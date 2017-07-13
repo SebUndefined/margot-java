@@ -1,0 +1,84 @@
+* {
+    /*transition: all .5s;*/
+}
+html {
+    font-size: 16px;
+    background-color: #F7F7F7;
+}
+h2 {
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+header, main, footer {
+    padding-left: 250px;
+}
+.graph {
+    height:40vh;
+}
+nav {
+    background-color: #EDEDED;
+}
+#logo {
+    height: 64px;
+    background-image: url("../img/logo_12Tree_resize.jpg");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.side-nav {
+    color: #FFFFFF;
+    background-color: #2A3F54;
+}
+.sub-menu {
+    background-color: #546576;
+}
+.drop-pmenu {
+    margin-right: 4em;
+}
+/*modifier l'apparence des scrollbars de tout le forum*/
+::-webkit-scrollbar {
+    width: 5px; /*largeur de la scrollbar verticale*/
+    height: 5px; /*hauteur de la scrollbar horizontale*/
+    background-color: red;}
+
+::-webkit-scrollbar-track {
+    background-color: #62778C; /*couleur du fond de la scrollbar*/
+}
+::-webkit-scrollbar-thumb { /*la petite bande qui monte/descend*/
+    background-color: #52677C /*couleur de l'ascenseur*/;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius:3px;}
+
+.side-nav > li a, .side-nav > li a i.material-icons{
+    color: #FFFFFF;
+}
+.panel6 {
+    width: 100%;
+    padding: 10px 17px;
+    margin-top: 1em;
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #E6E9ED;
+    -webkit-column-break-inside: avoid;
+    -moz-column-break-inside: avoid;
+    column-break-inside: avoid;
+    opacity: 1;
+    transition: all .2s ease;
+}
+.panel_title {
+    border-bottom: 2px solid #E6E9ED;
+    padding: 1px 0px 3px;
+
+}
+.panel_title h2 {
+    margin: 5px 0 6px;
+    display: block;
+}
+
+@media only screen and (max-width : 992px) {
+    header, main, footer {
+        padding-left: 0;
+    }
+}
