@@ -1,16 +1,27 @@
 package de.onetwotree.margaux.entity;
 
 
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
 /**
  * Created by SebUndefined on 10/07/17.
  */
+@Entity
+@Table(name = "db_harvest")
 public class Harvest extends MainEntity {
+    @Column(name = "harvest_begin_date")
     private GregorianCalendar beginDate;
+    @Column(name = "harvest_end_date")
     private GregorianCalendar endDate;
-    private float quantity;
+    @Column(name = "harvest_quantity")
+    private BigDecimal quantity;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plot_id")
     private Plot plot;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resource_id")
     private Resource resource;
 
     public Harvest() {
@@ -32,11 +43,11 @@ public class Harvest extends MainEntity {
         this.endDate = endDate;
     }
 
-    public float getQuantity() {
+    public BigDecimal getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(float quantity) {
+    public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
     }
 

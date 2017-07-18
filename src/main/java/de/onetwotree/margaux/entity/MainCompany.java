@@ -1,15 +1,26 @@
 package de.onetwotree.margaux.entity;
 
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by SebUndefined on 10/07/17.
  */
+@Entity
+@Table(name = "db_main_company")
 public class MainCompany extends MainEntity {
 
+    @Column(
+            name = "main_company_name",
+            nullable = false
+    )
     private String name;
+    @OneToMany(
+            mappedBy = "mainCompany",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<Company> companies = new ArrayList<Company>();
 
     public MainCompany() {

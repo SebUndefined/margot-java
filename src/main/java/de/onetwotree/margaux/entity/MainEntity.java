@@ -1,15 +1,25 @@
 package de.onetwotree.margaux.entity;
 
 
-import javax.persistence.Entity;
+import de.onetwotree.margaux.entity.User;
+
+import javax.persistence.*;
 
 /**
  * Created by sebby on 10/07/17.
  */
 @Entity
-public abstract class MainEntity {
-
+@Table(name = "db_main_entity")
+@Inheritance(
+        strategy = InheritanceType.JOINED
+)
+public class MainEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "main_entity_id")
     protected long id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     protected User manager;
 
     protected MainEntity() {
@@ -30,5 +40,7 @@ public abstract class MainEntity {
     public void setManager(User manager) {
         this.manager = manager;
     }
+
+
 
 }

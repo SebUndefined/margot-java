@@ -20,10 +20,19 @@ public class User {
     @NotNull
     @Column(name="user_username")
     private String userName;
+    @NotNull
+    @Column(name="user_firstname")
     private String firstname;
+    @NotNull
+    @Column(name="user_lastname")
     private String lastname;
+    @NotNull
+    @Column(name="user_email")
     private String email;
-
+    @OneToMany(
+            mappedBy = "manager",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     private List<MainEntity> isManagerOf = new ArrayList<MainEntity>();
 
     public User() {

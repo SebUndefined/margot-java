@@ -2,16 +2,27 @@ package de.onetwotree.margaux.entity;
 
 
 
+import de.onetwotree.margaux.entity.MainEntity;
+
 import javax.money.MonetaryAmount;
+import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
 /**
  * Created by SebUndefined on 10/07/17.
  */
+@Entity
+@Table(name = "db_sale")
 public class Sale extends MainEntity {
+    @Column(name = "sale_date")
     private GregorianCalendar date;
-    private MonetaryAmount amount;
+    @Column(name = "sale_amout")
+    private BigDecimal amount;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "harvest_id")
+    private Harvest harvest;
     public Sale() {
     }
 
@@ -23,11 +34,11 @@ public class Sale extends MainEntity {
         this.date = date;
     }
 
-    public MonetaryAmount getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(MonetaryAmount amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 }
