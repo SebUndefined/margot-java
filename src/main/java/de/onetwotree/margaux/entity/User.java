@@ -91,5 +91,6 @@ public class User {
         this.isManagerOf.remove(mainEntity);
     }
 
+    //Equal HashCode test
 
 }

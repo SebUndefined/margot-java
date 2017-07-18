@@ -18,7 +18,7 @@ public class MainEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "main_entity_id")
     protected long id;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     protected User manager;
 

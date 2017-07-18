@@ -30,6 +30,10 @@ nav {
     color: #FFFFFF;
     background-color: #2A3F54;
 }
+.side-nav li>a>i.material-icons {
+    margin-right: 23px;
+}
+
 .sub-menu {
     background-color: #546576;
 }
