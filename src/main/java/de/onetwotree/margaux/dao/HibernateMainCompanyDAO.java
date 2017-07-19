@@ -31,5 +31,6 @@ public class HibernateMainCompanyDAO implements MainCompanyDAO {
     public void addMainCompany(MainCompany mainCompany) {
         System.out.println(mainCompany.getName());
         entityManager.persist(mainCompany);
+
     }
 }

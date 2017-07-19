@@ -9,21 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan({"de.onetwotree.margaux.controller", "de.onetwotree.margaux.dao"})
+@ComponentScan({"de.onetwotree.margaux.controller", "de.onetwotree.margaux.dao", "de.onetwotree.margaux.appConfig"})
 @EntityScan(basePackages = "de.onetwotree.margaux.entity")
 public class MargauxOnetwotreeApplication {
 
 	public static void main(String[] args) {
 
         ApplicationContext ctx = SpringApplication.run(MargauxOnetwotreeApplication.class, args);
-        System.out.println("List of beans provided by Spring Boot:");
-        String[] beanNames = ctx.getBeanDefinitionNames();
-        Arrays.sort(beanNames);
-        for (String beanName : beanNames) {
-            System.out.print(beanName);
-            System.out.print(" ");
-        }
-
-        System.out.println("");
     }
 }

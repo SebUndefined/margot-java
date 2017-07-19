@@ -8,6 +8,7 @@ $(function(){
     });
     $('.collapsible').collapsible();
     Materialize.updateTextFields();
+    $('select').material_select();
     console.log("chargé");
 
 });
