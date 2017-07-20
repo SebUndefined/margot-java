@@ -9,7 +9,8 @@ import org.springframework.context.annotation.ComponentScan;
 import java.util.Arrays;
 
 @SpringBootApplication
-@ComponentScan({"de.onetwotree.margaux.controller", "de.onetwotree.margaux.dao", "de.onetwotree.margaux.appConfig"})
+@ComponentScan({"de.onetwotree.margaux.controller", "de.onetwotree.margaux.dao", "de.onetwotree.margaux.appConfig",
+        "de.onetwotree.margaux.service"})
 @EntityScan(basePackages = "de.onetwotree.margaux.entity")
 public class MargauxOnetwotreeApplication {
 

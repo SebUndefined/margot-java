@@ -1,17 +1,17 @@
-package de.onetwotree.margaux.dao;
+package de.onetwotree.margaux.temp;
 
 import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.entity.MainCompany;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 /**
  * Created by SebUndefined on 18/07/17.
  */
 public interface MainCompanyDAO {
+    List<MainCompany> findAll();
 
-    public MainCompany getMainCompany(long id);
-    public List<MainCompany> getAllMainCompany();
+    void addMainCompany(MainCompany mainCompany);
 
+    MainCompany findOnebyId(long id) throws MargauxException;
 }

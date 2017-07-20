@@ -20,36 +20,20 @@ import java.util.List;
 /**
  * Created by SebUndefined on 18/07/17.
  */
-@Repository
-@Transactional
+@Repository("mainCompanyDao")
 public class HibernateMainCompanyDAO implements MainCompanyDAO {
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
+    @Autowired
+    private SessionFactory sessionFactory;
 
     @Override
-    public List<MainCompany> findAll() {
-        List<MainCompany> mainCompanies = new ArrayList<MainCompany>();
-        Query query = entityManager.createQuery("FROM MainCompany");
-        mainCompanies = query.getResultList();
-        return mainCompanies;
+    public MainCompany getMainCompany(long id) {
+        return (MainCompany) sessionFactory.getCurrentSession().get(MainCompany.class, id);
     }
+
     @Override
-    public void addMainCompany(MainCompany mainCompany) {
-        System.out.println(mainCompany.getName());
-        entityManager.persist(mainCompany);
-
+    public List<MainCompany> getAllMainCompany() {
+        return (List<MainCompany>)sessionFactory.getCurrentSession().createCriteria(MainCompany.class).list();
     }
-    @Override
-    public MainCompany findOnebyId(long id) throws MargauxException {
 
-        MainCompany mainCompany = entityManager.find(MainCompany.class,id);
-        if (mainCompany == null) {
-            throw new MargauxException("Error no company with the id: " + id);
-        }
-        return mainCompany;
-
-
-    }
 }
