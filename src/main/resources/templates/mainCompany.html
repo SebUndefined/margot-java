@@ -10,22 +10,41 @@
                 <div class="panel_title">
                     <h2>Main Companies</h2>
                 </div>
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>User</th>
-                    </tr>
-                    <tr th:each="maincompany : ${MainCompanies}">
-                        <td th:text="${maincompany.id}">undefined</td>
-                        <td th:text="${maincompany.name}">undefined</td>
-                        <td th:text="${maincompany.manager.email}">undefined</td>
-                    </tr>
+                <table class="bordered highlight responsive-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Manager</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <tr th:each="maincompany : ${MainCompanies}">
+                                    <td th:text="${maincompany.id}">undefined</td>
+                                    <td th:text="${maincompany.name}">undefined</td>
+                                    <td th:text="${maincompany.manager.email}">undefined</td>
+                                    <td>
+                                        <a th:href="@{'/maincompany/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                            <i class="material-icons">visibility</i>
+                                        </a>
+                                        <a th:href="@{'/maincompany/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                            <i class="material-icons">edit</i>
+                                        </a>
+                                    </td>
+                            </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
     </div>
-
+    <!--Add button-->
+    <div class="fixed-action-btn horizontal">
+        <a th:href="@{/maincompany/add/}" class="btn-floating btn-large waves-effect waves-light">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+    <!-- end Add button-->
 </main>
 
 <div th:replace="common/footer :: footer"></div>

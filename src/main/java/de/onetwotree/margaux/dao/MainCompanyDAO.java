@@ -1,7 +1,9 @@
 package de.onetwotree.margaux.dao;
 
+import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.entity.MainCompany;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /**
@@ -11,4 +13,6 @@ public interface MainCompanyDAO {
     List<MainCompany> findAll();
 
     void addMainCompany(MainCompany mainCompany);
+
+    MainCompany findOnebyId(long id) throws MargauxException;
 }

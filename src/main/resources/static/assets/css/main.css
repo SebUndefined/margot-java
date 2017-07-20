@@ -74,7 +74,10 @@ nav {
 .panel_title {
     border-bottom: 2px solid #E6E9ED;
     padding: 1px 0px 3px;
-
+}
+.panel_title>h1 {
+    font-size: 2.6rem;
+    margin-bottom: 1rem;
 }
 .panel_title h2 {
     margin: 5px 0 6px;

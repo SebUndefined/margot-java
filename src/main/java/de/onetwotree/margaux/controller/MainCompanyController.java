@@ -1,19 +1,16 @@
 package de.onetwotree.margaux.controller;
 
+import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.dao.MainCompanyDAO;
 import de.onetwotree.margaux.dao.UserDao;
 import de.onetwotree.margaux.entity.MainCompany;
-import de.onetwotree.margaux.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 
 /**
  * Created by SebUndefined on 18/07/17.
@@ -40,11 +37,22 @@ public class MainCompanyController {
         model.addAttribute("MainCompany", new MainCompany());
         return "editMainCompany";
     }
-    //public String addMainCompanySubmit(@ModelAttribute MainCompany mainCompany) {
     @PostMapping(value = "add/")
     public String addMainCompanySubmit(@ModelAttribute("MainCompany") MainCompany mainCompany, BindingResult result) {
-        System.out.println(result.toString());
         mainCompanyDAO.addMainCompany(mainCompany);
         return "redirect:/maincompany/";
+    }
+    @GetMapping(value = "{id}")
+    public String viewMainCompany(@PathVariable(value = "id") String id, Model model){
+        try {
+            Long idMainCompany = Long.valueOf(id);
+            System.out.println(idMainCompany);
+            MainCompany mainCompany = mainCompanyDAO.findOnebyId(idMainCompany);
+            model.addAttribute("maincompany", mainCompany);
+            return "viewMainCompany";
+        } catch (MargauxException e) {
+            model.addAttribute("exception", e);
+            return "error";
+        }
     }
 }
