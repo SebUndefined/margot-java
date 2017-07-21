@@ -11,10 +11,7 @@ import java.util.List;
 
 public interface UserDao {
 
-    public void addUser(User user);
+    public User getUser(long id);
 
-
-    List<User> findAll();
-
-    User findUser(Long id);
+    List<User> getAllUsers();
 }

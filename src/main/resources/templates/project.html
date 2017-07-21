@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="common/head :: head"></div>
+<div th:replace="common/header :: header"></div>
+<main>
+    <div class="row">
+        <div class="col l12 m12 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Projects</h2>
+                </div>
+                <table class="bordered highlight responsive-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Begin date</th>
+                        <th>End Date</th>
+                        <th>Manager</th>
+                        <th>Company</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="project : ${projects}">
+                        <td th:text="${project.id}">undefined</td>
+                        <td th:text="${project.beginDate}">undefined</td>
+                        <td th:text="${project.manager.firstname} + ' ' + ${project.manager.lastname}">undefined</td>
+                        <td th:text="${project.company}">undefined</td>
+                        <td>
+                            <a th:href="@{'/project/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                <i class="material-icons">visibility</i>
+                            </a>
+                            <a th:href="@{'/project/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <a class="waves-effect waves-light btn modal-trigger" th:href="'#modal1' + ${project.id}">Modal</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--Add button-->
+    <div class="fixed-action-btn horizontal">
+        <a th:href="@{/project/add/}" class="btn-floating btn-large waves-effect waves-light">
+            <i class="material-icons">add</i>
+        </a>
+    </div>
+    <!-- end Add button-->
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Deleting Main Company ...</h4>
+            <p>Are you sure you want to delete this main company ?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+    <!-- End Modal-->
+</main>
+
+<div th:replace="common/footer :: footer"></div>
+</html>

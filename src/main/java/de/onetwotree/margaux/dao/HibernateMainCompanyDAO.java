@@ -2,6 +2,7 @@ package de.onetwotree.margaux.dao;
 
 import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.entity.MainCompany;
+import de.onetwotree.margaux.entity.User;
 import org.hibernate.HibernateException;
 import org.hibernate.JDBCException;
 import org.hibernate.Session;
@@ -29,6 +30,18 @@ public class HibernateMainCompanyDAO implements MainCompanyDAO {
     @Override
     public MainCompany getMainCompany(long id) {
         return (MainCompany) sessionFactory.getCurrentSession().get(MainCompany.class, id);
+    }
+
+    @Override
+    public void addMainCompany(MainCompany mainCompany){
+        Session session = sessionFactory.getCurrentSession();
+        User user = mainCompany.getManager();
+        if (!session.contains(user)) {
+            session.refresh(user);
+        }
+        System.out.println("Avant persist");
+        session.save(mainCompany);
+        System.out.println(mainCompany.getManager().getFirstname());
     }
 
     @Override

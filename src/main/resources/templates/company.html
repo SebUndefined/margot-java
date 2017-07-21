@@ -8,49 +8,32 @@
         <div class="col l12 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h1>Main Company <span th:text="${maincompany.name}"></span></h1>
-                </div>
-                This page is a particular MainCompany
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col l6 m6 s12">
-            <div class="panel6">
-                <div class="panel_title">
-                    <h2>Manager</h2>
-                </div>
-                Name: <span th:text="${maincompany.manager.lastname}"></span> <span th:text="${maincompany.manager.firstname}"></span><br/>
-                Email: <a th:href="'mailto:' + (${maincompany.manager.email})"><span th:text="${maincompany.manager.email}"></span> </a>
-            </div>
-        </div>
-        <div class="col l6 m6 s12">
-            <div class="panel6">
-                <div class="panel_title">
                     <h2>Companies</h2>
                 </div>
-                <p>This companies belong to <span th:text="${maincompany.name}"></span> </p>
                 <table class="bordered highlight responsive-table">
                     <thead>
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Main Company</th>
                         <th>Manager</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="company : ${maincompany.companies}">
+                    <tr th:each="company : ${companies}">
                         <td th:text="${company.id}">undefined</td>
                         <td th:text="${company.name}">undefined</td>
+                        <td th:text="${company.mainCompany.name}">undefined</td>
                         <td th:text="${company.manager.firstname} + ' ' + ${company.manager.lastname}">undefined</td>
                         <td>
-                            <a th:href="@{'/company/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
+                            <a th:href="@{'/company/' + ${company.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">visibility</i>
                             </a>
                             <a th:href="@{'/company/' + ${company.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">edit</i>
                             </a>
+                            <a class="waves-effect waves-light btn modal-trigger" th:href="'#modal1' + ${company.id}">Modal</a>
                         </td>
                     </tr>
                     </tbody>
@@ -60,11 +43,22 @@
     </div>
     <!--Add button-->
     <div class="fixed-action-btn horizontal">
-        <a th:href="@{/maincompany/add/}" class="btn-floating btn-large waves-effect waves-light">
+        <a th:href="@{/company/add/}" class="btn-floating btn-large waves-effect waves-light">
             <i class="material-icons">add</i>
         </a>
     </div>
     <!-- end Add button-->
+    <!-- Modal Structure -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <h4>Deleting Main Company ...</h4>
+            <p>Are you sure you want to delete this main company ?</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat">Agree</a>
+        </div>
+    </div>
+    <!-- End Modal-->
 </main>
 
 <div th:replace="common/footer :: footer"></div>

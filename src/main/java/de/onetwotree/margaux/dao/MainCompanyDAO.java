@@ -12,6 +12,9 @@ import java.util.List;
 public interface MainCompanyDAO {
 
     public MainCompany getMainCompany(long id);
+
+    void addMainCompany(MainCompany mainCompany);
+
     public List<MainCompany> getAllMainCompany();
 
 }

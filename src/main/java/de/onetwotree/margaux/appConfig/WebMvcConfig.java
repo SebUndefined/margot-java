@@ -1,5 +1,6 @@
 package de.onetwotree.margaux.appConfig;
 
+import de.onetwotree.margaux.application.StringToMainCompany;
 import de.onetwotree.margaux.application.StringToUser;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,10 +17,15 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public void addFormatters(FormatterRegistry registry) {
         System.out.println("###################Register Converter##################");
         registry.addConverter(getStringToUser());
+        registry.addConverter(getStringToMainCompany());
     }
     @Bean
     public StringToUser getStringToUser(){
         return new StringToUser();
+    }
+    @Bean
+    public StringToMainCompany getStringToMainCompany(){
+        return new StringToMainCompany();
     }
     //Test with Service
     @Bean

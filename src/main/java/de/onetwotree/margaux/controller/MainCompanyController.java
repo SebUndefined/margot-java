@@ -5,6 +5,7 @@ import de.onetwotree.margaux.dao.MainCompanyDAO;
 import de.onetwotree.margaux.dao.UserDao;
 import de.onetwotree.margaux.entity.MainCompany;
 import de.onetwotree.margaux.service.MainCompanyService;
+import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -25,10 +26,12 @@ public class MainCompanyController {
 //    @Autowired
 //    private MainCompanyDAO mainCompanyDAO;
 //
-//    @Autowired
-//    private UserDao userDao;
+    //@Autowired
+    //private UserDao userDao;
     @Autowired
     private MainCompanyService mainCompanyService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping(value = "/")
     public String MainCompanyIndex(Model model) {
@@ -39,30 +42,19 @@ public class MainCompanyController {
     }
     @GetMapping(value = "add/")
     public String addMainCompanyForm(Model model) {
-        //model.addAttribute("users", userDao.findAll());
+        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("MainCompany", new MainCompany());
         return "editMainCompany";
     }
     @PostMapping(value = "add/")
-    public String addMainCompanySubmit(@ModelAttribute("MainCompany") MainCompany mainCompany, BindingResult result) {
-        //mainCompanyDAO.addMainCompany(mainCompany);
+    public String addMainCompanySubmit(@ModelAttribute("MainCompany") MainCompany mainCompany,
+                                       BindingResult result) {
+        mainCompanyService.addMainCompany(mainCompany);
         return "redirect:/maincompany/";
     }
     @GetMapping(value = "{id}")
     public String viewMainCompany(@PathVariable(value = "id") String id, Model model){
-        /*try {
-            Long idMainCompany = Long.valueOf(id);
-            System.out.println(idMainCompany);
-            //MainCompany mainCompany = mainCompanyDAO.findOnebyId(idMainCompany);
-            MainCompany mainCompany = mainCompanyService.getMainCompany(idMainCompany);
-            model.addAttribute("maincompany", mainCompany);
-            return "viewMainCompany";
-        } catch (MargauxException e) {
-            model.addAttribute("exception", e);
-            return "error";
-        }*/
         Long idMainCompany = Long.valueOf(id);
-        System.out.println(idMainCompany);
         MainCompany mainCompany = mainCompanyService.getMainCompany(idMainCompany);
         model.addAttribute("maincompany", mainCompany);
         return "viewMainCompany";

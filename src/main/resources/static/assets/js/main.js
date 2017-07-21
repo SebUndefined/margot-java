@@ -9,6 +9,7 @@ $(function(){
     $('.collapsible').collapsible();
     Materialize.updateTextFields();
     $('select').material_select();
+    $('.modal').modal();
     console.log("chargé");
 
 });
