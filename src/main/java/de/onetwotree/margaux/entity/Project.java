@@ -2,7 +2,12 @@ package de.onetwotree.margaux.entity;
 
 
 
+import de.onetwotree.margaux.application.StringToMainCompany;
+import org.apache.tomcat.jni.Local;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -15,10 +20,12 @@ import java.util.List;
 @Table(name = "db_project")
 public class Project extends MainEntity {
 
+    @Column(name = "project_name")
+    private String name;
     @Column(name = "project_begin_date")
-    private GregorianCalendar beginDate;
+    private LocalDate beginDate;
     @Column(name = "project_end_date")
-    private GregorianCalendar endDate;
+    private LocalDate endDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
@@ -39,19 +46,19 @@ public class Project extends MainEntity {
     public Project() {
     }
 
-    public Calendar getBeginDate() {
+    public LocalDate getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(GregorianCalendar beginDate) {
+    public void setBeginDate(LocalDate beginDate) {
         this.beginDate = beginDate;
     }
 
-    public Calendar getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(GregorianCalendar endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -61,6 +68,14 @@ public class Project extends MainEntity {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     /*public List<Budget> getBudgets() {

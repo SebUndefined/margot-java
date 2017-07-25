@@ -24,4 +24,9 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = projectDAO.getAllProjects();
         return projects;
     }
+
+    @Override
+    public void addProject(Project project) {
+        projectDAO.addProject(project);
+    }
 }

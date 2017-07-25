@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface ProjectService {
     List<Project> getAllProject();
+
+    void addProject(Project project);
 }

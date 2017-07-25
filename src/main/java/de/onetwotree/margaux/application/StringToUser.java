@@ -15,12 +15,9 @@ import org.springframework.stereotype.Component;
 public class StringToUser implements Converter<String, User> {
     @Autowired
     UserService userService;
-
+    @Override
     public User convert(String id) {
-        System.out.println("###############Testsssssss");
         User user = userService.getUser(Long.valueOf(id));
-        System.out.println("###############Testsssssss");
-        System.out.println("user email-->" + user.getEmail());
         return user;
     }
 }

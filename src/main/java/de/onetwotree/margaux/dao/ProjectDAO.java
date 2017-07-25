@@ -10,4 +10,6 @@ import java.util.List;
 public interface ProjectDAO {
 
     List<Project> getAllProjects();
+
+    void addProject(Project project);
 }

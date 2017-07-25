@@ -1,10 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="common/head :: head"></div>
+<div th:replace="common/header :: header"></div>
+<main>
+    <div class="row">
+        <div class="col l12 m12 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Add a Project</h2>
+                </div>
+                <!--/*@thymesVar id="MainCompany" type="de.onetwotree.margaux.entity.MainCompany"*/-->
+                <form action="#" th:action="@{/project/add/}" th:object="${project}" method="post" class="col s12">
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <input id="projectName" type="text" class="validate" th:field="*{name}" required="required" />
+                            <label for="projectName">Project Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <input id="beginDate" type="text" class="datepicker"  th:field="*{beginDate}" required="required" />
+                            <label for="beginDate">Begin Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <input id="endDate" type="text" class="datepicker" th:field="*{endDate}" />
+                            <label for="endDate">End Date</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <select th:field="*{company}" class="input-field">
+                                <option id="mainCompany" th:each="company: ${companies}" th:value="${company.id}" th:text="${company.name}"></option>
+                            </select>
+                            <label for="mainCompany">Company</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <select th:field="*{manager}" class="input-field">
+                                <option id="manager" th:each="user: ${users}" th:value="${user.id}" th:text="${user.firstname}"></option>
+                            </select>
+                            <label for="manager">Manager</label>
+                        </div>
+                    </div>
 
-</body>
+                    <input class="waves-effect waves-light btn" type="submit" />
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="common/footer :: footer"></div>
 </html>
