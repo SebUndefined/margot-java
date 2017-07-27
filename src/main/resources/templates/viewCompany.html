@@ -35,6 +35,41 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Projects</h2>
+                </div>
+                <p>This projects belongs to <span th:text="${company.name}"></span> </p>
+                <table class="bordered highlight responsive-table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Manager</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="project : ${company.projects}">
+                        <td th:text="${project.id}">undefined</td>
+                        <td th:text="${project.name}">undefined</td>
+                        <td th:text="${project.manager.firstname} + ' ' + ${project.manager.lastname}">undefined</td>
+                        <td>
+                            <a th:href="@{'/project/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                <i class="material-icons">visibility</i>
+                            </a>
+                            <a th:href="@{'/project/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                <i class="material-icons">edit</i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     <!--Add button-->
     <div class="fixed-action-btn horizontal">
         <a th:href="@{/maincompany/add/}" class="btn-floating btn-large waves-effect waves-light">

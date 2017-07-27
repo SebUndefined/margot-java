@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -19,6 +20,10 @@ public class HibernateProjectDAO implements ProjectDAO {
     @Autowired
     SessionFactory sessionFactory;
 
+    @Override
+    public Project getProject(Long id) {
+        return (Project)sessionFactory.getCurrentSession().get(Project.class, id);
+    }
     @Override
     public List<Project> getAllProjects() {
         return (List<Project>)sessionFactory.getCurrentSession().createCriteria(Project.class).list();
@@ -34,4 +39,5 @@ public class HibernateProjectDAO implements ProjectDAO {
         System.out.println(project.getBeginDate().toString());
         session.save(project);
     }
+
 }

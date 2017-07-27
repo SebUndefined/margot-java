@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface ProjectDAO {
 
+    Project getProject(Long id);
+
     List<Project> getAllProjects();
 
     void addProject(Project project);

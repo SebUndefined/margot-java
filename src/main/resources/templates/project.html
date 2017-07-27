@@ -26,8 +26,8 @@
                     <tr th:each="project : ${projects}">
                         <td th:text="${project.id}">undefined</td>
                         <td th:text="${project.name}">undefined</td>
-                        <td th:text="${#temporals.format(project.beginDate,'dd/MMM/yyyy')}">undefined</td>
-                        <td th:text="${project.endDate}">undefined</td>
+                        <td th:text="${project.beginDate != null} ? ${#temporals.format(project.beginDate,'dd/MM/yyyy')} : 'null value!'">undefined</td>
+                        <td th:text="${project.endDate != null} ?  ${project.endDate} : 'null value!'">undefined</td>
                         <td th:text="${project.manager.firstname} + ' ' + ${project.manager.lastname}">undefined</td>
                         <td th:text="${project.company.name}">undefined</td>
                         <td>

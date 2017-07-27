@@ -45,4 +45,11 @@ public class Company extends MainEntity {
         this.mainCompany = mainCompany;
     }
 
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
 }

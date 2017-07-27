@@ -18,7 +18,6 @@ public class MainCompanyServiceImpl implements MainCompanyService {
     @Autowired
     private MainCompanyDAO mainCompanyDAO;
 
-
     @Override
     public MainCompany getMainCompany(long id) {
         return mainCompanyDAO.getMainCompany(id);
