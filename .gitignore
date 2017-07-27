@@ -24,4 +24,4 @@ nbdist/
 .nb-gradle/
 
 ### API Test ###
-src/main/resources/static/assets/res
+src/main/resources/static/assets/res/

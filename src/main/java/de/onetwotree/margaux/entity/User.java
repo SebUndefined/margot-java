@@ -1,6 +1,10 @@
 package de.onetwotree.margaux.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -33,6 +37,7 @@ public class User {
             mappedBy = "manager",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonManagedReference
     private List<MainEntity> isManagerOf = new ArrayList<MainEntity>();
 
     public User() {

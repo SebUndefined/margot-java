@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:fragment="map">
+    <script th:inline="javascript">
+        var map;
+        var myLatLng;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat:0,lng:0},
+                zoom: 2
+            });
+            console.log(plots.length);
+            for(var i = 0; i < plots.length; i++) {
+                var latlng = new google.maps.LatLng(plots[i].latitude, plots[i].longitude);
+                console.log(latlng);
+                var marker = new google.maps.Marker({
+                    position: latlng,
+                    map: map,
+                    title: plots[i].id.toString()
+                });
+            }
+
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=initMap"></script>
+</div>
+</html>

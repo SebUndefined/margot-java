@@ -8,7 +8,7 @@
         <div class="col l12 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h1>Company <span th:text="${project.name}"></span></h1>
+                    <h1>Project <span th:text="${project.name}"></span></h1>
                 </div>
                 This page is a particular project
             </div>
@@ -51,21 +51,21 @@
                         <th>Actions</th>
                     </tr>
                     </thead>
-                    <!--<tbody>
-                    <tr th:each="project : ${company.projects}">
-                        <td th:text="${project.id}">undefined</td>
-                        <td th:text="${project.name}">undefined</td>
-                        <td th:text="${project.manager.firstname} + ' ' + ${project.manager.lastname}">undefined</td>
+                    <tbody>
+                    <tr th:each="plot : ${project.plots}">
+                        <td th:text="${plot.id}">undefined</td>
+                        <!--<td th:text="${plot.name}">undefined</td>-->
+                        <td th:text="${plot.manager.firstname} + ' ' + ${plot.manager.lastname}">undefined</td>
                         <td>
-                            <a th:href="@{'/project/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                            <a th:href="@{'/project/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">visibility</i>
                             </a>
-                            <a th:href="@{'/project/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                            <a th:href="@{'/project/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">edit</i>
                             </a>
                         </td>
                     </tr>
-                    </tbody>-->
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -76,8 +76,16 @@
                 <div class="panel_title">
                     <h2>Plots</h2>
                 </div>
+                <div class="map-panel">
+                    <div id="map"></div>
+                </div>
+                <!-- Un test de map -->
+                <script th:inline="javascript">
+                    var plots = /*[[${project.plots}]]*/ '';
+                </script>
+                <div th:replace="common/map :: map"></div>
+                <!-- Un test deux -->
             </div>
-
         </div>
     </div>
     <!--Add button-->

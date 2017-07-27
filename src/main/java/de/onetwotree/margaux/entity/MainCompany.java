@@ -1,6 +1,8 @@
 package de.onetwotree.margaux.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,7 @@ public class MainCompany extends MainEntity {
             mappedBy = "mainCompany",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
+    @JsonManagedReference
     private List<Company> companies = new ArrayList<Company>();
 
     public MainCompany() {

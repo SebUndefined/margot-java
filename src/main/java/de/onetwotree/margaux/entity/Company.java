@@ -2,6 +2,9 @@ package de.onetwotree.margaux.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,7 @@ public class Company extends MainEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_company_id")
+    @JsonBackReference
     private MainCompany mainCompany;
 
     @OneToMany(
@@ -24,6 +28,7 @@ public class Company extends MainEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonManagedReference
     private List<Project> projects = new ArrayList<Project>();
 
     public Company() {

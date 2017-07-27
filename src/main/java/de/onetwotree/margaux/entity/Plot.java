@@ -1,8 +1,7 @@
 package de.onetwotree.margaux.entity;
 
 
-import de.onetwotree.margaux.entity.MainEntity;
-import de.onetwotree.margaux.entity.Project;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -14,12 +13,13 @@ import java.util.List;
 @Entity
 @Table(name = "db_plot")
 public class Plot extends MainEntity {
-    @Column(name = "project_latitude")
-    private String latitude;
-    @Column(name = "project_longitude")
-    private String longitude;
+    @Column(name = "plot_latitude")
+    private double latitude;
+    @Column(name = "plot_longitude")
+    private double longitude;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
+    @JsonBackReference
     private Project project;
     @ManyToMany(cascade = {
             CascadeType.PERSIST,
@@ -34,19 +34,19 @@ public class Plot extends MainEntity {
     public Plot() {
     }
 
-    public String getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

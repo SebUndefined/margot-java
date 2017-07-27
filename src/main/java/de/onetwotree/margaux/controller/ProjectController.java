@@ -2,6 +2,7 @@ package de.onetwotree.margaux.controller;
 
 import de.onetwotree.margaux.application.StringToMainCompany;
 import de.onetwotree.margaux.entity.Company;
+import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.entity.User;
 import de.onetwotree.margaux.service.CompanyService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +46,15 @@ public class ProjectController {
     public  String viewProject(@PathVariable(value = "id") String id, Model model) {
         Long projectId = Long.valueOf(id);
         Project project = projectService.getProject(projectId);
+        List<String> plots = new ArrayList<String>();
+        plots.add("String 1");
+        plots.add("String 2");
+        plots.add("String 3");
+        plots.add("String 4");
         model.addAttribute("project", project);
+        model.addAttribute("plots", plots);
+        model.addAttribute("lat", "8.9823792");
+        model.addAttribute("long", "-79.5198696");
         return "viewProject";
     }
 
