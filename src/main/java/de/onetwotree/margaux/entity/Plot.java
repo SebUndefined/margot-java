@@ -2,6 +2,7 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ public class Plot extends MainEntity {
     private double longitude;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Project project;
     @ManyToMany(cascade = {
             CascadeType.PERSIST,

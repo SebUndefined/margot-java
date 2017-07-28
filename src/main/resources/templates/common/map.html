@@ -13,7 +13,7 @@
             });
             for(var i = 0; i < plots.length; i++) {
                 var latlng = new google.maps.LatLng(plots[i].latitude, plots[i].longitude);
-                console.log(plots[i].id);
+                console.log(plots[i]);
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map,
@@ -30,7 +30,7 @@
                 })(marker, i));
             }
         }
-        google.maps.event.addDomListener(window, 'load', initMap);
+        //google.maps.event.addDomListener(window, 'load', initMap);
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=initMap"></script>
 </div>

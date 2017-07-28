@@ -37,7 +37,7 @@ public class Project extends MainEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    @JsonManagedReference
+    @JsonBackReference
     private List<Plot> plots = new ArrayList<Plot>();
     @OneToMany(
             mappedBy = "project",
