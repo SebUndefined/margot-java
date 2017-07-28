@@ -4,24 +4,33 @@
 <div th:fragment="map">
     <script th:inline="javascript">
         var map;
-        var myLatLng;
+
         function initMap() {
+            var infowindow = new google.maps.InfoWindow();
             map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat:0,lng:0},
                 zoom: 2
             });
-            console.log(plots.length);
             for(var i = 0; i < plots.length; i++) {
                 var latlng = new google.maps.LatLng(plots[i].latitude, plots[i].longitude);
-                console.log(latlng);
+                console.log(plots[i].id);
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map,
-                    title: plots[i].id.toString()
+                    icon: '../../assets/img/tree-2-32.png'
                 });
-            }
+                google.maps.event.addListener(marker, 'click', (function(marker, i) {
 
+                    return function() {
+                        //infowindow.close();
+                        infowindow.setContent( "<div id='infowindow'>"+ plots[i].id.toString() +"</div>");
+                        infowindow.open(map, marker);
+                    }
+
+                })(marker, i));
+            }
         }
+        google.maps.event.addDomListener(window, 'load', initMap);
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=initMap"></script>
 </div>
