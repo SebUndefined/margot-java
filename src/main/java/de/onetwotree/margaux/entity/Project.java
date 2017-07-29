@@ -2,8 +2,7 @@ package de.onetwotree.margaux.entity;
 
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import de.onetwotree.margaux.application.StringToMainCompany;
 import org.apache.tomcat.jni.Local;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -20,6 +19,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "db_project")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Project extends MainEntity {
 
     @Column(name = "project_name")
@@ -28,9 +28,10 @@ public class Project extends MainEntity {
     private LocalDate beginDate;
     @Column(name = "project_end_date")
     private LocalDate endDate;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
-    @JsonBackReference
+    @JsonManagedReference
     private Company company;
     @OneToMany(
             mappedBy = "project",
@@ -96,5 +97,12 @@ public class Project extends MainEntity {
 
     public void setPlots(List<Plot> plots) {
         this.plots = plots;
+    }
+    public List<Budget> getBudgets() {
+        return budgets;
+    }
+
+    public void setBudgets(List<Budget> budgets) {
+        this.budgets = budgets;
     }
 }

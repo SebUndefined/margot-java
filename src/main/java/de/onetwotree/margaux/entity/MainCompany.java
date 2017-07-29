@@ -1,7 +1,7 @@
 package de.onetwotree.margaux.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "db_main_company")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MainCompany extends MainEntity {
 
     @Column(
@@ -23,7 +24,7 @@ public class MainCompany extends MainEntity {
             mappedBy = "mainCompany",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Company> companies = new ArrayList<Company>();
 
     public MainCompany() {

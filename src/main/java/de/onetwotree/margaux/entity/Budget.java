@@ -1,6 +1,8 @@
 package de.onetwotree.margaux.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.annotations.Columns;
 import org.hibernate.annotations.Type;
 
@@ -32,7 +34,13 @@ public class Budget {
 
     public Budget() {
     }
+    public int getId() {
+        return id;
+    }
 
+    public void setId(int id) {
+        this.id = id;
+    }
     public GregorianCalendar getBegindate() {
         return begindate;
     }
@@ -55,5 +63,13 @@ public class Budget {
 
     public void set$ammount(BigDecimal $ammount) {
         this.$ammount = $ammount;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 }

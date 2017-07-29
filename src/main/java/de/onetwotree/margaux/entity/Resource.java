@@ -1,6 +1,8 @@
 package de.onetwotree.margaux.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.onetwotree.margaux.entity.MainEntity;
 
 import javax.persistence.*;

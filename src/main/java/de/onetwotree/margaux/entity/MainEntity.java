@@ -1,9 +1,7 @@
 package de.onetwotree.margaux.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import de.onetwotree.margaux.entity.User;
 
@@ -24,7 +22,7 @@ public class MainEntity {
     protected long id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-    @JsonBackReference
+    @JsonManagedReference
     protected User manager;
 
     protected MainEntity() {

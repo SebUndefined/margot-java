@@ -1,9 +1,7 @@
 package de.onetwotree.margaux.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,6 +13,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "db_user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
     @Id
@@ -37,7 +36,7 @@ public class User {
             mappedBy = "manager",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    @JsonManagedReference
+    @JsonBackReference
     private List<MainEntity> isManagerOf = new ArrayList<MainEntity>();
 
     public User() {

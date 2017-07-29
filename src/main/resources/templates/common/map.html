@@ -22,8 +22,13 @@
                 google.maps.event.addListener(marker, 'click', (function(marker, i) {
 
                     return function() {
+                        var contentString = "<div id='infowindow'>" +
+                                "<h5>Plot id: "+ plots[i].id.toString() +"</h5>" +
+                                "<p>Project:" +
+                            "Plot id:"+ plots[i].id.toString() +"</div>" +
+                            "</p>";
                         //infowindow.close();
-                        infowindow.setContent( "<div id='infowindow'>"+ plots[i].id.toString() +"</div>");
+                        infowindow.setContent(contentString);
                         infowindow.open(map, marker);
                     }
 
