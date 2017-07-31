@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface PlotDAO {
     List<Plot> getAllPlot();
+
+    void addPlot(Plot plot);
 }

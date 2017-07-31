@@ -23,4 +23,9 @@ public class PlotServiceImpl implements PlotService {
     public List<Plot> getAllPlot() {
         return plotDAO.getAllPlot();
     }
+
+    @Override
+    public void addPlot(Plot plot) {
+        plotDAO.addPlot(plot);
+    }
 }

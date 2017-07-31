@@ -1,9 +1,6 @@
 package de.onetwotree.margaux.appConfig;
 
-import de.onetwotree.margaux.application.LocalDateConverter;
-import de.onetwotree.margaux.application.StringToCompany;
-import de.onetwotree.margaux.application.StringToMainCompany;
-import de.onetwotree.margaux.application.StringToUser;
+import de.onetwotree.margaux.application.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
@@ -22,6 +19,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(getStringToUser());
         registry.addConverter(getStringToMainCompany());
         registry.addConverter(getStringToCompany());
+        registry.addConverter(getStringToProject());
         registry.addConverter(getLocalDateConverter());
     }
     @Bean
@@ -35,6 +33,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Bean
     public StringToCompany getStringToCompany() {
         return new StringToCompany();
+    }
+    @Bean
+    public StringToProject getStringToProject() {
+        return new StringToProject();
     }
     @Bean
     public LocalDateConverter getLocalDateConverter(){return new LocalDateConverter("dd-MM-yyyy");}

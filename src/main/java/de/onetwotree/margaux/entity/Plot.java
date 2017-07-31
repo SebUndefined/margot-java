@@ -14,6 +14,10 @@ import java.util.List;
 @Table(name = "db_plot")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Plot extends MainEntity {
+    @Column(name = "plot_name")
+    private String name;
+    @Column(name = "plot_size")
+    private double size;
     @Column(name = "plot_latitude")
     private double latitude;
     @Column(name = "plot_longitude")
@@ -34,6 +38,22 @@ public class Plot extends MainEntity {
     private List<Resource> resources = new ArrayList<Resource>();
 
     public Plot() {
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getSize() {
+        return size;
+    }
+
+    public void setSize(double size) {
+        this.size = size;
     }
 
     public double getLatitude() {

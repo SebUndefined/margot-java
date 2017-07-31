@@ -42,19 +42,11 @@ public class ProjectController {
         return "project";
     }
 
-    @RequestMapping(value = "{id}")
+    @RequestMapping(value = "/view/{id}")
     public  String viewProject(@PathVariable(value = "id") String id, Model model) {
         Long projectId = Long.valueOf(id);
         Project project = projectService.getProject(projectId);
-        List<String> plots = new ArrayList<String>();
-        plots.add("String 1");
-        plots.add("String 2");
-        plots.add("String 3");
-        plots.add("String 4");
         model.addAttribute("project", project);
-        model.addAttribute("plots", plots);
-        model.addAttribute("lat", "8.9823792");
-        model.addAttribute("long", "-79.5198696");
         return "viewProject";
     }
 

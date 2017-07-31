@@ -22,17 +22,25 @@
                 google.maps.event.addListener(marker, 'click', (function(marker, i) {
 
                     return function() {
-                        var contentString = "<div id='infowindow'>" +
-                                "<h5>Plot id: "+ plots[i].id.toString() +"</h5>" +
-                                "<p>Project:" +
-                            "Plot id:"+ plots[i].id.toString() +"</div>" +
-                            "</p>";
+                        var contentString = '<div class="gm-window">' +
+                            '<div class="gm-window-title">' +
+                            plots[i].name +
+                            '</div>' +
+                            '<div class="gm-window-content">' +
+                            'Size: ' + plots[i].size + ' ha' + '<br/>' +
+                            'Project: <a href="/project/view/' + plots[i].project.id + '">' + plots[i].project.name + '</a>' +
+                            '</div>' +
+                            '</div>';
                         //infowindow.close();
                         infowindow.setContent(contentString);
                         infowindow.open(map, marker);
+                        map.setCenter(latlng);
                     }
 
                 })(marker, i));
+
+
+
             }
         }
         //google.maps.event.addDomListener(window, 'load', initMap);

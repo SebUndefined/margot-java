@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface PlotService {
     List<Plot> getAllPlot();
+
+    void addPlot(Plot plot);
 }
