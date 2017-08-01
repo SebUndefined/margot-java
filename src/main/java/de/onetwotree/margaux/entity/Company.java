@@ -18,7 +18,7 @@ public class Company extends MainEntity {
     @Column(name = "company_name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "main_company_id")
     @JsonManagedReference
     private MainCompany mainCompany;
@@ -26,7 +26,8 @@ public class Company extends MainEntity {
     @OneToMany(
             mappedBy = "company",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
     )
     @JsonBackReference
     private List<Project> projects = new ArrayList<Project>();

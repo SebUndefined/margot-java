@@ -12,5 +12,7 @@ public interface ProjectService {
 
     List<Project> getAllProject();
 
+    List<Project> getAllProjectsForMainCompany(Long idMainCompany);
+
     void addProject(Project project);
 }

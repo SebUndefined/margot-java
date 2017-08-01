@@ -13,7 +13,8 @@ import java.util.List;
  * Created by SebUndefined on 21/07/17.
  */
 @Service("userService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     @Autowired

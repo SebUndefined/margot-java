@@ -20,10 +20,10 @@ public class Harvest extends MainEntity {
     private GregorianCalendar endDate;
     @Column(name = "harvest_quantity")
     private BigDecimal quantity;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "plot_id")
     private Plot plot;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "resource_id")
     private Resource resource;
 

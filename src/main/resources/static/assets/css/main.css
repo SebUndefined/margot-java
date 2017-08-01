@@ -58,6 +58,8 @@ nav {
 .side-nav > li a, .side-nav > li a i.material-icons{
     color: #FFFFFF;
 }
+.tabs .indicator { display: none; }
+.tabs .tab a.active { border-bottom: 2px solid #f6b2b5; }
 .panel6 {
     width: 100%;
     padding: 10px 17px;

@@ -1,5 +1,6 @@
 package de.onetwotree.margaux.dao;
 
+import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.entity.Project;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface ProjectDAO {
     Project getProject(Long id);
 
     List<Project> getAllProjects();
+
+    List<Project> getAllProjectsForMainCompany(Long idMainCompany);
 
     void addProject(Project project);
 }

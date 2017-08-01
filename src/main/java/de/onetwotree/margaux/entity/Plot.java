@@ -22,7 +22,7 @@ public class Plot extends MainEntity {
     private double latitude;
     @Column(name = "plot_longitude")
     private double longitude;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     @JsonManagedReference
     private Project project;

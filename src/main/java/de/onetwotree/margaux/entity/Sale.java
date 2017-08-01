@@ -22,7 +22,7 @@ public class Sale extends MainEntity {
     @Column(name = "sale_amout")
     private BigDecimal amount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "harvest_id")
     private Harvest harvest;
     public Sale() {

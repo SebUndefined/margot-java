@@ -13,7 +13,8 @@ import java.util.List;
  * Created by SebUndefined on 29/07/17.
  */
 @Service("plotService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+@Transactional(readOnly = true)
 public class PlotServiceImpl implements PlotService {
 
     @Autowired
@@ -23,8 +24,13 @@ public class PlotServiceImpl implements PlotService {
     public List<Plot> getAllPlot() {
         return plotDAO.getAllPlot();
     }
+    @Override
+    public List<Plot> getAllPlotForMainCompany(Long idMainCompany) {
+        return plotDAO.getAllPlotForMainCompany(idMainCompany);
+    }
 
     @Override
+    @Transactional
     public void addPlot(Plot plot) {
         plotDAO.addPlot(plot);
     }

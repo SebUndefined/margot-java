@@ -10,5 +10,7 @@ import java.util.List;
 public interface PlotService {
     List<Plot> getAllPlot();
 
+    List<Plot> getAllPlotForMainCompany(Long idMainCompany);
+
     void addPlot(Plot plot);
 }

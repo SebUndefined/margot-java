@@ -11,7 +11,13 @@ public interface CompanyDAO {
 
     Company getCompany(Long id);
 
+    Company getCompanyWithProjects(Long id);
+
     void addCompany(Company company);
 
     List<Company> getAllCompanies();
+
+    List<Company> getAllCompaniesWithManagerAndMainCompany();
+
+    List<Company> getAllCompaniesForMainCompany(Long idMainCompany);
 }

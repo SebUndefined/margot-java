@@ -1,12 +1,10 @@
 package de.onetwotree.margaux.dao;
 
 import de.onetwotree.margaux.Utils.MargauxException;
+import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.entity.MainCompany;
 import de.onetwotree.margaux.entity.User;
-import org.hibernate.HibernateException;
-import org.hibernate.JDBCException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.service.spi.InjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -33,6 +31,18 @@ public class HibernateMainCompanyDAO implements MainCompanyDAO {
     }
 
     @Override
+    public MainCompany getMainCompanyForView(long id) {
+        Session session = sessionFactory.getCurrentSession();
+        MainCompany mainCompany = session.get(MainCompany.class, id);
+        Hibernate.initialize(mainCompany.getCompanies());
+        for (Company company: mainCompany.getCompanies()) {
+            Hibernate.initialize(company.getManager());
+        }
+        Hibernate.initialize(mainCompany.getManager());
+        return mainCompany;
+    }
+
+    @Override
     public void addMainCompany(MainCompany mainCompany){
         Session session = sessionFactory.getCurrentSession();
         User user = mainCompany.getManager();
@@ -47,6 +57,16 @@ public class HibernateMainCompanyDAO implements MainCompanyDAO {
     @Override
     public List<MainCompany> getAllMainCompany() {
         return (List<MainCompany>)sessionFactory.getCurrentSession().createCriteria(MainCompany.class).list();
+    }
+
+    @Override
+    public List<MainCompany> getAllMainCompanyWithManager() {
+        Session session = sessionFactory.getCurrentSession();
+        List<MainCompany> mainCompanies = (List<MainCompany>)session.createCriteria(MainCompany.class).list();
+        for(MainCompany mainCompany:mainCompanies) {
+            Hibernate.initialize(mainCompany.getManager());
+        }
+        return mainCompanies;
     }
 
 }

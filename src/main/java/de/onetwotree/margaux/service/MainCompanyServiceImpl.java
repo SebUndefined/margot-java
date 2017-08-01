@@ -13,7 +13,8 @@ import java.util.List;
  * Created by SebUndefined on 20/07/17.
  */
 @Service("mainCompanyService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+@Transactional(readOnly = true)
 public class MainCompanyServiceImpl implements MainCompanyService {
     @Autowired
     private MainCompanyDAO mainCompanyDAO;
@@ -24,6 +25,12 @@ public class MainCompanyServiceImpl implements MainCompanyService {
     }
 
     @Override
+    public MainCompany getMainCompanyForView(long id) {
+        return mainCompanyDAO.getMainCompanyForView(id);
+    }
+
+    @Override
+    @Transactional
     public void addMainCompany(MainCompany mainCompany){
         mainCompanyDAO.addMainCompany(mainCompany);
     }
@@ -31,5 +38,10 @@ public class MainCompanyServiceImpl implements MainCompanyService {
     @Override
     public List<MainCompany> getAllMainCompany() {
         return mainCompanyDAO.getAllMainCompany();
+    }
+
+    @Override
+    public List<MainCompany> getAllMainCompanyWithManager() {
+        return mainCompanyDAO.getAllMainCompanyWithManager();
     }
 }

@@ -10,5 +10,7 @@ import java.util.List;
 public interface PlotDAO {
     List<Plot> getAllPlot();
 
+    List<Plot> getAllPlotForMainCompany(Long idMainCompany);
+
     void addPlot(Plot plot);
 }

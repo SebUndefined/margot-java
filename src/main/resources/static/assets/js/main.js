@@ -19,6 +19,8 @@ $(function(){
         close: 'Ok',
         closeOnSelect: false // Close upon selecting a date,
     });
+    $('ul.tabs').tabs();
+    //$('ul.tabs').tabs('select_tab', 'tab_id');
     console.log("chargé");
 
 });

@@ -30,14 +30,14 @@ public class CompanyController {
 
     @GetMapping(value = "/")
     public String indexCompany(Model model) {
-        List<Company> companies = companyService.getAllCompanies();
+        List<Company> companies = companyService.getAllCompaniesWithManagerAndMainCompany();
         model.addAttribute("companies", companies);
         return "company";
     }
     @GetMapping(value = "{id}")
     public String viewCompany(@PathVariable(value = "id") String id, Model model) {
         Long idCompany = Long.valueOf(id);
-        model.addAttribute("company", companyService.getCompany(idCompany));
+        model.addAttribute("company", companyService.getCompanyWithProjects(idCompany));
         return "viewCompany";
     }
     @GetMapping(value = "/add")

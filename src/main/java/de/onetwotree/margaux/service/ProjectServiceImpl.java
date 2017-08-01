@@ -13,7 +13,8 @@ import java.util.List;
  * Created by SebUndefined on 21/07/17.
  */
 @Service("projectService")
-@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+@Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
@@ -29,8 +30,13 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> projects = projectDAO.getAllProjects();
         return projects;
     }
+    @Override
+    public List<Project> getAllProjectsForMainCompany(Long idMainCompany) {
+        return projectDAO.getAllProjectsForMainCompany(idMainCompany);
+    }
 
     @Override
+    @Transactional
     public void addProject(Project project) {
         projectDAO.addProject(project);
     }

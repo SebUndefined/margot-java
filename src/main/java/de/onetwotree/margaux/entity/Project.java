@@ -29,7 +29,7 @@ public class Project extends MainEntity {
     @Column(name = "project_end_date")
     private LocalDate endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     @JsonManagedReference
     private Company company;

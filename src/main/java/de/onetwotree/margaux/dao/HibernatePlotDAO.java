@@ -2,8 +2,10 @@ package de.onetwotree.margaux.dao;
 
 import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.User;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,6 +29,21 @@ public class HibernatePlotDAO implements PlotDAO {
         List<Plot> plots = (List<Plot>) session.createCriteria(Plot.class).list();
         return plots;
     }
+    @Override
+    public List<Plot> getAllPlotForMainCompany(Long idMainCompany) {
+        Session session = sessionFactory.getCurrentSession();
+        List<Plot> plots = session.createCriteria(Plot.class, "plot")
+                .createAlias("plot.project", "project")
+                .createAlias("project.company", "company")
+                .createAlias("company.mainCompany", "mainCompany")
+                .add(Restrictions.eq("mainCompany.id", idMainCompany))
+                .list();
+        for (Plot plot: plots) {
+            Hibernate.initialize(plot.getProject());
+            Hibernate.initialize(plot.getManager());
+        }
+        return plots;
+    }
 
     @Override
     public void addPlot(Plot plot) {
@@ -37,5 +54,6 @@ public class HibernatePlotDAO implements PlotDAO {
         }
         session.save(plot);
     }
+
 
 }

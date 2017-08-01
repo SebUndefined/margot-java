@@ -28,7 +28,7 @@ public class Budget {
     private GregorianCalendar endDate;
     @Column(name = "budget_ammount")
     private BigDecimal $ammount;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "project_id")
     private Project project;
 
