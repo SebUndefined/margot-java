@@ -2,6 +2,7 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import de.onetwotree.margaux.entity.MainEntity;
 
@@ -22,11 +23,20 @@ public class Resource {
     private int id;
     @Column(name = "resource_name")
     private String name;
-    @Column(name = "resource_unity")
-    private String unity;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "resource_type_id")
+    private ResourceType resourceType;
 
     @ManyToMany(mappedBy = "resources")
     private List<Plot> plots = new ArrayList<Plot>();
+
+    @OneToMany(
+            mappedBy = "resource",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
+    private List<Harvest> harvests = new ArrayList<>();
     public Resource() {
     }
 
@@ -38,11 +48,27 @@ public class Resource {
         this.name = name;
     }
 
-    public String getUnity() {
-        return unity;
+    public int getId() {
+        return id;
     }
 
-    public void setUnity(String unity) {
-        this.unity = unity;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ResourceType getResourceType() {
+        return resourceType;
+    }
+
+    public void setResourceType(ResourceType resourceType) {
+        this.resourceType = resourceType;
+    }
+
+    public List<Harvest> getHarvests() {
+        return harvests;
+    }
+
+    public void setHarvests(List<Harvest> harvests) {
+        this.harvests = harvests;
     }
 }

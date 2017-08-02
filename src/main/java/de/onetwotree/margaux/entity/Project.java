@@ -29,7 +29,7 @@ public class Project extends MainEntity {
     @Column(name = "project_end_date")
     private LocalDate endDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     @JsonManagedReference
     private Company company;
@@ -45,6 +45,7 @@ public class Project extends MainEntity {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
+    @JsonIgnore
     private List<Budget> budgets = new ArrayList<Budget>();
 
 

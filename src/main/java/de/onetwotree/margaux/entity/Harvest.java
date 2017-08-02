@@ -3,9 +3,11 @@ package de.onetwotree.margaux.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.GregorianCalendar;
 
 /**
@@ -15,9 +17,9 @@ import java.util.GregorianCalendar;
 @Table(name = "db_harvest")
 public class Harvest extends MainEntity {
     @Column(name = "harvest_begin_date")
-    private GregorianCalendar beginDate;
+    private LocalDate beginDate;
     @Column(name = "harvest_end_date")
-    private GregorianCalendar endDate;
+    private LocalDate endDate;
     @Column(name = "harvest_quantity")
     private BigDecimal quantity;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,19 +32,19 @@ public class Harvest extends MainEntity {
     public Harvest() {
     }
 
-    public GregorianCalendar getBeginDate() {
+    public LocalDate getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(GregorianCalendar beginDate) {
+    public void setBeginDate(LocalDate beginDate) {
         this.beginDate = beginDate;
     }
 
-    public GregorianCalendar getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(GregorianCalendar endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 

@@ -1,5 +1,7 @@
 package de.onetwotree.margaux.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.dao.MainCompanyDAO;
 import de.onetwotree.margaux.dao.UserDao;
@@ -7,6 +9,7 @@ import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.entity.MainCompany;
 import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Project;
+import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,11 +28,6 @@ import java.util.List;
 @RequestMapping(value = "maincompany")
 public class MainCompanyController {
 
-//    @Autowired
-//    private MainCompanyDAO mainCompanyDAO;
-//
-    //@Autowired
-    //private UserDao userDao;
     @Autowired
     private MainCompanyService mainCompanyService;
     @Autowired
@@ -84,11 +82,19 @@ public class MainCompanyController {
         return "viewProjectsofMainCompany";
     }
     @GetMapping(value = "{id}/plots/")
-    public String viewPlotsOfMainCompany(@PathVariable(value = "id") String id, Model model){
+    public String viewPlotsOfMainCompany(@PathVariable(value = "id") String id, Model model) {
         Long idMainCompany = Long.valueOf(id);
-        List<Plot> plots= plotService.getAllPlotForMainCompany(idMainCompany);
+        List<Plot> plots = plotService.getAllPlotForMainCompany(idMainCompany);
+        ObjectMapper mapper = new ObjectMapper();
+        String result = null;
+        try {
+            result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plots);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(result);
         model.addAttribute("urlId", id);
-        model.addAttribute("plots", plots);
+        model.addAttribute("plots", result);
         return "viewPlotsofMainCompany";
     }
 }

@@ -16,7 +16,9 @@
                 </div>
                 <!-- Un test de map -->
                 <script th:inline="javascript">
-                    var plots = /*[[${plots}]]*/ '';
+                    //var plots = [];
+                    var plots = [(${plots})];
+                    console.log(plots);
                 </script>
                 <div th:replace="common/map :: map"></div>
                 <!-- Un test deux -->

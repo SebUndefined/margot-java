@@ -23,7 +23,8 @@ public class MainCompany extends MainEntity {
     @OneToMany(
             mappedBy = "mainCompany",
             cascade = CascadeType.ALL,
-            orphanRemoval = true)
+            orphanRemoval = true,
+            fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Company> companies = new ArrayList<Company>();
 

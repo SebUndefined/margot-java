@@ -37,7 +37,7 @@ public class ProjectController {
 
     @RequestMapping(value = "/")
     public String mainProjectIndex(Model model) {
-        List<Project> projects = projectService.getAllProject();
+        List<Project> projects = projectService.getAllProjects();
         model.addAttribute("projects", projects);
         return "project";
     }

@@ -45,7 +45,7 @@ public class PlotController {
     public String addPlotForm(Model model) {
         Plot plot = new Plot();
         List<User> users = userService.getAllUsers();
-        List<Project> projects = projectService.getAllProject();
+        List<Project> projects = projectService.getAllProjects();
         model.addAttribute("plot", plot);
         model.addAttribute("projects", projects);
         model.addAttribute("users", users);

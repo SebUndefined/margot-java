@@ -10,7 +10,8 @@ import java.util.List;
 public interface ProjectService {
     Project getProject(Long id);
 
-    List<Project> getAllProject();
+    List<Project> getAllProjects();
+
 
     List<Project> getAllProjectsForMainCompany(Long idMainCompany);
 

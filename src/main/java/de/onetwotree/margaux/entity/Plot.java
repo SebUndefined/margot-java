@@ -2,6 +2,7 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
+import de.onetwotree.margaux.entityJson.PlotView;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,16 +16,21 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Plot extends MainEntity {
     @Column(name = "plot_name")
+    @JsonView(PlotView.PlotBasic.class)
     private String name;
     @Column(name = "plot_size")
+    @JsonView(PlotView.PlotBasic.class)
     private double size;
     @Column(name = "plot_latitude")
+    @JsonView(PlotView.PlotBasic.class)
     private double latitude;
     @Column(name = "plot_longitude")
+    @JsonView(PlotView.PlotBasic.class)
     private double longitude;
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
-    @JsonManagedReference
+    @JsonView(PlotView.PlotWithUserAndCompany.class)
     private Project project;
 
     @ManyToMany(cascade = {
@@ -35,6 +41,7 @@ public class Plot extends MainEntity {
             joinColumns = @JoinColumn(name = "plot_id"),
             inverseJoinColumns = @JoinColumn(name = "resource_id")
     )
+    @JsonIgnore
     private List<Resource> resources = new ArrayList<Resource>();
 
     public Plot() {
