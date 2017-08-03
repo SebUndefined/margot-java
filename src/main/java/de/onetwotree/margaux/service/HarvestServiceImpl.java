@@ -22,4 +22,9 @@ public class HarvestServiceImpl implements HarvestService {
     public List getAllHarvest() {
         return harvestDAO.getAllHarvest();
     }
+    @Override
+    public List getAllHarvestByMainCompany(Long idMainCompany, Long idResource) {
+        return harvestDAO.getAllHarvestByMainCompany(idMainCompany, idResource);
+    }
+
 }

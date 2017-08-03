@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface HarvestService {
     List getAllHarvest();
+
+    List getAllHarvestByMainCompany(Long idMainCompany, Long idResource);
 }

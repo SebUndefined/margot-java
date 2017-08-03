@@ -1,8 +1,10 @@
 package de.onetwotree.margaux.controller;
 
+import com.fasterxml.classmate.Annotations;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Utils.MargauxException;
+import de.onetwotree.margaux.chartData.json.*;
 import de.onetwotree.margaux.dao.MainCompanyDAO;
 import de.onetwotree.margaux.dao.UserDao;
 import de.onetwotree.margaux.entity.Company;
@@ -18,6 +20,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,6 +42,8 @@ public class MainCompanyController {
     private ProjectService projectService;
     @Autowired
     private PlotService plotService;
+    @Autowired
+    private HarvestService harvestService;
 
     @GetMapping(value = "/")
     public String MainCompanyIndex(Model model) {
@@ -96,5 +102,47 @@ public class MainCompanyController {
         model.addAttribute("urlId", id);
         model.addAttribute("plots", result);
         return "viewPlotsofMainCompany";
+    }
+    @GetMapping(value = "{id}/harvests/")
+    public String viewHarvestsOfMainCompany(
+            @PathVariable(value = "id") String id,
+            @RequestParam(value = "typeOrNull", required = false)String typeOrNull,
+            Model model) {
+        Long idMainCompany = Long.valueOf(id);
+        String param = typeOrNull;
+        if (param !=null && !param.isEmpty()) {
+            if (typeOrNull.equals("date")) {
+                viewHarvestsOfMainCompanyInLineChart(idMainCompany, model);
+            }
+        }
+        else {
+            List<Object[]> results = harvestService.getAllHarvestByMainCompany(idMainCompany, (long) 1);
+            List<String> x = new ArrayList<String>();
+            List<BigDecimal> y = new ArrayList<BigDecimal>();
+            for (Object[] row: results) {
+                x.add(row[1].toString());
+                y.add((BigDecimal) row[2]);
+            }
+            Datum datum = new Datum(x, y, "bar");
+            List<Datum> data = new ArrayList<>();
+            data.add(datum);
+            PlotLy plotLyChart = new PlotLy(data);
+            ObjectMapper mapper = new ObjectMapper();
+            String myGraphData = "";
+            try {
+                myGraphData = mapper.writeValueAsString(plotLyChart);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+            model.addAttribute("urlId", id);
+            model.addAttribute("myGraphData", myGraphData);
+        }
+        return "viewHarvestByEntity";
+    }
+    public String viewHarvestsOfMainCompanyInLineChart(Long id, Model model) {
+        System.out.println(id);
+        model.addAttribute("urlId", id);
+        model.addAttribute("myGraphData", "prout");
+        return "viewHarvestByEntity";
     }
 }

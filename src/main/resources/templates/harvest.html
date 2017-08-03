@@ -28,8 +28,11 @@
 <div th:replace="common/footer :: footer"></div>
 <!-- test chart -->
 <script>
+    var myJson = '{"data":[{"y":[1,2,3]}],"layout":{"title":"my graph"}}';
+    var figure = JSON.parse(myJson);
 
-    Plotly.d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/wind_speed_laurel_nebraska.csv', function (rows) {
+    Plotly.newPlot('wind-speed', figure.data, figure.layout);
+    /*Plotly.d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/wind_speed_laurel_nebraska.csv', function (rows) {
         var trace = {
             type: 'scatter',                    // set the chart type
             mode: 'lines',                      // connect points with lines
@@ -63,7 +66,8 @@
         };
 
         Plotly.plot(document.getElementById('wind-speed'), [trace], layout, {showLink: false});
-    });
+    });*/
+
 
 
 </script>
