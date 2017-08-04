@@ -29,6 +29,8 @@ public class Datum {
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
+    public Datum() {
+    }
     public Datum(List<String> x, List<BigDecimal> y, String type) {
         this.x = x;
         this.y = y;
@@ -59,6 +61,8 @@ public class Datum {
     public void setY(List<BigDecimal> y) {
         this.y = y;
     }
+
+
 
     public Datum withY(List<BigDecimal> y) {
         this.y = y;

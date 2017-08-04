@@ -1,6 +1,7 @@
 package de.onetwotree.margaux.dao;
 
 import de.onetwotree.margaux.entity.Harvest;
+import de.onetwotree.margaux.entity.Resource;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -8,9 +9,11 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Projection;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,7 +37,7 @@ public class HibernateHarvestDAO implements HarvestDAO {
     }
 
     @Override
-    public List getAllHarvestByMainCompany(Long idMainCompany, Long idResource) {
+    public List getAllHarvestByMainCompanyByResource(Long idMainCompany, Long idResource) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createSQLQuery("SELECT margaux2.db_resource_type.resource_type_name, margaux2.db_resource.resource_name, sum(harvest_quantity) " +
                         "From margaux2.db_harvest, margaux2.db_resource, margaux2.db_resource_type, margaux2.db_plot, margaux2.db_project, margaux2.db_company, margaux2.db_main_company " +
@@ -52,4 +55,22 @@ public class HibernateHarvestDAO implements HarvestDAO {
         List result = query.list();
         return result;
     }
+    @Override
+    public List getAllHarvestByMainCompanyByResourceWithDate(long idMainCompany, long idResource) {
+        Session session = sessionFactory.getCurrentSession();
+        Criteria myCriteria = session.createCriteria(Harvest.class, "harvest");
+        myCriteria.createAlias("resource", "resource");
+        myCriteria.createAlias("resource.resourceType", "resourceType");
+        myCriteria.add(Restrictions.eq("resourceType.id", idResource));
+        myCriteria.setProjection( Projections.projectionList().add(Projections.groupProperty("resource")));
+        myCriteria.createAlias("plot", "plot");
+        myCriteria.createAlias("plot.project", "project");
+        myCriteria.createAlias("project.company", "company");
+        myCriteria.createAlias("company.mainCompany", "mainCompany");
+        myCriteria.add(Restrictions.eq("mainCompany.id", idMainCompany));
+        List<Resource> resources = myCriteria.list();
+        String pro = "prout";
+        return resources;
+    }
+
 }

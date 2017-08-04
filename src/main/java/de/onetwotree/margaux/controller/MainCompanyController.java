@@ -7,10 +7,7 @@ import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.chartData.json.*;
 import de.onetwotree.margaux.dao.MainCompanyDAO;
 import de.onetwotree.margaux.dao.UserDao;
-import de.onetwotree.margaux.entity.Company;
-import de.onetwotree.margaux.entity.MainCompany;
-import de.onetwotree.margaux.entity.Plot;
-import de.onetwotree.margaux.entity.Project;
+import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +41,8 @@ public class MainCompanyController {
     private PlotService plotService;
     @Autowired
     private HarvestService harvestService;
+    @Autowired
+    private ResourceService resourceService;
 
     @GetMapping(value = "/")
     public String MainCompanyIndex(Model model) {
@@ -108,34 +107,20 @@ public class MainCompanyController {
             @PathVariable(value = "id") String id,
             @RequestParam(value = "typeOrNull", required = false)String typeOrNull,
             Model model) {
-        Long idMainCompany = Long.valueOf(id);
-        String param = typeOrNull;
-        if (param !=null && !param.isEmpty()) {
+        model.addAttribute("urlId", id);
+        long idMainCompany = Long.parseLong(id);
+        if (typeOrNull !=null && !typeOrNull.isEmpty()) {
             if (typeOrNull.equals("date")) {
-                viewHarvestsOfMainCompanyInLineChart(idMainCompany, model);
+               //resourceService.getAllResourceByMainCompanyWithHarvestPlotLy(idMainCompany);
+                String resources= resourceService.getAllResourceByMainCompanyByResIdWithHarvestPlotLy(idMainCompany, (long)1);
+                model.addAttribute("myGraphDataWood", resources);
             }
         }
         else {
-            List<Object[]> results = harvestService.getAllHarvestByMainCompany(idMainCompany, (long) 1);
-            List<String> x = new ArrayList<String>();
-            List<BigDecimal> y = new ArrayList<BigDecimal>();
-            for (Object[] row: results) {
-                x.add(row[1].toString());
-                y.add((BigDecimal) row[2]);
-            }
-            Datum datum = new Datum(x, y, "bar");
-            List<Datum> data = new ArrayList<>();
-            data.add(datum);
-            PlotLy plotLyChart = new PlotLy(data);
-            ObjectMapper mapper = new ObjectMapper();
-            String myGraphData = "";
-            try {
-                myGraphData = mapper.writeValueAsString(plotLyChart);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            model.addAttribute("urlId", id);
-            model.addAttribute("myGraphData", myGraphData);
+            String myGraphDataWood = harvestService.getSumHarvestByMCompanyByResourceJson(idMainCompany, (long) 1);
+            String myGraphDataCocoa = harvestService.getSumHarvestByMCompanyByResourceJson(idMainCompany, (long) 2);
+            model.addAttribute("myGraphDataCocoa", myGraphDataCocoa);
+            model.addAttribute("myGraphDataWood", myGraphDataWood);
         }
         return "viewHarvestByEntity";
     }

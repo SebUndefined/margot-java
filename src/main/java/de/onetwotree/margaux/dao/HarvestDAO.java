@@ -10,5 +10,7 @@ import java.util.List;
 public interface HarvestDAO {
     List getAllHarvest();
 
-    List getAllHarvestByMainCompany(Long idMainCompany, Long idResource);
+    List getAllHarvestByMainCompanyByResource(Long idMainCompany, Long idResource);
+
+    List getAllHarvestByMainCompanyByResourceWithDate(long idMainCompany, long idResource);
 }
