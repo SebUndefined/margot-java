@@ -37,8 +37,8 @@ public class ResourceServiceImpl implements ResourceService {
         List<Datum> data = new ArrayList<>();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         for(Resource resource:resources) {
-            y.clear();
-            x.clear();
+            y = new ArrayList<BigDecimal>();
+            x = new ArrayList<String>();
             for (Harvest harvest : resource.getHarvests()) {
                 y.add(harvest.getQuantity());
                 x.add(harvest.getBeginDate().format(formatter));

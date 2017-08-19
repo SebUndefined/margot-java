@@ -5,7 +5,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.chartData.json.*;
+import de.onetwotree.margaux.dao.CompanyRepository;
 import de.onetwotree.margaux.dao.MainCompanyDAO;
+import de.onetwotree.margaux.dao.MainCompanyRepository;
 import de.onetwotree.margaux.dao.UserDao;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
@@ -31,6 +33,10 @@ public class MainCompanyController {
 
     @Autowired
     private MainCompanyService mainCompanyService;
+    @Autowired
+    private MainCompanyRepository mainCompanyRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
     @Autowired
     private UserService userService;
     @Autowired
@@ -59,23 +65,26 @@ public class MainCompanyController {
     @PostMapping(value = "add/")
     public String addMainCompanySubmit(@ModelAttribute("MainCompany") MainCompany mainCompany,
                                        BindingResult result) {
-        mainCompanyService.addMainCompany(mainCompany);
+        //mainCompanyService.addMainCompany(mainCompany);
+        MainCompany mainCompany1 = mainCompanyRepository.saveAndFlush(mainCompany);
         return "redirect:/maincompany/";
     }
     @GetMapping(value = "{id}")
     public String viewMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
-        MainCompany mainCompany = mainCompanyService.getMainCompanyForView(idMainCompany);
+        //MainCompany mainCompany = mainCompanyService.getMainCompanyForView(idMainCompany);
+        MainCompany mainCompany1 = mainCompanyRepository.findOne(idMainCompany);
         model.addAttribute("urlId", id);
-        model.addAttribute("maincompany", mainCompany);
+        model.addAttribute("maincompany", mainCompany1);
         return "viewMainCompany";
     }
     @GetMapping(value = "{id}/companies/")
     public String viewCompaniesOfMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
-        List<Company> companies = companyService.getAllCompaniesForMainCompany(idMainCompany);
+        //List<Company> companies = companyService.getAllCompaniesForMainCompany(idMainCompany);
+        List<Company> companyList = companyRepository.findCompaniesByMainCompanyId(idMainCompany);
         model.addAttribute("urlId", id);
-        model.addAttribute("companies", companies);
+        model.addAttribute("companies", companyList);
         return "viewCompanyofMainCompany";
     }
     @GetMapping(value = "{id}/projects/")

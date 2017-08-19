@@ -23,7 +23,7 @@ public class MainEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "main_entity_id")
     @JsonView(MainEntityView.Simple.class)
-    protected long id;
+    protected Long id;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     @JsonIgnore
