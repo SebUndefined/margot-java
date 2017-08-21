@@ -15,7 +15,10 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_harvest")
-public class Harvest extends MainEntity {
+public class Harvest {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(name = "harvest_begin_date")
     private LocalDate beginDate;
     @Column(name = "harvest_end_date")

@@ -17,7 +17,6 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Main Company</th>
-                        <th>Manager</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -26,7 +25,6 @@
                         <td th:text="${company.id}">undefined</td>
                         <td th:text="${company.name}">undefined</td>
                         <td th:text="${company.mainCompany.name}">undefined</td>
-                        <td th:text="${company.manager.firstname} + ' ' + ${company.manager.lastname}">undefined</td>
                         <td>
                             <a th:href="@{'/company/' + ${company.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">visibility</i>

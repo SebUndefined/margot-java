@@ -1,5 +1,6 @@
 package de.onetwotree.margaux.application;
 
+import de.onetwotree.margaux.dao.ProjectRepository;
 import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,10 @@ import org.springframework.core.convert.converter.Converter;
 public class StringToProject implements Converter<String, Project> {
 
     @Autowired
-    ProjectService projectService;
+    ProjectRepository projectRepository;
 
     public Project convert(String id) {
-        Project project = projectService.getProject(Long.valueOf(id));
+        Project project = projectRepository.findOne(Long.valueOf(id));
         return project;
     }
 }

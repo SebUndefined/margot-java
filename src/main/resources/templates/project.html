@@ -17,7 +17,6 @@
                         <th>Name</th>
                         <th>Begin date</th>
                         <th>End Date</th>
-                        <th>Manager</th>
                         <th>Company</th>
                         <th>Actions</th>
                     </tr>
@@ -28,7 +27,6 @@
                         <td th:text="${project.name}">undefined</td>
                         <td th:text="${project.beginDate != null} ? ${#temporals.format(project.beginDate,'dd/MM/yyyy')} : 'null value!'">undefined</td>
                         <td th:text="${project.endDate != null} ?  ${project.endDate} : 'null value!'">undefined</td>
-                        <td th:text="${project.manager.firstname} + ' ' + ${project.manager.lastname}">undefined</td>
                         <td th:text="${project.company.name}">undefined</td>
                         <td>
                             <a th:href="@{'/project/view/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">

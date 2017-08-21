@@ -26,6 +26,17 @@ nav {
     background-size: contain;
     background-position: center;
 }
+.tabs .indicator { display: none; }
+.tabs .tab a {
+    color: rgba(42,63, 84, 0.7);
+}
+.tabs .tab a:hover {
+    color: rgba(42,63, 84, 1);
+}
+.tabs .tab a.active {
+    color: #2A3F54;
+    border-bottom: 2px solid #2A3F54;
+}
 .side-nav {
     color: #FFFFFF;
     background-color: #2A3F54;
@@ -58,8 +69,7 @@ nav {
 .side-nav > li a, .side-nav > li a i.material-icons{
     color: #FFFFFF;
 }
-.tabs .indicator { display: none; }
-.tabs .tab a.active { border-bottom: 2px solid #f6b2b5; }
+
 .panel6 {
     width: 100%;
     padding: 10px 17px;

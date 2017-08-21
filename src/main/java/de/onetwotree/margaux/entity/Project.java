@@ -20,8 +20,12 @@ import java.util.List;
 @Entity
 @Table(name = "db_project")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Project extends MainEntity {
+public class Project {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@JsonView(MainEntityView.Simple.class)
+    protected Long id;
     @Column(name = "project_name")
     private String name;
     @Column(name = "project_begin_date")
@@ -50,6 +54,14 @@ public class Project extends MainEntity {
 
 
     public Project() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getBeginDate() {

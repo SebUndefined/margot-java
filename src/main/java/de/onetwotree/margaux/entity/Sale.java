@@ -16,7 +16,11 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_sale")
-public class Sale extends MainEntity {
+public class Sale {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@JsonView(MainEntityView.Simple.class)
+    protected Long id;
     @Column(name = "sale_date")
     private GregorianCalendar date;
     @Column(name = "sale_amout")

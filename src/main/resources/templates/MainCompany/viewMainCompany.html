@@ -19,15 +19,6 @@
         <div class="col l6 m6 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h2>Manager</h2>
-                </div>
-                Name: <span th:text="${maincompany.manager.lastname}"></span> <span th:text="${maincompany.manager.firstname}"></span><br/>
-                Email: <a th:href="'mailto:' + (${maincompany.manager.email})"><span th:text="${maincompany.manager.email}"></span> </a>
-            </div>
-        </div>
-        <div class="col l6 m6 s12">
-            <div class="panel6">
-                <div class="panel_title">
                     <h2>Companies</h2>
                 </div>
                 <p>This companies belong to <span th:text="${maincompany.name}"></span> </p>
@@ -36,7 +27,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Manager</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -44,7 +34,6 @@
                     <tr th:each="company : ${maincompany.companies}">
                         <td th:text="${company.id}">undefined</td>
                         <td th:text="${company.name}">undefined</td>
-                        <td th:text="${company.manager.firstname} + ' ' + ${company.manager.lastname}">undefined</td>
                         <td>
                             <a th:href="@{'/company/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">visibility</i>

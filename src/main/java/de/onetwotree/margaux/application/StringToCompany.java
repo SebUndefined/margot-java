@@ -1,5 +1,6 @@
 package de.onetwotree.margaux.application;
 
+import de.onetwotree.margaux.dao.CompanyRepository;
 import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.service.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,10 @@ import org.springframework.core.convert.converter.Converter;
 public class StringToCompany implements Converter<String, Company> {
 
     @Autowired
-    CompanyService CompanyService;
+    CompanyRepository companyRepository;
 
     public Company convert(String id) {
-        Company company = CompanyService.getCompany(Long.valueOf(id));
+        Company company = companyRepository.findOne(Long.valueOf(id));
         System.out.println("###############String to company loaded");
         System.out.println("user email-->" + company.getName());
         return company;

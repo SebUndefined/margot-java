@@ -5,10 +5,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Utils.MargauxException;
 import de.onetwotree.margaux.chartData.json.*;
-import de.onetwotree.margaux.dao.CompanyRepository;
-import de.onetwotree.margaux.dao.MainCompanyDAO;
-import de.onetwotree.margaux.dao.MainCompanyRepository;
-import de.onetwotree.margaux.dao.UserDao;
+import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.service.*;
@@ -38,6 +35,10 @@ public class MainCompanyController {
     @Autowired
     private CompanyRepository companyRepository;
     @Autowired
+    private ProjectRepository projectRepository;
+    @Autowired
+    private PlotRepository plotRepository;
+    @Autowired
     private UserService userService;
     @Autowired
     private CompanyService companyService;
@@ -52,64 +53,61 @@ public class MainCompanyController {
 
     @GetMapping(value = "/")
     public String MainCompanyIndex(Model model) {
-        List<MainCompany> mainCompanies = mainCompanyService.getAllMainCompanyWithManager();
+        List<MainCompany> mainCompanies = mainCompanyRepository.findAll();
         model.addAttribute("MainCompanies", mainCompanies);
-        return "mainCompany";
+        return "MainCompany/mainCompany";
     }
     @GetMapping(value = "add/")
     public String addMainCompanyForm(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
         model.addAttribute("MainCompany", new MainCompany());
-        return "editMainCompany";
+        return "MainCompany/editMainCompany";
     }
     @PostMapping(value = "add/")
     public String addMainCompanySubmit(@ModelAttribute("MainCompany") MainCompany mainCompany,
                                        BindingResult result) {
-        //mainCompanyService.addMainCompany(mainCompany);
         MainCompany mainCompany1 = mainCompanyRepository.saveAndFlush(mainCompany);
         return "redirect:/maincompany/";
     }
     @GetMapping(value = "{id}")
     public String viewMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
-        //MainCompany mainCompany = mainCompanyService.getMainCompanyForView(idMainCompany);
         MainCompany mainCompany1 = mainCompanyRepository.findOne(idMainCompany);
         model.addAttribute("urlId", id);
         model.addAttribute("maincompany", mainCompany1);
-        return "viewMainCompany";
+        return "MainCompany/viewMainCompany";
     }
     @GetMapping(value = "{id}/companies/")
     public String viewCompaniesOfMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
-        //List<Company> companies = companyService.getAllCompaniesForMainCompany(idMainCompany);
         List<Company> companyList = companyRepository.findCompaniesByMainCompanyId(idMainCompany);
         model.addAttribute("urlId", id);
         model.addAttribute("companies", companyList);
-        return "viewCompanyofMainCompany";
+        return "MainCompany/viewCompanyofMainCompany";
     }
     @GetMapping(value = "{id}/projects/")
     public String viewProjectsOfMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
-        List<Project> projects= projectService.getAllProjectsForMainCompany(idMainCompany);
+        //List<Project> projects= projectService.getAllProjectsForMainCompany(idMainCompany);
+        List<Project> projects= projectRepository.findAllByMainCompanyId(idMainCompany);
         model.addAttribute("urlId", id);
         model.addAttribute("projects", projects);
-        return "viewProjectsofMainCompany";
+        return "MainCompany/viewProjectsofMainCompany";
     }
     @GetMapping(value = "{id}/plots/")
     public String viewPlotsOfMainCompany(@PathVariable(value = "id") String id, Model model) {
         Long idMainCompany = Long.valueOf(id);
-        List<Plot> plots = plotService.getAllPlotForMainCompany(idMainCompany);
+        List<Plot> plotList = plotRepository.findAllByMainCompanyId(idMainCompany);
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
         try {
-            result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plots);
+            result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plotList);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         System.out.println(result);
         model.addAttribute("urlId", id);
         model.addAttribute("plots", result);
-        return "viewPlotsofMainCompany";
+        return "MainCompany/viewPlotsofMainCompany";
     }
     @GetMapping(value = "{id}/harvests/")
     public String viewHarvestsOfMainCompany(

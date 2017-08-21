@@ -2,6 +2,7 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
+import de.onetwotree.margaux.entityJson.MainEntityView;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,8 +14,12 @@ import java.util.List;
 @Entity
 @Table(name = "db_main_company")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class MainCompany extends MainEntity {
+public class MainCompany {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@JsonView(MainEntityView.Simple.class)
+    protected Long id;
     @Column(
             name = "main_company_name",
             nullable = false
@@ -30,6 +35,14 @@ public class MainCompany extends MainEntity {
 
     public MainCompany() {
 
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

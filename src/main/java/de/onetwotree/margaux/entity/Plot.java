@@ -14,7 +14,11 @@ import java.util.List;
 @Entity
 @Table(name = "db_plot")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Plot extends MainEntity {
+public class Plot {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@JsonView(MainEntityView.Simple.class)
+    protected Long id;
     @Column(name = "plot_name")
     @JsonView(PlotView.PlotBasic.class)
     private String name;
@@ -45,6 +49,14 @@ public class Plot extends MainEntity {
     private List<Resource> resources = new ArrayList<Resource>();
 
     public Plot() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

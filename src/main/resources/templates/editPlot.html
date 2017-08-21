@@ -44,14 +44,6 @@
                             <label for="projectPlot">Project</label>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-field col l6 m6 s12">
-                            <select th:field="*{manager}" class="input-field">
-                                <option id="manager" th:each="user: ${users}" th:value="${user.id}" th:text="${user.firstname}"></option>
-                            </select>
-                            <label for="manager">Manager</label>
-                        </div>
-                    </div>
 
                     <input class="waves-effect waves-light btn" type="submit" />
                 </form>

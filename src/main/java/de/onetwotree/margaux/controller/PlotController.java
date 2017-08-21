@@ -1,6 +1,8 @@
 package de.onetwotree.margaux.controller;
 
 import de.onetwotree.margaux.application.StringToCompany;
+import de.onetwotree.margaux.dao.PlotRepository;
+import de.onetwotree.margaux.dao.ProjectRepository;
 import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.entity.User;
@@ -27,16 +29,16 @@ public class PlotController {
 
     @Autowired
     PlotService plotService;
-
+    @Autowired
+    PlotRepository plotRepository;
+    @Autowired
+    ProjectRepository projectRepository;
     @Autowired
     ProjectService projectService;
 
-    @Autowired
-    UserService userService;
-
     @RequestMapping(value = "/")
     public String plotIndex(Model model) {
-        List<Plot> plots = plotService.getAllPlot();
+        List<Plot> plots = plotRepository.findAll();
         model.addAttribute("plots", plots);
         return "plot";
     }
@@ -44,11 +46,9 @@ public class PlotController {
     @RequestMapping(value = "/add")
     public String addPlotForm(Model model) {
         Plot plot = new Plot();
-        List<User> users = userService.getAllUsers();
-        List<Project> projects = projectService.getAllProjects();
+        List<Project> projects = projectRepository.findAll();
         model.addAttribute("plot", plot);
         model.addAttribute("projects", projects);
-        model.addAttribute("users", users);
         return "editPlot";
     }
 
@@ -56,7 +56,7 @@ public class PlotController {
     public String addPlotSubmit(@ModelAttribute("Plot") Plot plot, BindingResult result) {
         System.out.println("Size:" + plot.getSize());
         System.out.println("Project:" + plot.getProject().getName());
-        plotService.addPlot(plot);
+        plotRepository.saveAndFlush(plot);
         return "redirect:/plot/add/";
 
     }

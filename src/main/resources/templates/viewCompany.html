@@ -20,8 +20,6 @@
                 <div class="panel_title">
                     <h2>Manager</h2>
                 </div>
-                Name: <span th:text="${company.manager.lastname}"></span> <span th:text="${company.manager.firstname}"></span><br/>
-                Email: <a th:href="'mailto:' + (${company.manager.email})"><span th:text="${company.manager.email}"></span> </a>
             </div>
         </div>
         <div class="col l6 m6 s12">
@@ -30,8 +28,6 @@
                     <h2>Main Company</h2>
                 </div>
                 Name: <span th:text="${company.mainCompany.name}"></span><br/>
-                Manager : <span th:text="${company.mainCompany.manager.lastname}"></span> <span th:text="${company.mainCompany.manager.firstname}"></span><br/>
-                Email: <a th:href="'mailto:' + (${company.mainCompany.manager.email})"><span th:text="${company.mainCompany.manager.email}"></span> </a>
             </div>
         </div>
     </div>
@@ -47,7 +43,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Manager</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
@@ -55,7 +50,6 @@
                     <tr th:each="project : ${company.projects}">
                         <td th:text="${project.id}">undefined</td>
                         <td th:text="${project.name}">undefined</td>
-                        <td th:text="${project.manager.firstname} + ' ' + ${project.manager.lastname}">undefined</td>
                         <td>
                             <a th:href="@{'/project/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">visibility</i>

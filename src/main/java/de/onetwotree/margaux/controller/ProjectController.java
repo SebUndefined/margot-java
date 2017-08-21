@@ -1,8 +1,8 @@
 package de.onetwotree.margaux.controller;
 
-import de.onetwotree.margaux.application.StringToMainCompany;
+import de.onetwotree.margaux.dao.CompanyRepository;
+import de.onetwotree.margaux.dao.ProjectRepository;
 import de.onetwotree.margaux.entity.Company;
-import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.entity.User;
 import de.onetwotree.margaux.service.CompanyService;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,7 +27,10 @@ import java.util.List;
 public class ProjectController {
     @Autowired
     ProjectService projectService;
-
+    @Autowired
+    ProjectRepository projectRepository;
+    @Autowired
+    CompanyRepository companyRepository;
     @Autowired
     CompanyService companyService;
 
@@ -37,7 +39,7 @@ public class ProjectController {
 
     @RequestMapping(value = "/")
     public String mainProjectIndex(Model model) {
-        List<Project> projects = projectService.getAllProjects();
+        List<Project> projects = projectRepository.findAll();
         model.addAttribute("projects", projects);
         return "project";
     }
@@ -45,7 +47,7 @@ public class ProjectController {
     @RequestMapping(value = "/view/{id}")
     public  String viewProject(@PathVariable(value = "id") String id, Model model) {
         Long projectId = Long.valueOf(id);
-        Project project = projectService.getProject(projectId);
+        Project project = projectRepository.findOne(projectId);
         model.addAttribute("project", project);
         return "viewProject";
     }
@@ -53,7 +55,7 @@ public class ProjectController {
     @RequestMapping(value = "/add")
     public String addProjectForm(Model model) {
         List<User> users = userService.getAllUsers();
-        List<Company> companies = companyService.getAllCompanies();
+        List<Company> companies = companyRepository.findAll();
         Project project = new Project();
         model.addAttribute("users", users);
         model.addAttribute("companies", companies);
@@ -65,7 +67,7 @@ public class ProjectController {
     public String addProjectSubmit(@ModelAttribute("Project") Project project, BindingResult result) {
         System.out.println("Date Begin:" + project.getBeginDate());
         System.out.println("Date End:" + project.getEndDate());
-        projectService.addProject(project);
+        projectRepository.saveAndFlush(project);
         return "redirect:/project/";
 
     }

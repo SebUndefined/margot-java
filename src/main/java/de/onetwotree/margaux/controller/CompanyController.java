@@ -1,6 +1,8 @@
 package de.onetwotree.margaux.controller;
 
 import de.onetwotree.margaux.application.StringToMainCompany;
+import de.onetwotree.margaux.dao.CompanyRepository;
+import de.onetwotree.margaux.dao.MainCompanyRepository;
 import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.service.CompanyService;
 import de.onetwotree.margaux.service.MainCompanyService;
@@ -24,26 +26,27 @@ public class CompanyController {
     @Autowired
     CompanyService companyService;
     @Autowired
+    CompanyRepository companyRepository;
+    @Autowired
     UserService userService;
     @Autowired
-    MainCompanyService mainCompanyService;
+    MainCompanyRepository mainCompanyRepository;
 
     @GetMapping(value = "/")
     public String indexCompany(Model model) {
-        List<Company> companies = companyService.getAllCompaniesWithManagerAndMainCompany();
+        List<Company> companies = companyRepository.findAll();
         model.addAttribute("companies", companies);
         return "company";
     }
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "view/{id}")
     public String viewCompany(@PathVariable(value = "id") String id, Model model) {
         Long idCompany = Long.valueOf(id);
-        model.addAttribute("company", companyService.getCompanyWithProjects(idCompany));
+        model.addAttribute("company", companyRepository.findOne(idCompany));
         return "viewCompany";
     }
     @GetMapping(value = "/add")
     public String addCompanyForm(Model model) {
-        model.addAttribute("mainCompanies", mainCompanyService.getAllMainCompany());
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("mainCompanies", mainCompanyRepository.findAll());
         model.addAttribute("company", new Company());
         return "editCompany";
     }
@@ -51,9 +54,9 @@ public class CompanyController {
     @PostMapping(value = "/add")
     public String addCompanySubmit(@ModelAttribute("Company") Company company,
                                    BindingResult result){
-        System.out.println("First name of manager ==>" + company.getManager().getFirstname());
+        //System.out.println("First name of manager ==>" + company.getManager().getFirstname());
         System.out.println("First name of manager ==>" + company.getMainCompany().toString());
-        companyService.addCompany(company);
+        companyRepository.saveAndFlush(company);
         return "redirect:/company/";
     }
 }

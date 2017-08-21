@@ -8,9 +8,5 @@ import java.util.List;
  * Created by SebUndefined on 29/07/17.
  */
 public interface PlotService {
-    List<Plot> getAllPlot();
 
-    List<Plot> getAllPlotForMainCompany(Long idMainCompany);
-
-    void addPlot(Plot plot);
 }
