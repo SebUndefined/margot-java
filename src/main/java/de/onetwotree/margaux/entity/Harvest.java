@@ -15,20 +15,18 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_harvest")
-public class Harvest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Harvest extends MainEntity{
+
     @Column(name = "harvest_begin_date")
     private LocalDate beginDate;
     @Column(name = "harvest_end_date")
     private LocalDate endDate;
     @Column(name = "harvest_quantity")
     private BigDecimal quantity;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plot_id")
     private Plot plot;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resource_id")
     private Resource resource;
 

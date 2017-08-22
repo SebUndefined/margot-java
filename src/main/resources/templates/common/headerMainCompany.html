@@ -4,19 +4,19 @@
 <div th:fragment="headerMainCompany">
     <ul class="tabs tabs-fixed-width">
         <li class="tab col s2">
-            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith(urlId + '/') ? 'active':''}" target="_self" th:href="@{'/maincompany/'+ ${urlId}}">General</a>
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith(urlId + '/') ? 'active':''}" target="_self" th:href="@{'/maincompany/view/'+ ${urlId}}">General</a>
         </li>
         <li class="tab col s2">
-            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/companies/') ? 'active':''}" target="_self" th:href="@{'/maincompany/' + ${urlId}+'/companies/'}">Companies</a>
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/companies/') ? 'active':''}" target="_self" th:href="@{'/maincompany/view/' + ${urlId}+'/companies/'}">Companies</a>
         </li>
         <li class="tab col s2">
-            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/projects/') ? 'active':''}" target="_self" th:href="@{'/maincompany/' + ${urlId}+'/projects/'}">Projects</a>
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/projects/') ? 'active':''}" target="_self" th:href="@{'/maincompany/view/' + ${urlId}+'/projects/'}">Projects</a>
         </li>
         <li class="tab col s2">
-            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/plots/') ? 'active':''}" target="_self" th:href="@{'/maincompany/' + ${urlId}+'/plots/'}">Plots</a>
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/plots/') ? 'active':''}" target="_self" th:href="@{'/maincompany/view/' + ${urlId}+'/plots/'}">Plots</a>
         </li>
         <li class="tab col s2">
-            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/harvests/') ? 'active':''}" target="_self" th:href="@{'/maincompany/' + ${urlId}+'/harvests/'}">Harvests</a>
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/harvests/') ? 'active':''}" target="_self" th:href="@{'/maincompany/view/' + ${urlId}+'/harvests/'}">Harvests</a>
         </li>
         <li class="tab col s2">
             <a target="_self" th:href="@{'/maincompany/' + ${urlId}+'/sales/'}">Sales</a>

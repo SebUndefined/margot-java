@@ -16,7 +16,7 @@ public class ResourceType {
     private Long id;
     @Column(name = "resource_type_name")
     private String description;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resource_unity_id")
     private Unity unity;
 

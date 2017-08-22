@@ -16,31 +16,21 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_budget")
-public class Budget {
+public class Budget extends MainEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "budget_id")
-    private int id;
     @Column(name = "budget_begin_date")
     private GregorianCalendar begindate;
     @Column(name = "budget_end_date")
     private GregorianCalendar endDate;
     @Column(name = "budget_ammount")
     private BigDecimal $ammount;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private Project project;
 
     public Budget() {
     }
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
     public GregorianCalendar getBegindate() {
         return begindate;
     }

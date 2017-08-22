@@ -41,7 +41,7 @@ public class ProjectController {
     public String mainProjectIndex(Model model) {
         List<Project> projects = projectRepository.findAll();
         model.addAttribute("projects", projects);
-        return "project";
+        return "Project/project";
     }
 
     @RequestMapping(value = "/view/{id}")
@@ -49,7 +49,7 @@ public class ProjectController {
         Long projectId = Long.valueOf(id);
         Project project = projectRepository.findOne(projectId);
         model.addAttribute("project", project);
-        return "viewProject";
+        return "Project/viewProject";
     }
 
     @RequestMapping(value = "/add")
@@ -60,7 +60,7 @@ public class ProjectController {
         model.addAttribute("users", users);
         model.addAttribute("companies", companies);
         model.addAttribute("project", project);
-        return "editProject";
+        return "Project/editProject";
     }
 
     @PostMapping(value="/add")

@@ -16,17 +16,14 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_sale")
-public class Sale {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@JsonView(MainEntityView.Simple.class)
-    protected Long id;
+public class Sale extends MainEntity {
+
     @Column(name = "sale_date")
     private GregorianCalendar date;
     @Column(name = "sale_amout")
     private BigDecimal amount;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "harvest_id")
     private Harvest harvest;
     public Sale() {

@@ -24,29 +24,19 @@ public abstract class MainEntity {
     @Column(name = "main_entity_id")
     @JsonView(MainEntityView.Simple.class)
     protected Long id;
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    protected User manager;
+
 
     protected MainEntity() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public User getManager() {
-        return manager;
-    }
-
-    public void setManager(User manager) {
-        this.manager = manager;
-    }
 
 
 

@@ -68,7 +68,7 @@ public class MainCompanyController {
         MainCompany mainCompany1 = mainCompanyRepository.saveAndFlush(mainCompany);
         return "redirect:/maincompany/";
     }
-    @GetMapping(value = "{id}")
+    @GetMapping(value = "view/{id}")
     public String viewMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
         MainCompany mainCompany1 = mainCompanyRepository.findOne(idMainCompany);
@@ -76,7 +76,7 @@ public class MainCompanyController {
         model.addAttribute("maincompany", mainCompany1);
         return "MainCompany/viewMainCompany";
     }
-    @GetMapping(value = "{id}/companies/")
+    @GetMapping(value = "view/{id}/companies/")
     public String viewCompaniesOfMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
         List<Company> companyList = companyRepository.findCompaniesByMainCompanyId(idMainCompany);
@@ -84,7 +84,7 @@ public class MainCompanyController {
         model.addAttribute("companies", companyList);
         return "MainCompany/viewCompanyofMainCompany";
     }
-    @GetMapping(value = "{id}/projects/")
+    @GetMapping(value = "view/{id}/projects/")
     public String viewProjectsOfMainCompany(@PathVariable(value = "id") String id, Model model){
         Long idMainCompany = Long.valueOf(id);
         //List<Project> projects= projectService.getAllProjectsForMainCompany(idMainCompany);
@@ -93,7 +93,7 @@ public class MainCompanyController {
         model.addAttribute("projects", projects);
         return "MainCompany/viewProjectsofMainCompany";
     }
-    @GetMapping(value = "{id}/plots/")
+    @GetMapping(value = "view/{id}/plots/")
     public String viewPlotsOfMainCompany(@PathVariable(value = "id") String id, Model model) {
         Long idMainCompany = Long.valueOf(id);
         List<Plot> plotList = plotRepository.findAllByMainCompanyId(idMainCompany);
@@ -109,7 +109,7 @@ public class MainCompanyController {
         model.addAttribute("plots", result);
         return "MainCompany/viewPlotsofMainCompany";
     }
-    @GetMapping(value = "{id}/harvests/")
+    @GetMapping(value = "view/{id}/harvests/")
     public String viewHarvestsOfMainCompany(
             @PathVariable(value = "id") String id,
             @RequestParam(value = "typeOrNull", required = false)String typeOrNull,

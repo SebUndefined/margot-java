@@ -11,7 +11,7 @@ import java.util.List;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface CompanyRepository extends JpaRepository<Company, Long> {
+public interface CompanyRepository extends BaseRepository<Company> {
 
     List<Company> findCompaniesByMainCompanyId(Long idMainCompany);
 }

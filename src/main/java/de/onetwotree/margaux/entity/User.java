@@ -32,12 +32,12 @@ public class User {
     @NotNull
     @Column(name="user_email")
     private String email;
-    @OneToMany(
+    /*@OneToMany(
             mappedBy = "manager",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
     @JsonBackReference
-    private List<MainEntity> isManagerOf = new ArrayList<MainEntity>();
+    private List<MainEntity> isManagerOf = new ArrayList<MainEntity>();*/
 
     public User() {
     }
@@ -82,7 +82,7 @@ public class User {
         this.email = email;
     }
 
-    public List<MainEntity> getIsManagerOf() {
+    /*public List<MainEntity> getIsManagerOf() {
         return isManagerOf;
     }
     public void setIsManagerOf(List<MainEntity> isManagerOf) {
@@ -93,7 +93,7 @@ public class User {
     }
     public void removeEntityTomanager(MainEntity mainEntity) {
         this.isManagerOf.remove(mainEntity);
-    }
+    }*/
 
     //Equal HashCode test
 

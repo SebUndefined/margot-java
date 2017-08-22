@@ -14,12 +14,8 @@ import java.util.List;
 @Entity
 @Table(name = "db_main_company")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class MainCompany {
+public class MainCompany extends MainEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@JsonView(MainEntityView.Simple.class)
-    protected Long id;
     @Column(
             name = "main_company_name",
             nullable = false
@@ -35,14 +31,6 @@ public class MainCompany {
 
     public MainCompany() {
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {

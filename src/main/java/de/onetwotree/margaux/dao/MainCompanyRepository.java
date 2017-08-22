@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface MainCompanyRepository extends JpaRepository<MainCompany, Long> {
+public interface MainCompanyRepository extends BaseRepository<MainCompany> {
 }

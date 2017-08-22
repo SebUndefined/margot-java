@@ -3,10 +3,14 @@ package de.onetwotree.margaux.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import de.onetwotree.margaux.entityJson.PlotView;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.NaturalIdCache;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by SebUndefined on 10/07/17.
@@ -14,11 +18,8 @@ import java.util.List;
 @Entity
 @Table(name = "db_plot")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Plot {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@JsonView(MainEntityView.Simple.class)
-    protected Long id;
+public class Plot extends MainEntity {
+
     @Column(name = "plot_name")
     @JsonView(PlotView.PlotBasic.class)
     private String name;
@@ -37,26 +38,11 @@ public class Plot {
     @JsonView(PlotView.PlotWithUserAndCompany.class)
     private Project project;
 
-    @ManyToMany(cascade = {
-            CascadeType.PERSIST,
-            CascadeType.MERGE
-    })
-    @JoinTable(name = "db_plot_resource",
-            joinColumns = @JoinColumn(name = "plot_id"),
-            inverseJoinColumns = @JoinColumn(name = "resource_id")
-    )
+    @OneToMany(mappedBy = "plot")
     @JsonIgnore
-    private List<Resource> resources = new ArrayList<Resource>();
+    private List<PlotResource> resources = new ArrayList<>();
 
     public Plot() {
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -98,11 +84,30 @@ public class Plot {
     public void setProject(Project project) {
         this.project = project;
     }
-    public List<Resource> getResources() {
+    public List<PlotResource> getResources() {
         return resources;
     }
-
-    public void setResources(List<Resource> resources) {
+    public void setResources(List<PlotResource> resources) {
         this.resources = resources;
+    }
+
+    public void addResource(Resource resource, int proportion) {
+        PlotResource plotResource = new PlotResource();
+        plotResource.setPlots(this);
+        plotResource.setResource(resource);
+        resources.add(plotResource);
+        resource.getPlots().add(plotResource);
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Plot plot = (Plot) o;
+        return Objects.equals(name, plot.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

@@ -36,19 +36,19 @@ public class CompanyController {
     public String indexCompany(Model model) {
         List<Company> companies = companyRepository.findAll();
         model.addAttribute("companies", companies);
-        return "company";
+        return "Company/company";
     }
     @GetMapping(value = "view/{id}")
     public String viewCompany(@PathVariable(value = "id") String id, Model model) {
         Long idCompany = Long.valueOf(id);
         model.addAttribute("company", companyRepository.findOne(idCompany));
-        return "viewCompany";
+        return "Company/viewCompany";
     }
     @GetMapping(value = "/add")
     public String addCompanyForm(Model model) {
         model.addAttribute("mainCompanies", mainCompanyRepository.findAll());
         model.addAttribute("company", new Company());
-        return "editCompany";
+        return "Company/editCompany";
     }
 
     @PostMapping(value = "/add")

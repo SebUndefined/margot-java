@@ -23,10 +23,10 @@
                                     <td th:text="${maincompany.id}">undefined</td>
                                     <td th:text="${maincompany.name}">undefined</td>
                                     <td>
-                                        <a th:href="@{'/maincompany/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                        <a th:href="@{'/maincompany/view/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
                                             <i class="material-icons">visibility</i>
                                         </a>
-                                        <a th:href="@{'/maincompany/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                        <a th:href="@{'/maincompany/view/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
                                             <i class="material-icons">edit</i>
                                         </a>
                                         <a class="waves-effect waves-light btn modal-trigger" th:href="'#modal1' + ${maincompany.id}">Modal</a>
