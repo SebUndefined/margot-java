@@ -39,10 +39,10 @@ public class ResourceServiceImpl implements ResourceService {
         for(Resource resource:resources) {
             y = new ArrayList<BigDecimal>();
             x = new ArrayList<String>();
-            for (Harvest harvest : resource.getHarvests()) {
+            /*for (Harvest harvest : resource.getHarvests()) {
                 y.add(harvest.getQuantity());
                 x.add(harvest.getBeginDate().format(formatter));
-            }
+            }*/
             data.add(new Datum(x, y, "lines"));
         }
 

@@ -2,12 +2,10 @@ package de.onetwotree.margaux.controller;
 
 import de.onetwotree.margaux.application.StringToCompany;
 import de.onetwotree.margaux.dao.PlotRepository;
+import de.onetwotree.margaux.dao.PlotResourceRepository;
 import de.onetwotree.margaux.dao.ProjectRepository;
 import de.onetwotree.margaux.dao.ResourceRepository;
-import de.onetwotree.margaux.entity.Plot;
-import de.onetwotree.margaux.entity.Project;
-import de.onetwotree.margaux.entity.Resource;
-import de.onetwotree.margaux.entity.User;
+import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.service.PlotService;
 import de.onetwotree.margaux.service.ProjectService;
 import de.onetwotree.margaux.service.UserService;
@@ -36,6 +34,8 @@ public class PlotController {
     @Autowired
     ProjectRepository projectRepository;
     @Autowired
+    PlotResourceRepository plotResourceRepository;
+    @Autowired
     ProjectService projectService;
 
     @RequestMapping(value = "/")
@@ -63,19 +63,41 @@ public class PlotController {
     }
     @PostMapping(value="/add")
     public String addPlotSubmit(@ModelAttribute("Plot") Plot plot, BindingResult result) {
-        System.out.println("Size:" + plot.getSize());
-        System.out.println("Project:" + plot.getProject().getName());
         plotRepository.saveAndFlush(plot);
         return "redirect:/plot/add/";
 
     }
     @GetMapping(value = "/view/{id}/add-resource")
     public String addResourceToPlot(Model model, @PathVariable(value = "id") String id) {
-        Resource acacia = resourceRepository.findOne(2L);
-        Plot plot = plotRepository.findOne(Long.valueOf(id));
-        plot.addResource(acacia, 20);
-        System.out.println(acacia.toString());
-        plotRepository.save(plot);
-        return "yep";
+        List<Resource> resources = resourceRepository.findAll();
+        PlotResource plotResource = new PlotResource();
+        plotResource.setPlot(plotRepository.findOne(Long.valueOf(id)));
+        model.addAttribute("resources", resources);
+        model.addAttribute("plotResource", plotResource);
+
+        return "Plot/addResourceToPlot";
     }
+    @PostMapping(value="/view/{id}/add-resource")
+    public String addResourceToPlotSubmit(@ModelAttribute("PlotResource") PlotResource plotResource, BindingResult result) {
+        System.out.println("Submit");
+        //plotResourceRepository.save(plotResource);
+        return "redirect:/plot/";
+
+    }
+
+    /*Resource resource = resourceRepository.findOne(Long.valueOf(2));
+        System.out.println("€€€€€€€€€€€€€€€€€€" + resource.getName());
+    Plot plot = plotRepository.findOne(Long.valueOf(12));
+        System.out.println("€€€€€€€€€€€€€€€€€€" + plot.getName());
+    PlotResource plotResource = new PlotResource();
+    PlotResourcePK plotResourcePK = new PlotResourcePK(plot.getId(), resource.getId());
+        plotResource.setPlotResourcePK(plotResourcePK);
+        plotResource.setResource(resource);
+        plotResource.setPlot(plot);
+        plotResource.setProportion(45);
+        plot.getPlotResources().add(plotResource);
+        resource.getPlotResources().add(plotResource);
+        System.out.println(resource.getId().toString());
+        plotResourceRepository.save(plotResource);
+        return "yep";*/
 }

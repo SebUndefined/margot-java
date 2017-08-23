@@ -28,8 +28,7 @@ import java.util.List;
 @RequestMapping(value = "maincompany")
 public class MainCompanyController {
 
-    @Autowired
-    private MainCompanyService mainCompanyService;
+
     @Autowired
     private MainCompanyRepository mainCompanyRepository;
     @Autowired
@@ -38,14 +37,6 @@ public class MainCompanyController {
     private ProjectRepository projectRepository;
     @Autowired
     private PlotRepository plotRepository;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private CompanyService companyService;
-    @Autowired
-    private ProjectService projectService;
-    @Autowired
-    private PlotService plotService;
     @Autowired
     private HarvestService harvestService;
     @Autowired

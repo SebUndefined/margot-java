@@ -1,25 +1,17 @@
+
 package de.onetwotree.margaux.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import de.onetwotree.margaux.entity.MainEntity;
-import org.hibernate.annotations.*;
-
 import javax.persistence.*;
-import javax.persistence.Cache;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 /**
  * Created by SebUndefined on 10/07/17.
  */
+
 @Entity
 @Table(name = "db_resource")
 public class Resource implements Serializable {
@@ -36,7 +28,7 @@ public class Resource implements Serializable {
     private ResourceType resourceType;
 
     @OneToMany(mappedBy = "resource")
-    private List<PlotResource> plots = new ArrayList<>();
+    private List<PlotResource> plotResources = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "resource",
@@ -71,12 +63,13 @@ public class Resource implements Serializable {
         this.resourceType = resourceType;
     }
 
-    public List<PlotResource> getPlots() {
-        return plots;
+
+    public List<de.onetwotree.margaux.entity.PlotResource> getPlotResources() {
+        return plotResources;
     }
 
-    public void setPlots(List<PlotResource> plots) {
-        this.plots = plots;
+    public void setPlotResources(List<PlotResource> plotResources) {
+        this.plotResources = plotResources;
     }
 
     public List<Harvest> getHarvests() {
@@ -87,7 +80,8 @@ public class Resource implements Serializable {
         this.harvests = harvests;
     }
 
-    @Override
+
+/*@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -98,5 +92,7 @@ public class Resource implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(name);
-    }
+    }*/
+
 }
+
