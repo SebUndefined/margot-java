@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -54,9 +55,15 @@ public class MainCompanyController {
         return "MainCompany/editMainCompany";
     }
     @PostMapping(value = "add/")
-    public String addMainCompanySubmit(@ModelAttribute("MainCompany") MainCompany mainCompany,
+    public String addMainCompanySubmit(RedirectAttributes redirectAttributes,
+                                       @ModelAttribute("MainCompany") MainCompany mainCompany,
                                        BindingResult result) {
-        MainCompany mainCompany1 = mainCompanyRepository.saveAndFlush(mainCompany);
+        MainCompany mainCompanySaved = mainCompanyRepository.saveAndFlush(mainCompany);
+        if (mainCompanySaved != null) {
+            String message = "The MainCompany " + mainCompanySaved.getName()
+                    + "</br> has been saved";
+            redirectAttributes.addFlashAttribute("info", message);
+        }
         return "redirect:/maincompany/";
     }
     @GetMapping(value = "view/{id}")

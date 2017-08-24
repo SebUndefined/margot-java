@@ -18,9 +18,7 @@ import java.util.GregorianCalendar;
 public class Harvest extends MainEntity{
 
     @Column(name = "harvest_begin_date")
-    private LocalDate beginDate;
-    @Column(name = "harvest_end_date")
-    private LocalDate endDate;
+    private LocalDate date;
     @Column(name = "harvest_quantity")
     private BigDecimal quantity;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -33,20 +31,12 @@ public class Harvest extends MainEntity{
     public Harvest() {
     }
 
-    public LocalDate getBeginDate() {
-        return beginDate;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setBeginDate(LocalDate beginDate) {
-        this.beginDate = beginDate;
-    }
-
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDate endDate) {
-        this.endDate = endDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public BigDecimal getQuantity() {

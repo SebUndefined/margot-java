@@ -65,8 +65,6 @@ public class ProjectController {
 
     @PostMapping(value="/add")
     public String addProjectSubmit(@ModelAttribute("Project") Project project, BindingResult result) {
-        System.out.println("Date Begin:" + project.getBeginDate());
-        System.out.println("Date End:" + project.getEndDate());
         projectRepository.saveAndFlush(project);
         return "redirect:/project/";
 

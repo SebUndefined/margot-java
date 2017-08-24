@@ -16,4 +16,6 @@ public interface HarvestService {
     String getSumHarvestByMCompanyByResourceJson(Long idMainCompany, Long idResource);
 
     String getHarvestsbyMainCompanyPlotLy(long idMainCompany);
+
+    boolean addHarvest(Harvest harvest);
 }

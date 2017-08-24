@@ -81,6 +81,7 @@
                     <div class="collapsible-body">
                         <ul>
                             <li class="sub-menu"><a th:href="@{/plot/}">All</a></li>
+                            <li class="sub-menu"><a th:href="@{/plot/map}">All (map)</a></li>
                             <li class="sub-menu"><a th:href="@{/plot/add/}">Add</a></li>
                         </ul>
                     </div>
@@ -92,11 +93,11 @@
         <li class="bold">
             <ul class="collapsible collapsible-accordion">
                 <li>
-                    <a class="collapsible-header"><i class="petite material-icons">shopping_cart</i>Sales<i class="material-icons right">arrow_drop_down</i></a>
+                    <a class="collapsible-header"><i class="petite material-icons">swap_calls</i>Harvests<i class="material-icons right">arrow_drop_down</i></a>
                     <div class="collapsible-body">
                         <ul>
-                            <li class="sub-menu"><a href="#!">Check All</a></li>
-                            <li class="sub-menu"><a href="#!">Find one</a></li>
+                            <li class="sub-menu"><a th:href="@{/harvest/}">All</a></li>
+                            <li class="sub-menu"><a th:href="@{/harvest/add/}">Add</a></li>
                         </ul>
                     </div>
                 </li>
@@ -107,7 +108,7 @@
         <li class="bold">
             <ul class="collapsible collapsible-accordion">
                 <li>
-                    <a class="collapsible-header"><i class="petite material-icons">swap_calls</i>Harvests<i class="material-icons right">arrow_drop_down</i></a>
+                    <a class="collapsible-header"><i class="petite material-icons">shopping_cart</i>Sales<i class="material-icons right">arrow_drop_down</i></a>
                     <div class="collapsible-body">
                         <ul>
                             <li class="sub-menu"><a href="#!">Check All</a></li>

@@ -1,6 +1,7 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.Plot;
+import de.onetwotree.margaux.entity.PlotResource;
 
 import java.util.List;
 
@@ -9,4 +10,6 @@ import java.util.List;
  */
 public interface PlotService {
 
+
+    boolean addResourceToPlot(Long id, PlotResource plotResource);
 }

@@ -33,13 +33,13 @@ public class Project extends MainEntity {
     @JoinColumn(name = "company_id")
     @JsonManagedReference
     private Company company;
-    /*@OneToMany(
+    @OneToMany(
             mappedBy = "project",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     @JsonBackReference
-    private List<Plot> plots = new ArrayList<Plot>();*/
+    private List<Plot> plots = new ArrayList<Plot>();
     @OneToMany(
             mappedBy = "project",
             cascade = CascadeType.ALL,
@@ -84,21 +84,14 @@ public class Project extends MainEntity {
         this.name = name;
     }
 
-    /*public List<Budget> getBudgets() {
-        return budgets;
-    }
 
-    public void setBudgets(List<Budget> budgets) {
-        this.budgets = budgets;
-    }*/
-
-/*    public List<Plot> getPlots() {
+    public List<Plot> getPlots() {
         return plots;
     }
 
     public void setPlots(List<Plot> plots) {
         this.plots = plots;
-    }*/
+    }
     public List<Budget> getBudgets() {
         return budgets;
     }

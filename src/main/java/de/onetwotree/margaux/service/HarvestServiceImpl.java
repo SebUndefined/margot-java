@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.chartData.json.Datum;
 import de.onetwotree.margaux.chartData.json.PlotLy;
 import de.onetwotree.margaux.dao.HarvestDAO;
+import de.onetwotree.margaux.dao.HarvestRepository;
 import de.onetwotree.margaux.entity.Harvest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ import java.util.List;
 public class HarvestServiceImpl implements HarvestService {
     @Autowired
     HarvestDAO harvestDAO;
+    @Autowired
+    HarvestRepository harvestRepository;
 
     @Override
     public List getAllHarvest() {
@@ -61,6 +64,15 @@ public class HarvestServiceImpl implements HarvestService {
         System.out.println(harvestDAO.getAllHarvestByMainCompanyByResourceWithDate(idMainCompany, (long) 1));
         return "prout";
 
+    }
+
+    @Override
+    public boolean addHarvest(Harvest harvest) {
+        if (harvest.getPlot().getPlotResources().contains(harvest.getResource())) {
+            return true;
+        }
+        //harvestRepository.saveAndFlush(harvest);
+        return false;
     }
 
 }

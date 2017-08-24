@@ -12,7 +12,20 @@
     <!-- Personnal script -->
     <script th:src="@{/assets/js/main.js}"></script>
     <script th:src="@{/assets/js/graph.js}"></script>
-
+    <p th:if="${alert!=null}">
+        <script th:inline="javascript">
+            var message = "<i class=\"material-icons\">warning</i> " + [[${alert}]];
+            console.log(message);
+            Materialize.toast(message.toString(), 6000, 'red');
+        </script>
+    </p>
+    <p th:if="${info!=null}">
+        <script th:inline="javascript">
+            var message = "<i class=\"material-icons\">check_circle</i> " + [[${info}]];
+            console.log(message);
+            Materialize.toast(message.toString(), 6000, 'green');
+        </script>
+    </p>
 
 
 
