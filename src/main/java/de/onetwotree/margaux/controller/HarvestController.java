@@ -69,9 +69,33 @@ public class HarvestController {
                                 BindingResult result) {
         Boolean isExist = harvestService.addHarvest(harvest);
 
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
         System.out.println(isExist);
-
-        return "Harvest/editHarvest";
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
+        System.out.println("###################");
+        String url = "";
+        String message = "";
+        if (!isExist) {
+            message = "The Plot " + harvest.getPlot().getName()
+                    + "</br> does not have " + harvest.getResource().getName();
+            redirectAttributes.addFlashAttribute("alert", message);
+            url = "redirect:";
+        }
+        else {
+            message = "The Harvest has been saved !";
+            redirectAttributes.addFlashAttribute("info", message);
+            url = "redirect:/harvest/";
+        }
+        return url;
 
     }
 }

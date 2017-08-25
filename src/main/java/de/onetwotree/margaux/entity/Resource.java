@@ -82,19 +82,5 @@ public class Resource implements Serializable {
     }
 
 
-    @Override
-    public boolean equals(Object o){
-        if(o instanceof Resource){
-            Resource toCompare = (Resource) o;
-            return this.id.equals(toCompare.id);
-        }
-        return false;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
-
 }
 

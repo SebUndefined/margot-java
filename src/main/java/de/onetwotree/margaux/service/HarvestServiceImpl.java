@@ -7,6 +7,9 @@ import de.onetwotree.margaux.chartData.json.PlotLy;
 import de.onetwotree.margaux.dao.HarvestDAO;
 import de.onetwotree.margaux.dao.HarvestRepository;
 import de.onetwotree.margaux.entity.Harvest;
+import de.onetwotree.margaux.entity.Plot;
+import de.onetwotree.margaux.entity.PlotResource;
+import de.onetwotree.margaux.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,11 +70,18 @@ public class HarvestServiceImpl implements HarvestService {
     }
 
     @Override
+    @Transactional
     public boolean addHarvest(Harvest harvest) {
-        if (harvest.getPlot().getPlotResources().contains(harvest.getResource())) {
+        Resource resource = harvest.getResource();
+        List<PlotResource> resourcePlotList = harvest.getPlot().getPlotResources();
+        List<Resource> resourceList = new ArrayList<>();
+        for (PlotResource item : resourcePlotList) {
+            resourceList.add(item.getResource());
+        }
+        if (resourceList.contains(resource)) {
+            harvestRepository.saveAndFlush(harvest);
             return true;
         }
-        //harvestRepository.saveAndFlush(harvest);
         return false;
     }
 

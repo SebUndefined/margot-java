@@ -5,6 +5,7 @@ package de.onetwotree.margaux.entity;
 import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +13,13 @@ import java.util.List;
  * Created by sebby on 10/07/17.
  */
 @Entity
-@Table(name = "db_company")
+@Table(name = "db_company", uniqueConstraints = @UniqueConstraint(name="name_company_uc",
+        columnNames = "company_name"))
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Company extends MainEntity {
 
     @Column(name = "company_name")
+    @NotNull
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)

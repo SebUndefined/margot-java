@@ -6,7 +6,9 @@
 <main>
     <h1>Request Failed...</h1>
      Failed URL: <span th:text="${#httpServletRequest.requestURI}">undefined</span>
-    <div th:text="${exception.message}">undefined</div>
+    <div th:if="${exception != null}"
+         th:utext="'Exception: ' + ${exception.message}" th:remove="tag">
+    </div>
 </main>
 
 <div th:replace="common/footer :: footer"></div>

@@ -110,19 +110,18 @@ public class MainCompanyController {
     @GetMapping(value = "view/{id}/harvests/")
     public String viewHarvestsOfMainCompany(
             @PathVariable(value = "id") String id,
-            @RequestParam(value = "typeOrNull", required = false)String typeOrNull,
+            @RequestParam(value = "graphType", required = false)String graphType,
             Model model) {
         model.addAttribute("urlId", id);
         long idMainCompany = Long.parseLong(id);
-        if (typeOrNull !=null && !typeOrNull.isEmpty()) {
-            if (typeOrNull.equals("date")) {
-               //resourceService.getAllResourceByMainCompanyWithHarvestPlotLy(idMainCompany);
+        if (graphType !=null && !graphType.isEmpty()) {
+            if (graphType.equals("date")) {
                 String resources= resourceService.getAllResourceByMainCompanyByResIdWithHarvestPlotLy(idMainCompany, (long)1);
                 model.addAttribute("myGraphDataWood", resources);
             }
         }
         else {
-            String myGraphDataWood = harvestService.getSumHarvestByMCompanyByResourceJson(idMainCompany, (long) 1);
+            String myGraphDataWood = harvestService.getSumHarvestByMCompanyByResourceJson(idMainCompany, Long.valueOf(1));
             String myGraphDataCocoa = harvestService.getSumHarvestByMCompanyByResourceJson(idMainCompany, (long) 2);
             model.addAttribute("myGraphDataCocoa", myGraphDataCocoa);
             model.addAttribute("myGraphDataWood", myGraphDataWood);

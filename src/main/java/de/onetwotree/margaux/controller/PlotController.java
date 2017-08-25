@@ -61,6 +61,13 @@ public class PlotController {
         model.addAttribute("page", page);
         return "Plot/plot";
     }
+    @RequestMapping(value = "/map/")
+    public String plotIndexMap(Model model)
+    {
+        List<Plot> plots = plotRepository.findAll();
+        model.addAttribute("plots", plots);
+        return "Plot/plotMap";
+    }
 
     @RequestMapping(value = "/view/{id}")
     public  String viewPlot(@PathVariable(value = "id") String id, Model model) {

@@ -1,6 +1,7 @@
 package de.onetwotree.margaux.controller;
 
 import de.onetwotree.margaux.application.StringToMainCompany;
+import de.onetwotree.margaux.controllerException.ItemNotFoundException;
 import de.onetwotree.margaux.dao.CompanyRepository;
 import de.onetwotree.margaux.dao.MainCompanyRepository;
 import de.onetwotree.margaux.entity.Company;
@@ -39,9 +40,11 @@ public class CompanyController {
         return "Company/company";
     }
     @GetMapping(value = "view/{id}")
-    public String viewCompany(@PathVariable(value = "id") String id, Model model) {
+    public String viewCompany(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long idCompany = Long.valueOf(id);
-        model.addAttribute("company", companyRepository.findOne(idCompany));
+        Company company = companyRepository.findOne(idCompany);
+        if (company == null) throw new ItemNotFoundException(idCompany);
+        model.addAttribute("company", company);
         return "Company/viewCompany";
     }
     @GetMapping(value = "/add")
@@ -59,4 +62,6 @@ public class CompanyController {
         companyRepository.saveAndFlush(company);
         return "redirect:/company/";
     }
+
+
 }
