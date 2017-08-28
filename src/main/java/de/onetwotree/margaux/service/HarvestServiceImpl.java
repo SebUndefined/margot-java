@@ -70,12 +70,11 @@ public class HarvestServiceImpl implements HarvestService {
         List<Resource> resourceList = resourceRepository.findAll();
         List<Harvest> harvestList = harvestRepository.findAll(new Sort(Sort.Direction.ASC, "date"));
         HashMap<String, HashMap<String, List<Harvest>>> resourceTypeWithResource = new HashMap<>();
-        HashMap<String, List<Harvest>> resourceWithHarvest = new HashMap<>();
+        Map<Resource, List<Harvest>> resourceWithHarvest = new HashMap<>();
 
-        resourceTypeWithResource = harvestList.stream()
-                .collect(Collectors.groupingBy(h -> h.getName(),
-                        Collectors.mapping((Harvest h) -> h)));
+        resourceWithHarvest = harvestList.stream().collect(Collectors.groupingBy(Harvest::getResource));
 
+        System.out.println(resourceWithHarvest.toString());
 
 
 //        for (ResourceType resourceType : resourceTypeList) {
