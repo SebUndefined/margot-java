@@ -6,17 +6,18 @@ import de.onetwotree.margaux.chartData.json.Datum;
 import de.onetwotree.margaux.chartData.json.PlotLy;
 import de.onetwotree.margaux.dao.HarvestDAO;
 import de.onetwotree.margaux.dao.HarvestRepository;
-import de.onetwotree.margaux.entity.Harvest;
-import de.onetwotree.margaux.entity.Plot;
-import de.onetwotree.margaux.entity.PlotResource;
-import de.onetwotree.margaux.entity.Resource;
+import de.onetwotree.margaux.dao.ResourceRepository;
+import de.onetwotree.margaux.dao.ResourceTypeRepository;
+import de.onetwotree.margaux.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by SebUndefined on 02/08/17.
@@ -29,11 +30,66 @@ public class HarvestServiceImpl implements HarvestService {
     HarvestDAO harvestDAO;
     @Autowired
     HarvestRepository harvestRepository;
+    @Autowired
+    ResourceRepository resourceRepository;
+    @Autowired
+    ResourceTypeRepository resourceTypeRepository;
 
     @Override
     public List getAllHarvest() {
         return harvestDAO.getAllHarvest();
     }
+
+    @Override
+    public String getSumByResourceWhereResourceTypeId(Long resourceTypeId) {
+        List<Object[]> harvests = harvestRepository.sumByResourceWhereIdResourceType(resourceTypeId);
+        List<String> x = new ArrayList<String>();
+        List<BigDecimal> y = new ArrayList<BigDecimal>();
+        for (Object[] row: harvests) {
+            x.add(row[0].toString());
+            y.add((BigDecimal) row[1]);
+        }
+        Datum datum = new Datum(x, y, "bar");
+        List<Datum> data = new ArrayList<>();
+        data.add(datum);
+        PlotLy plotLyChart = new PlotLy(data);
+        ObjectMapper mapper = new ObjectMapper();
+        String myGraphData = "";
+        try {
+            myGraphData = mapper.writeValueAsString(plotLyChart);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(myGraphData);
+        return myGraphData;
+    }
+    @Override
+    public HashMap<String, HashMap<String,List<Harvest>>> getAllGroupByResourceType() {
+        String graphData ="";
+        List<ResourceType> resourceTypeList = resourceTypeRepository.findAll();
+        List<Resource> resourceList = resourceRepository.findAll();
+        List<Harvest> harvestList = harvestRepository.findAll(new Sort(Sort.Direction.ASC, "date"));
+        HashMap<String, HashMap<String, List<Harvest>>> resourceTypeWithResource = new HashMap<>();
+        HashMap<String, List<Harvest>> resourceWithHarvest = new HashMap<>();
+
+        resourceTypeWithResource = harvestList.stream()
+                .collect(Collectors.groupingBy(h -> h.getName(),
+                        Collectors.mapping((Harvest h) -> h)));
+
+
+
+//        for (ResourceType resourceType : resourceTypeList) {
+//            for (Resource resource : resourceType.getResources()) {
+//                resourceWithHarvest.put(resource.getName(), resource.getHarvests());
+//                resourceTypeWithResource.put(resourceType.getDescription(), resourceWithHarvest);
+//            }
+//            resourceWithHarvest = new HashMap<String, List<Harvest>>();
+//        }
+        return resourceTypeWithResource;
+    }
+
+
+
     @Override
     public List getAllHarvestByMainCompanyByResource(long idMainCompany, long idResource) {
         return harvestDAO.getAllHarvestByMainCompanyByResource(idMainCompany, idResource);

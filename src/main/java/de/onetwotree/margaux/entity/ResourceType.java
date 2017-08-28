@@ -20,12 +20,12 @@ public class ResourceType {
     @JoinColumn(name = "resource_unity_id")
     private Unity unity;
 
-    /*@OneToMany(
+    @OneToMany(
             mappedBy = "resourceType",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
-    private List<Resource> resources = new ArrayList<>();*/
+    private List<Resource> resources = new ArrayList<>();
 
     public ResourceType() {
     }
@@ -54,11 +54,11 @@ public class ResourceType {
         this.unity = unity;
     }
 
-   /* public List<Resource> getResources() {
+   public List<Resource> getResources() {
         return resources;
     }
 
     public void setResources(List<Resource> resources) {
         this.resources = resources;
-    }*/
+    }
 }

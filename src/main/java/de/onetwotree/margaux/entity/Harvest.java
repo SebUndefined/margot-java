@@ -19,6 +19,8 @@ public class Harvest extends MainEntity{
 
     @Column(name = "harvest_begin_date")
     private LocalDate date;
+    @Column(name = "harvest_year")
+    private Integer year;
     @Column(name = "harvest_quantity")
     private BigDecimal quantity;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,6 +39,14 @@ public class Harvest extends MainEntity{
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
     }
 
     public BigDecimal getQuantity() {

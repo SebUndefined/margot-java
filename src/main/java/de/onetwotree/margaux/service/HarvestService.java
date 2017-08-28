@@ -2,6 +2,7 @@ package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.Harvest;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -10,6 +11,10 @@ import java.util.List;
 public interface HarvestService {
 
     List getAllHarvest();
+
+    String getSumByResourceWhereResourceTypeId(Long resourceTypeId);
+
+    HashMap<String, HashMap<String,List<Harvest>>> getAllGroupByResourceType();
 
     List getAllHarvestByMainCompanyByResource(long idMainCompany, long idResource);
 

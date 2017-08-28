@@ -32,6 +32,7 @@ public class PlotServiceImpl implements PlotService {
      * @return boolean true|false
      */
     @Override
+    @Transactional
     public boolean addResourceToPlot(Long id, PlotResource plotResource) {
         PlotResourcePK plotResourcePK = new PlotResourcePK(id, plotResource.getResource().getId());
         if (plotResourceRepository.findOne(plotResourcePK) == null) {

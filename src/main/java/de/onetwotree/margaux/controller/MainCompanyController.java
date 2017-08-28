@@ -39,6 +39,8 @@ public class MainCompanyController {
     @Autowired
     private PlotRepository plotRepository;
     @Autowired
+    HarvestRepository harvestRepository;
+    @Autowired
     private HarvestService harvestService;
     @Autowired
     private ResourceService resourceService;
@@ -112,7 +114,7 @@ public class MainCompanyController {
             @PathVariable(value = "id") String id,
             @RequestParam(value = "graphType", required = false)String graphType,
             Model model) {
-        model.addAttribute("urlId", id);
+        /*model.addAttribute("urlId", id);
         long idMainCompany = Long.parseLong(id);
         if (graphType !=null && !graphType.isEmpty()) {
             if (graphType.equals("date")) {
@@ -125,7 +127,8 @@ public class MainCompanyController {
             String myGraphDataCocoa = harvestService.getSumHarvestByMCompanyByResourceJson(idMainCompany, (long) 2);
             model.addAttribute("myGraphDataCocoa", myGraphDataCocoa);
             model.addAttribute("myGraphDataWood", myGraphDataWood);
-        }
+        }*/
+        System.out.println(harvestRepository.findAllByMainCompanyIdAnAndResourceTypeId(Long.valueOf(id), Long.valueOf(1)));
         return "viewHarvestByEntity";
     }
     public String viewHarvestsOfMainCompanyInLineChart(Long id, Model model) {

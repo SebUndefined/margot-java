@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:fragment="headerHarvest">
+    <ul class="tabs tabs-fixed-width">
+        <li class="tab col s2">
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/harvest/') ? 'active':''}" target="_self" th:href="@{'/harvest/'}">General</a>
+        </li>
+        <li class="tab col s2">
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/graph-total/') ? 'active':''}" target="_self" th:href="@{'/harvest/graph-total/'}">Total</a>
+        </li>
+        <li class="tab col s2">
+            <a th:classappend="${#httpServletRequest.getRequestURI().endsWith('/graph-timeline/') ? 'active':''}" target="_self" th:href="@{'/harvest/graph-timeline/'}">Timeline</a>
+        </li>
+    </ul>
+
+
+
+</div>
+</html>
