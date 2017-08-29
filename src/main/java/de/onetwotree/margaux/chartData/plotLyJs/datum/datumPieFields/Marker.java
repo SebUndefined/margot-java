@@ -1,5 +1,4 @@
-
-package de.onetwotree.margaux.chartData.json;
+package de.onetwotree.margaux.chartData.plotLyJs.datum.datumPieFields;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,49 +12,46 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "data",
-        "layout"
+        "colors"
 })
-public class PlotLy {
+public class Marker {
 
-    @JsonProperty("data")
-    private List<Datum> data = null;
-    @JsonProperty("layout")
-    private Layout layout;
+    @JsonProperty("colors")
+    private List<String> colors = null;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public PlotLy() {
+    /**
+     * No args constructor for use in serialization
+     *
+     */
+    public Marker() {
     }
 
-    public PlotLy(List<Datum> data) {
-        this.data = data;
-        this.layout = new Layout();
+    /**
+     *
+     * @param colors
+     */
+    public Marker(List<String> colors) {
+        super();
+        this.colors = colors;
     }
 
-    @JsonProperty("data")
-    public List<Datum> getData() {
-        return data;
+    @JsonProperty("colors")
+    public List<String> getColors() {
+        return colors;
     }
 
-    @JsonProperty("data")
-    public void setData(List<Datum> data) {
-        this.data = data;
+    @JsonProperty("colors")
+    public void setColors(List<String> colors) {
+        this.colors = colors;
     }
 
-    public PlotLy withData(List<Datum> data) {
-        this.data = data;
+    public Marker withColors(List<String> colors) {
+        this.colors = colors;
         return this;
     }
 
-
-    public Layout getLayout() {
-        return layout;
-    }
-
-    public void setLayout(Layout layout) {
-        this.layout = layout;
-    }
 
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
@@ -67,7 +63,7 @@ public class PlotLy {
         this.additionalProperties.put(name, value);
     }
 
-    public PlotLy withAdditionalProperty(String name, Object value) {
+    public Marker withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }

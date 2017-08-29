@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -31,9 +31,7 @@ public class HarvestServiceImpl implements HarvestService {
     @Autowired
     HarvestRepository harvestRepository;
     @Autowired
-    ResourceRepository resourceRepository;
-    @Autowired
-    ResourceTypeRepository resourceTypeRepository;
+    ChartService chartService;
 
     @Override
     public List getAllHarvest() {
@@ -64,27 +62,13 @@ public class HarvestServiceImpl implements HarvestService {
         return myGraphData;
     }
     @Override
-    public HashMap<String, HashMap<String,List<Harvest>>> getAllGroupByResourceType() {
-        String graphData ="";
-        List<ResourceType> resourceTypeList = resourceTypeRepository.findAll();
-        List<Resource> resourceList = resourceRepository.findAll();
-        List<Harvest> harvestList = harvestRepository.findAll(new Sort(Sort.Direction.ASC, "date"));
-        HashMap<String, HashMap<String, List<Harvest>>> resourceTypeWithResource = new HashMap<>();
-        Map<Resource, List<Harvest>> resourceWithHarvest = new HashMap<>();
-
-        resourceWithHarvest = harvestList.stream().collect(Collectors.groupingBy(Harvest::getResource));
-
-        System.out.println(resourceWithHarvest.toString());
-
-
-//        for (ResourceType resourceType : resourceTypeList) {
-//            for (Resource resource : resourceType.getResources()) {
-//                resourceWithHarvest.put(resource.getName(), resource.getHarvests());
-//                resourceTypeWithResource.put(resourceType.getDescription(), resourceWithHarvest);
-//            }
-//            resourceWithHarvest = new HashMap<String, List<Harvest>>();
-//        }
-        return resourceTypeWithResource;
+    public String getAllGroupByResourceTypeJson(Long idResourceType) {
+        List<Harvest> harvestList = harvestRepository.findAllByResourceTypeOrderByDate(idResourceType);
+        Map<Resource, List<Harvest>> resourceWithHarvests;
+        resourceWithHarvests = harvestList.stream()
+                .collect(Collectors.groupingBy(Harvest::getResource));
+        String myGraphData = chartService.buildLineChartByDate(resourceWithHarvests);
+        return myGraphData;
     }
 
 

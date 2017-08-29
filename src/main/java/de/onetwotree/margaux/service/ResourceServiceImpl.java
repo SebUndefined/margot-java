@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.chartData.json.Datum;
 import de.onetwotree.margaux.chartData.json.PlotLy;
 import de.onetwotree.margaux.dao.ResourceDAO;
-import de.onetwotree.margaux.entity.Harvest;
 import de.onetwotree.margaux.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

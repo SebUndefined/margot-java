@@ -1,36 +1,34 @@
+package de.onetwotree.margaux.chartData.plotLyJs;
 
-package de.onetwotree.margaux.chartData.json;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import de.onetwotree.margaux.chartData.json.Datum;
+import de.onetwotree.margaux.chartData.plotLyJs.plotLyLayout.PlotLyLayout;
+
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({
-    "data",
-        "layout"
-})
-public class PlotLy {
-
+/**
+ * Created by SebUndefined on 29/08/17.
+ */
+public class PlotLyJs {
     @JsonProperty("data")
     private List<Datum> data = null;
     @JsonProperty("layout")
-    private Layout layout;
+    private PlotLyLayout layout;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public PlotLy() {
+    public PlotLyJs() {
     }
 
-    public PlotLy(List<Datum> data) {
+    public PlotLyJs(List<Datum> data, PlotLyLayout layout) {
         this.data = data;
-        this.layout = new Layout();
+        this.layout = layout;
     }
 
     @JsonProperty("data")
@@ -43,17 +41,17 @@ public class PlotLy {
         this.data = data;
     }
 
-    public PlotLy withData(List<Datum> data) {
+    public PlotLyJs withData(List<Datum> data) {
         this.data = data;
         return this;
     }
 
 
-    public Layout getLayout() {
+    public PlotLyLayout getLayout() {
         return layout;
     }
 
-    public void setLayout(Layout layout) {
+    public void setLayout(PlotLyLayout layout) {
         this.layout = layout;
     }
 
@@ -67,9 +65,8 @@ public class PlotLy {
         this.additionalProperties.put(name, value);
     }
 
-    public PlotLy withAdditionalProperty(String name, Object value) {
+    public PlotLyJs withAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
         return this;
     }
-
 }

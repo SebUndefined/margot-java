@@ -17,18 +17,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col l12 m12 s12">
-            <div class="panel6">
-                <div class="panel_title">
-                    <h2>Alimentary</h2>
-                </div>
-                <div class="map-panel">
-                    <div id="alimentary-sum-harvest"></div>
-                </div>
-            </div>
-        </div>
-    </div>
     </div>
 </main>
 
@@ -38,10 +26,7 @@
     var graphWood = /*[[${myGraphData}]]*/ '';
     console.log(graphWood);
     var figureWood = JSON.parse(graphWood);
-    var figureCocoa = JSON.parse(/*[[${myGraphDataAlimentary}]]*/);
     Plotly.newPlot('wood-sum-harvest', figureWood.data, figureWood.layout);
-    console.log(figureWood);
-    Plotly.newPlot('alimentary-sum-harvest', figureCocoa.data, figureCocoa.layout);
 </script>
 <!--<div th:replace="common/map :: map"></div>-->
 </html>

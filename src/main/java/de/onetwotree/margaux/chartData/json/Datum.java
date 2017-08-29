@@ -16,16 +16,21 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 @JsonPropertyOrder({
     "x",
     "y",
-    "type"
+    "type",
+        "name",
+        "domain"
 })
 public class Datum {
 
     @JsonProperty("x")
-    private List<String> x = null;
+    protected List<String> x = null;
     @JsonProperty("y")
-    private List<BigDecimal> y = null;
+    protected List<BigDecimal> y = null;
     @JsonProperty("type")
-    private String type;
+    protected String type;
+    @JsonProperty("name")
+    protected String name;
+
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
@@ -35,6 +40,12 @@ public class Datum {
         this.x = x;
         this.y = y;
         this.type = type;
+    }
+    public Datum(List<String> x, List<BigDecimal> y, String type, String name) {
+        this.x = x;
+        this.y = y;
+        this.type = type;
+        this.name = name;
     }
 
     @JsonProperty("x")
@@ -79,9 +90,20 @@ public class Datum {
         this.type = type;
     }
 
+
+
     public Datum withType(String type) {
         this.type = type;
         return this;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
 

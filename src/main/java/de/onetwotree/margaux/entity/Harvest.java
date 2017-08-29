@@ -72,4 +72,5 @@ public class Harvest extends MainEntity{
     public void setResource(Resource resource) {
         this.resource = resource;
     }
+
 }

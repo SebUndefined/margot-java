@@ -6,6 +6,7 @@ import de.onetwotree.margaux.dao.PlotResourceRepository;
 import de.onetwotree.margaux.dao.ProjectRepository;
 import de.onetwotree.margaux.dao.ResourceRepository;
 import de.onetwotree.margaux.entity.*;
+import de.onetwotree.margaux.service.PlotResourceService;
 import de.onetwotree.margaux.service.PlotService;
 import de.onetwotree.margaux.service.ProjectService;
 import de.onetwotree.margaux.service.UserService;
@@ -40,16 +41,8 @@ public class PlotController {
     @Autowired
     ProjectRepository projectRepository;
     @Autowired
-    PlotResourceRepository plotResourceRepository;
-    @Autowired
-    ProjectService projectService;
+    PlotResourceService plotResourceService;
 
-    /*@RequestMapping(value = "/")
-    public String plotIndex(Model model) {
-        List<Plot> plots = plotRepository.findAll();
-        model.addAttribute("plots", plots);
-        return "Plot/plot";
-    }*/
     @RequestMapping(value = "/")
     public String plotIndex(Model model,
                             @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
@@ -73,6 +66,8 @@ public class PlotController {
     public  String viewPlot(@PathVariable(value = "id") String id, Model model) {
         Long plotId = Long.valueOf(id);
         Plot plot = plotRepository.findOne(plotId);
+        List<PlotResource> resourcePlotList = plot.getPlotResources();
+        String res = plotResourceService.getPlotResourceAsJson(resourcePlotList);
         model.addAttribute("plot", plot);
         return "Plot/viewPlot";
     }

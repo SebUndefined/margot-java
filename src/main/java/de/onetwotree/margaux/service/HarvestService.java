@@ -1,9 +1,12 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.Harvest;
+import de.onetwotree.margaux.entity.Resource;
+import de.onetwotree.margaux.entity.ResourceType;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by SebUndefined on 02/08/17.
@@ -14,7 +17,8 @@ public interface HarvestService {
 
     String getSumByResourceWhereResourceTypeId(Long resourceTypeId);
 
-    HashMap<String, HashMap<String,List<Harvest>>> getAllGroupByResourceType();
+
+    String getAllGroupByResourceTypeJson(Long idResourceType);
 
     List getAllHarvestByMainCompanyByResource(long idMainCompany, long idResource);
 

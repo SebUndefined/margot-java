@@ -44,13 +44,11 @@ public interface HarvestRepository extends BaseRepository<Harvest> {
             @Param("idMainCompany") Long idMainCompany,
             @Param("idResourceType") Long idResourceType);
 
-    /*@Query("SELECT resource.name, sum(quantity) " +
-            "FROM Harvest harvest, Resource resource " +
-            "JOIN resource" +
-            "WHERE resource.resourceType.id = :idResourceType " +
-            "GROUP BY resource ")
-    List getSumByResourceWhereMainCompanyIdAndResourceTypeid(
-            @Param("idResourceType") Long idResourceType);*/
 
+    @Query("SELECT h FROM Harvest as h " +
+            "join h.resource resource " +
+            "where resource.resourceType.id = :idResourceType " +
+            "order by h.date asc")
+    List<Harvest> findAllByResourceTypeOrderByDate(@Param("idResourceType") Long idResourceType);
 
 }
