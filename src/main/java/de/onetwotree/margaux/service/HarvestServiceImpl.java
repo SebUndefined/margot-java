@@ -4,10 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.chartData.json.Datum;
 import de.onetwotree.margaux.chartData.json.PlotLy;
-import de.onetwotree.margaux.dao.HarvestDAO;
-import de.onetwotree.margaux.dao.HarvestRepository;
-import de.onetwotree.margaux.dao.ResourceRepository;
-import de.onetwotree.margaux.dao.ResourceTypeRepository;
+import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.exception.AddHarvestException;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
@@ -18,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
@@ -37,6 +35,8 @@ public class HarvestServiceImpl implements HarvestService {
     HarvestRepository harvestRepository;
     @Autowired
     ChartService chartService;
+    @Autowired
+    PlotResourceRepository plotResourceRepository;
 
     @Override
     public List getAllHarvest() {
@@ -77,7 +77,7 @@ public class HarvestServiceImpl implements HarvestService {
     }
 
     @Override
-    public String findAllHarvestWherePlotIdAsJson(Long idPlot) throws ItemNotFoundException {
+    public String findAllHarvestWherePlotIdAsJson(Long idPlot) {
         List<Harvest> harvestList = harvestRepository.findAllByPlotId(idPlot);
         System.out.println(harvestList.size());
         Map<Resource, List<Harvest>> resourceWithHarvest = harvestList.stream()
@@ -138,7 +138,11 @@ public class HarvestServiceImpl implements HarvestService {
             if (currentDate.isAfter(dateBeginHarvest)) {
                 throw new AddHarvestException("You cannot add an harvest before the plot was created.");
             }
-            System.out.println("The diff is ======>" + period.getYears());
+            harvest.setYear(period.getYears());
+            PlotResource plotResource = plotResourceRepository.findOne(
+                    new PlotResourcePK(harvest.getPlot().getId(), harvest.getResource().getId()));
+            System.out.println("harvest qté " + harvest.getQuantity() + " Proportion " + plotResource.getProportion());
+            harvest.setQuantityPerHa(harvest.getQuantity().divide(plotResource.getProportion(), 2, RoundingMode.HALF_UP));
             Harvest harvestSaved =  harvestRepository.saveAndFlush(harvest);
             return harvestSaved;
         }

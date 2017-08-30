@@ -22,7 +22,7 @@ public interface HarvestService {
 
     String getAllGroupByResourceTypeJson(Long idResourceType);
 
-    String findAllHarvestWherePlotIdAsJson(Long idPlot) throws ItemNotFoundException;
+    String findAllHarvestWherePlotIdAsJson(Long idPlot);
 
     List getAllHarvestByMainCompanyByResource(long idMainCompany, long idResource);
 

@@ -24,6 +24,8 @@ public class Harvest extends MainEntity{
     private Integer year;
     @Column(name = "harvest_quantity")
     private BigDecimal quantity;
+    @Column(name = "harvest_quantity_per_ha")
+    private BigDecimal quantityPerHa;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "plot_id")
     private Plot plot;
@@ -56,6 +58,14 @@ public class Harvest extends MainEntity{
 
     public void setQuantity(BigDecimal quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getQuantityPerHa() {
+        return quantityPerHa;
+    }
+
+    public void setQuantityPerHa(BigDecimal quantityPerHa) {
+        this.quantityPerHa = quantityPerHa;
     }
 
     public Plot getPlot() {
