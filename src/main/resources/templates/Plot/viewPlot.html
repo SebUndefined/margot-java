@@ -4,6 +4,7 @@
 <div th:replace="common/head :: head"></div>
 <div th:replace="common/header :: header"></div>
 <main>
+    <div th:replace="common/headerPlot :: headerPlot"></div>
     <div class="row">
         <div class="col l12 m12 s12">
             <div class="panel6">
@@ -31,65 +32,74 @@
 
             </div>
         </div>
-        <div class="col l6 m6 s12">
+        <div class="col l6 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
                     <h2>Resources</h2>
                 </div>
-
-
+                <div id="plot-resource-graph"></div>
             </div>
         </div>
-        <div class="row">
-            <div class="col l12 m12 s12">
+            <div class="col l6 m12 s12">
                 <div class="panel6">
                     <div class="panel_title">
-                        <h2>Plots</h2>
-                    </div>
-                    <p>This plots belongs to <span th:text="${plot.id}"></span> </p>
-                    <table class="bordered highlight responsive-table">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Proportion</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="resourcePlot : ${plot.plotResources}">
-                            <td th:text="${resourcePlot.resource.name}">undefined</td>
-                            <td th:text="${resourcePlot.proportion}">undefined</td>
-                            <!--<td>
-                                <a th:href="@{'/project/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
-                                    <i class="material-icons">visibility</i>
-                                </a>
-                                <a th:href="@{'/project/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
-                                    <i class="material-icons">edit</i>
-                                </a>
-                            </td>-->
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col l12 m12 s12">
-                <div class="panel6">
-                    <div class="panel_title">
-                        <h2>Plots</h2>
+                        <h2>Localisation</h2>
                     </div>
                     <div class="map-panel">
                         <div id="map"></div>
+                        <!-- Un test de map -->
+                            <script th:inline="javascript">
+                                var map;
+                                var plot = /*[[${plot}]]*/ '';
+                                function initMap() {
+                                    var infowindow = new google.maps.InfoWindow();
+                                    map = new google.maps.Map(document.getElementById('map'), {
+                                        center: {lat:plot.latitude,lng:plot.longitude},
+                                        zoom: 2
+                                    });
+                                        var latlng = new google.maps.LatLng(plot.latitude, plot.longitude);
+                                        var marker = new google.maps.Marker({
+                                            position: latlng,
+                                            map: map,
+                                            icon: '/assets/img/tree-2-32.png'
+                                        });
+                                        google.maps.event.addListener(marker, 'click', (function(marker, plot) {
+
+                                            return function() {
+                                                var contentString = '<div class="gm-window">' +
+                                                    '<div class="gm-window-title">' +
+                                                    plot.name +
+                                                    '</div>' +
+                                                    '<div class="gm-window-content">' +
+                                                    'Size: ' + plot.size + ' ha' + '<br/>' +
+                                                    'Project: <a href="/project/view/' + plot.project.id + '">' + plot.project.name + '</a>' +
+                                                    '</div>' +
+                                                    '</div>';
+                                                infowindow.setContent(contentString);
+                                                infowindow.open(map, marker);
+                                                map.setCenter(latlng);
+                                            }
+
+                                        })(marker, i));
+                                }
+                                //google.maps.event.addDomListener(window, 'load', initMap);
+                            </script>
+                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=initMap"></script>
+
+                        <!-- Un test deux -->
                     </div>
                 </div>
             </div>
-        </div>
         <!--Add button-->
-        <div class="fixed-action-btn horizontal">
-            <a th:href="@{/project/add/}" class="btn-floating btn-large waves-effect waves-light">
-                <i class="material-icons">add</i>
+        <div class="fixed-action-btn horizontal click-to-toggle">
+            <a class="btn-floating btn-large red">
+                <i class="material-icons">menu</i>
             </a>
+            <ul>
+                <li><a class="btn-floating red" title="Add an harvest"><i class="material-icons">swap_calls</i></a></li>
+                <li><a class="btn-floating yellow darken-1" title="Add a resource" th:href="@{'/plot/view/' + ${urlId}+'/add-resource/'}"><i class="material-icons">spa</i></a></li>
+                <li><a class="btn-floating green" title="Edit this plot"><i class="material-icons">edit</i></a></li>
+            </ul>
         </div>
         <!-- end Add button-->
 
@@ -99,4 +109,10 @@
 <div th:replace="common/footer :: footer"></div>
 <!--Alerte Message-->
 <!--End Alerte Message-->
+<script th:inline="javascript">
+    var graphJson = /*[[${graphResource}]]*/ '';
+    console.log(graphJson);
+    var figure = JSON.parse(graphJson);
+    Plotly.newPlot('plot-resource-graph', figure.data, figure.layout);
+</script>
 </html>

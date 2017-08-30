@@ -12,6 +12,8 @@ import de.onetwotree.margaux.entityJson.PlotView;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,9 +30,12 @@ public class Plot extends MainEntity implements Serializable {
     @Column(name = "plot_name")
     @JsonView(PlotView.PlotBasic.class)
     private String name;
+    @Column(name = "plot_creation_date")
+    @JsonView(PlotView.PlotBasic.class)
+    private LocalDate creationDate;
     @Column(name = "plot_size")
     @JsonView(PlotView.PlotBasic.class)
-    private double size;
+    private BigDecimal size;
     @Column(name = "plot_latitude")
     @JsonView(PlotView.PlotBasic.class)
     private double latitude;
@@ -58,11 +63,19 @@ public class Plot extends MainEntity implements Serializable {
         this.name = name;
     }
 
-    public double getSize() {
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public BigDecimal getSize() {
         return size;
     }
 
-    public void setSize(double size) {
+    public void setSize(BigDecimal size) {
         this.size = size;
     }
 

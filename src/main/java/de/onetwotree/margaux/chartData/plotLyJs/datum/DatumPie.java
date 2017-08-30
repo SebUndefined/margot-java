@@ -129,19 +129,22 @@ public class DatumPie extends DatumMain {
     /**
      * Pie Static
      */
-    public static DatumPie createSimpleDataForPie(Long pull,
-                                                  String uid, List<String> Label, Boolean showlegend,
+    public static DatumPie createSimpleDataForPie(List<String> labels, Boolean showlegend,
                                                   List<String> values, String textinfo, Double hole
-                                                  )
-    {
+                                                  ) {
 
         DatumPie datumPie = new DatumPie();
         datumPie.setPull(Long.valueOf(0));
         datumPie.setUid("34553");
-        datumPie.setDomain(
-                new Domain(
-                new ArrayList<>(Arrays.asList(0L, 1L)),
-                new ArrayList<>(Arrays.asList(0L, 1L))
-                ));
+        datumPie.setDomain(Domain.creatSimpleDomain());
+        datumPie.setLabels(labels);
+        datumPie.setShowlegend(showlegend);
+        datumPie.setTextinfo(textinfo);
+        datumPie.setValues(values);
+        datumPie.setHole(hole);
+        datumPie.setType("pie");
+
+        return datumPie;
+    }
 
 }

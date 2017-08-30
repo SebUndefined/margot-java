@@ -2,6 +2,8 @@ package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.PlotResource;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -11,5 +13,6 @@ import java.util.List;
 public interface PlotService {
 
 
+    @Transactional
     boolean addResourceToPlot(Long id, PlotResource plotResource);
 }

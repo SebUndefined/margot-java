@@ -1,20 +1,18 @@
 package de.onetwotree.margaux.controller;
 
-import de.onetwotree.margaux.application.StringToMainCompany;
-import de.onetwotree.margaux.controllerException.ItemNotFoundException;
+import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.dao.CompanyRepository;
 import de.onetwotree.margaux.dao.MainCompanyRepository;
 import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.service.CompanyService;
-import de.onetwotree.margaux.service.MainCompanyService;
 import de.onetwotree.margaux.service.UserService;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.WebParam;
 import java.util.List;
 
 /**
@@ -43,7 +41,7 @@ public class CompanyController {
     public String viewCompany(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long idCompany = Long.valueOf(id);
         Company company = companyRepository.findOne(idCompany);
-        if (company == null) throw new ItemNotFoundException(idCompany);
+        if (company == null) throw new ItemNotFoundException(idCompany, "company/");
         model.addAttribute("company", company);
         return "Company/viewCompany";
     }
@@ -59,7 +57,11 @@ public class CompanyController {
                                    BindingResult result){
         //System.out.println("First name of manager ==>" + company.getManager().getFirstname());
         System.out.println("First name of manager ==>" + company.getMainCompany().toString());
-        companyRepository.saveAndFlush(company);
+        try {
+            companyRepository.saveAndFlush(company);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+        }
         return "redirect:/company/";
     }
 

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,5 +43,20 @@ public class Domain {
 
     public void setX(List<Long> x) {
         this.x = x;
+    }
+
+    /**
+     * Default
+     */
+    public static Domain creatSimpleDomain() {
+        List<Long> x = new ArrayList<>();
+        List<Long> y = new ArrayList<>();
+        x.add(0L);
+        x.add(1L);
+        y.add(0L);
+        y.add(1L);
+        Domain domain = new Domain(y, x);
+        return domain;
+
     }
 }

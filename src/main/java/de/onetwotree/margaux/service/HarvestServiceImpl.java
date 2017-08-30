@@ -9,12 +9,17 @@ import de.onetwotree.margaux.dao.HarvestRepository;
 import de.onetwotree.margaux.dao.ResourceRepository;
 import de.onetwotree.margaux.dao.ResourceTypeRepository;
 import de.onetwotree.margaux.entity.*;
+import de.onetwotree.margaux.exception.AddHarvestException;
+import de.onetwotree.margaux.exception.ItemNotFoundException;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -71,6 +76,15 @@ public class HarvestServiceImpl implements HarvestService {
         return myGraphData;
     }
 
+    @Override
+    public String findAllHarvestWherePlotIdAsJson(Long idPlot) throws ItemNotFoundException {
+        List<Harvest> harvestList = harvestRepository.findAllByPlotId(idPlot);
+        System.out.println(harvestList.size());
+        Map<Resource, List<Harvest>> resourceWithHarvest = harvestList.stream()
+                .collect(Collectors.groupingBy(Harvest::getResource));
+        return "prout";
+    }
+
 
 
     @Override
@@ -110,7 +124,7 @@ public class HarvestServiceImpl implements HarvestService {
 
     @Override
     @Transactional
-    public boolean addHarvest(Harvest harvest) {
+    public Harvest addHarvest(Harvest harvest) throws AddHarvestException {
         Resource resource = harvest.getResource();
         List<PlotResource> resourcePlotList = harvest.getPlot().getPlotResources();
         List<Resource> resourceList = new ArrayList<>();
@@ -118,10 +132,17 @@ public class HarvestServiceImpl implements HarvestService {
             resourceList.add(item.getResource());
         }
         if (resourceList.contains(resource)) {
-            harvestRepository.saveAndFlush(harvest);
-            return true;
+            LocalDate dateBeginHarvest = harvest.getDate();
+            LocalDate currentDate = LocalDate.now();
+            Period period = Period.between(currentDate, dateBeginHarvest);
+            if (currentDate.isAfter(dateBeginHarvest)) {
+                throw new AddHarvestException("You cannot add an harvest before the plot was created.");
+            }
+            System.out.println("The diff is ======>" + period.getYears());
+            Harvest harvestSaved =  harvestRepository.saveAndFlush(harvest);
+            return harvestSaved;
         }
-        return false;
+        throw new AddHarvestException("This plot does not have " + harvest.getResource().getName());
     }
 
 }

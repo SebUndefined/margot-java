@@ -51,4 +51,6 @@ public interface HarvestRepository extends BaseRepository<Harvest> {
             "order by h.date asc")
     List<Harvest> findAllByResourceTypeOrderByDate(@Param("idResourceType") Long idResourceType);
 
+    List<Harvest> findAllByPlotId(Long idPlot);
+
 }

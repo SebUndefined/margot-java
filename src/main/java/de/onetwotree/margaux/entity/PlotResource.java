@@ -4,7 +4,9 @@ package de.onetwotree.margaux.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 
 /**
@@ -28,8 +30,9 @@ public class PlotResource {
     insertable = false, updatable = false)
     private Resource resource;
 
+    @Digits(integer = 10, fraction = 2)
     @Column(name = "proportion")
-    private Integer proportion;
+    private BigDecimal proportion;
 
     public PlotResource() {
     }
@@ -42,11 +45,11 @@ public class PlotResource {
         this.plotResourcePK = new PlotResourcePK(idPlot, idResource);
     }
 
-    public Integer getProportion() {
+    public BigDecimal getProportion() {
         return proportion;
     }
 
-    public void setProportion(Integer proportion) {
+    public void setProportion(BigDecimal proportion) {
         this.proportion = proportion;
     }
 

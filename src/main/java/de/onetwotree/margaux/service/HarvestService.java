@@ -3,6 +3,8 @@ package de.onetwotree.margaux.service;
 import de.onetwotree.margaux.entity.Harvest;
 import de.onetwotree.margaux.entity.Resource;
 import de.onetwotree.margaux.entity.ResourceType;
+import de.onetwotree.margaux.exception.AddHarvestException;
+import de.onetwotree.margaux.exception.ItemNotFoundException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +22,13 @@ public interface HarvestService {
 
     String getAllGroupByResourceTypeJson(Long idResourceType);
 
+    String findAllHarvestWherePlotIdAsJson(Long idPlot) throws ItemNotFoundException;
+
     List getAllHarvestByMainCompanyByResource(long idMainCompany, long idResource);
 
     String getSumHarvestByMCompanyByResourceJson(Long idMainCompany, Long idResource);
 
     String getHarvestsbyMainCompanyPlotLy(long idMainCompany);
 
-    boolean addHarvest(Harvest harvest);
+    Harvest addHarvest(Harvest harvest) throws AddHarvestException;
 }

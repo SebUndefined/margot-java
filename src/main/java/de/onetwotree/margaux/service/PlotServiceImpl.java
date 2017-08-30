@@ -9,7 +9,9 @@ import de.onetwotree.margaux.entity.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -35,11 +37,23 @@ public class PlotServiceImpl implements PlotService {
     @Transactional
     public boolean addResourceToPlot(Long id, PlotResource plotResource) {
         PlotResourcePK plotResourcePK = new PlotResourcePK(id, plotResource.getResource().getId());
-        if (plotResourceRepository.findOne(plotResourcePK) == null) {
-            Plot plot = plotRepository.findOne(Long.valueOf(id));
+        PlotResource isExist = plotResourceRepository.findOne(plotResourcePK);
+        BigDecimal total = plotResourceRepository.findSumOfProportionOfPlot(id);
+        if(total == null) {
+            total = BigDecimal.valueOf(0);
+        }
+        if (isExist == null) {
+            Plot plot = plotRepository.findOne(id);
             plotResource.setPlotResourcePK(plotResourcePK);
             plotResource.setPlot(plot);
-            plotResourceRepository.saveAndFlush(plotResource);
+            BigDecimal difference = plotResource.getPlot().getSize().subtract(total);
+            if (difference.compareTo(plotResource.getProportion()) == 0
+                    || difference.compareTo(plotResource.getProportion()) == 1) {
+                plotResourceRepository.saveAndFlush(plotResource);
+            }
+            else {
+                return false;
+            }
             return true;
         }
         else {

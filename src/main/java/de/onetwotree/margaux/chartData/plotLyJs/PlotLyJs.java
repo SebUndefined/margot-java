@@ -1,9 +1,6 @@
 package de.onetwotree.margaux.chartData.plotLyJs;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
 import de.onetwotree.margaux.chartData.json.Datum;
 import de.onetwotree.margaux.chartData.plotLyJs.plotLyLayout.PlotLyLayout;
 
@@ -15,35 +12,23 @@ import java.util.Map;
 /**
  * Created by SebUndefined on 29/08/17.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+        "layout"
+})
 public class PlotLyJs {
-    @JsonProperty("data")
-    private List<Datum> data = null;
+
     @JsonProperty("layout")
-    private PlotLyLayout layout;
+    protected PlotLyLayout layout;
     @JsonIgnore
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    protected Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public PlotLyJs() {
     }
 
-    public PlotLyJs(List<Datum> data, PlotLyLayout layout) {
-        this.data = data;
+    public PlotLyJs(PlotLyLayout layout) {
+
         this.layout = layout;
-    }
-
-    @JsonProperty("data")
-    public List<Datum> getData() {
-        return data;
-    }
-
-    @JsonProperty("data")
-    public void setData(List<Datum> data) {
-        this.data = data;
-    }
-
-    public PlotLyJs withData(List<Datum> data) {
-        this.data = data;
-        return this;
     }
 
 

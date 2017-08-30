@@ -8,7 +8,7 @@
         <div class="col l12 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h2>Add a Project</h2>
+                    <h2>Add a Plot</h2>
                 </div>
                 <!--/*@thymesVar id="MainCompany" type="de.onetwotree.margaux.entity.MainCompany"*/-->
                 <form action="#" th:action="@{/plot/add/}" th:object="${plot}" method="post" class="col s12">
@@ -16,6 +16,12 @@
                         <div class="input-field col l6 m6 s12">
                             <input id="projectName" type="text" class="validate" th:field="*{name}" required="required" />
                             <label for="projectName">Plot Name</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <input id="date" type="text" class="datepicker"  th:field="*{creationDate}" required="required" />
+                            <label for="date">Creation Date</label>
                         </div>
                     </div>
                     <div class="row">

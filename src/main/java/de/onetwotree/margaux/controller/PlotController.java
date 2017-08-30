@@ -1,28 +1,22 @@
 package de.onetwotree.margaux.controller;
 
-import de.onetwotree.margaux.application.StringToCompany;
 import de.onetwotree.margaux.dao.PlotRepository;
-import de.onetwotree.margaux.dao.PlotResourceRepository;
 import de.onetwotree.margaux.dao.ProjectRepository;
 import de.onetwotree.margaux.dao.ResourceRepository;
 import de.onetwotree.margaux.entity.*;
-import de.onetwotree.margaux.service.PlotResourceService;
-import de.onetwotree.margaux.service.PlotService;
-import de.onetwotree.margaux.service.ProjectService;
-import de.onetwotree.margaux.service.UserService;
+import de.onetwotree.margaux.exception.ItemNotFoundException;
+import de.onetwotree.margaux.exception.PlotResourceException;
+import de.onetwotree.margaux.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -42,6 +36,8 @@ public class PlotController {
     ProjectRepository projectRepository;
     @Autowired
     PlotResourceService plotResourceService;
+    @Autowired
+    HarvestService harvestService;
 
     @RequestMapping(value = "/")
     public String plotIndex(Model model,
@@ -63,15 +59,25 @@ public class PlotController {
     }
 
     @RequestMapping(value = "/view/{id}")
-    public  String viewPlot(@PathVariable(value = "id") String id, Model model) {
+    public  String viewPlot(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long plotId = Long.valueOf(id);
+
         Plot plot = plotRepository.findOne(plotId);
+        if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
         List<PlotResource> resourcePlotList = plot.getPlotResources();
-        String res = plotResourceService.getPlotResourceAsJson(resourcePlotList);
+        String myGraphData = plotResourceService.getPlotResourceAsJson(resourcePlotList);
+        model.addAttribute("graphResource", myGraphData);
+        model.addAttribute("urlId", id);
         model.addAttribute("plot", plot);
         return "Plot/viewPlot";
     }
-
+    @RequestMapping(value = "/view/{id}/harvests/")
+    public String viewHarvestOfPlot(@PathVariable(value = "id") String id, Model model) {
+        String graphHarvestsPlot = harvestService.findAllHarvestWherePlotIdAsJson(Long.valueOf(id));
+        model.addAttribute("myGraphData", graphHarvestsPlot);
+        model.addAttribute("urlId", id);
+        return "Plot/viewHarvestsOfPlot";
+    }
     @RequestMapping(value = "/add")
     public String addPlotForm(Model model) {
         Plot plot = new Plot();
@@ -102,11 +108,14 @@ public class PlotController {
                                           @ModelAttribute("PlotResource") PlotResource plotResource,
                                           BindingResult result) {
         Boolean isExist = plotService.addResourceToPlot(Long.valueOf(id), plotResource);
-        System.out.println(isExist);
         if (!isExist) {
-            String message = "This plot has already the " + plotResource.getResource().getName()
-                    + "resource.</br> Please use the update function.";
-            redirectAttributes.addFlashAttribute("alert", message);
+            throw new PlotResourceException("Error: You cannot add this resource to this plot. " +
+                    "Already here, or the size of the plot is not big enough", id);
+        }
+        else {
+            String message = "Resource " + plotResource.getResource().getName()
+                    + " has been added to plot.";
+            redirectAttributes.addFlashAttribute("info", message);
         }
         String url = "redirect:/plot/view/" + id + "/";
         return url;

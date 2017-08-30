@@ -103,16 +103,10 @@ public class HarvestController {
     public String addPlotSubmit(RedirectAttributes redirectAttributes,
                                 @ModelAttribute("Harvest") Harvest harvest,
                                 BindingResult result) {
-        Boolean isExist = harvestService.addHarvest(harvest);
+        Harvest harvestSaved = harvestService.addHarvest(harvest);
         String url = "";
         String message = "";
-        if (!isExist) {
-            message = "The Plot " + harvest.getPlot().getName()
-                    + "</br> does not have " + harvest.getResource().getName();
-            redirectAttributes.addFlashAttribute("alert", message);
-            url = "redirect:";
-        }
-        else {
+        if (harvestSaved != null) {
             message = "The Harvest has been saved !";
             redirectAttributes.addFlashAttribute("info", message);
             url = "redirect:/harvest/";
