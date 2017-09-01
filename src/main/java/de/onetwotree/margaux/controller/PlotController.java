@@ -73,7 +73,7 @@ public class PlotController {
     }
     @RequestMapping(value = "/view/{id}/harvests/")
     public String viewHarvestOfPlot(@PathVariable(value = "id") String id, Model model) {
-        String graphHarvestsPlot = harvestService.findAllHarvestWherePlotIdAsJson(Long.valueOf(id));
+        String graphHarvestsPlot = harvestService.findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long.valueOf(id), Long.valueOf(1));
         model.addAttribute("myGraphData", graphHarvestsPlot);
         model.addAttribute("urlId", id);
         return "Plot/viewHarvestsOfPlot";

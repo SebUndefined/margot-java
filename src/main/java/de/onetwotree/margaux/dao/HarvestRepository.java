@@ -49,8 +49,13 @@ public interface HarvestRepository extends BaseRepository<Harvest> {
             "join h.resource resource " +
             "where resource.resourceType.id = :idResourceType " +
             "order by h.date asc")
-    List<Harvest> findAllByResourceTypeOrderByDate(@Param("idResourceType") Long idResourceType);
+    List<Harvest> findAllWhereIdResourceTypeOrderByDate(@Param("idResourceType") Long idResourceType);
 
-    List<Harvest> findAllByPlotId(Long idPlot);
+    @Query("SELECT h from Harvest as h " +
+            "JOIN h.resource resource " +
+            "WHERE h.plot.id = :idPlot " +
+            "AND resource.resourceType.id = :idResourceType " +
+            "ORDER BY h.date asc ")
+    List<Harvest> findAllByWherePlotIdAndResourceTypeIdOrderByDate(@Param("idPlot") Long idPlot, @Param("idResourceType") Long idResourceType);
 
 }

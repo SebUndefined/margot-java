@@ -67,8 +67,8 @@ public class HarvestServiceImpl implements HarvestService {
         return myGraphData;
     }
     @Override
-    public String getAllGroupByResourceTypeJson(Long idResourceType) {
-        List<Harvest> harvestList = harvestRepository.findAllByResourceTypeOrderByDate(idResourceType);
+    public String findAllGroupByResourceTypeJson(Long idResourceType) {
+        List<Harvest> harvestList = harvestRepository.findAllWhereIdResourceTypeOrderByDate(idResourceType);
         Map<Resource, List<Harvest>> resourceWithHarvests;
         resourceWithHarvests = harvestList.stream()
                 .collect(Collectors.groupingBy(Harvest::getResource));
@@ -77,12 +77,15 @@ public class HarvestServiceImpl implements HarvestService {
     }
 
     @Override
-    public String findAllHarvestWherePlotIdAsJson(Long idPlot) {
-        List<Harvest> harvestList = harvestRepository.findAllByPlotId(idPlot);
-        System.out.println(harvestList.size());
-        Map<Resource, List<Harvest>> resourceWithHarvest = harvestList.stream()
-                .collect(Collectors.groupingBy(Harvest::getResource));
-        return "prout";
+    public String findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long idPlot, Long idResourceType) {
+        List<Harvest> harvestList = harvestRepository.findAllByWherePlotIdAndResourceTypeIdOrderByDate(idPlot, idResourceType);
+        Map<Resource, Map<Integer, BigDecimal>> resourceWithSumHarvestPerYear;
+        resourceWithSumHarvestPerYear = harvestList.stream()
+                .collect(Collectors.groupingBy(Harvest::getResource,
+                        Collectors.groupingBy(Harvest::getYear,
+                                Collectors.mapping(Harvest::getQuantityPerHa, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)))));
+        String myGraphData = chartService.buildLineChartHarvestWithYear(resourceWithSumHarvestPerYear);
+        return myGraphData;
     }
 
 
@@ -133,9 +136,9 @@ public class HarvestServiceImpl implements HarvestService {
         }
         if (resourceList.contains(resource)) {
             LocalDate dateBeginHarvest = harvest.getDate();
-            LocalDate currentDate = LocalDate.now();
-            Period period = Period.between(currentDate, dateBeginHarvest);
-            if (currentDate.isAfter(dateBeginHarvest)) {
+            LocalDate dateCreationPlot = harvest.getPlot().getCreationDate();
+            Period period = Period.between(dateCreationPlot, dateBeginHarvest);
+            if (dateCreationPlot.isAfter(dateBeginHarvest)) {
                 throw new AddHarvestException("You cannot add an harvest before the plot was created.");
             }
             harvest.setYear(period.getYears());

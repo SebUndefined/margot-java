@@ -20,9 +20,9 @@ public interface HarvestService {
     String getSumByResourceWhereResourceTypeId(Long resourceTypeId);
 
 
-    String getAllGroupByResourceTypeJson(Long idResourceType);
+    String findAllGroupByResourceTypeJson(Long idResourceType);
 
-    String findAllHarvestWherePlotIdAsJson(Long idPlot);
+    String findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long idPlot, Long idResourceType);
 
     List getAllHarvestByMainCompanyByResource(long idMainCompany, long idResource);
 

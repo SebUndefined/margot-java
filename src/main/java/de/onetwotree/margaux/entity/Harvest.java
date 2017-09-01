@@ -36,6 +36,13 @@ public class Harvest extends MainEntity{
     public Harvest() {
     }
 
+    public Harvest(BigDecimal value, Integer key, Resource e1Key) {
+        this.year = year;
+        this.quantity = quantity;
+        this.quantityPerHa = quantityPerHa;
+        this.resource = resource;
+    }
+
     public LocalDate getDate() {
         return date;
     }

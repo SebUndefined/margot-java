@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.chartData.json.Datum;
 import de.onetwotree.margaux.chartData.json.PlotLy;
+import de.onetwotree.margaux.chartData.plotLyJs.PlotLyJsLine;
+import de.onetwotree.margaux.chartData.plotLyJs.datum.DatumLine;
+import de.onetwotree.margaux.chartData.plotLyJs.plotLyLayout.PlotLyLayout;
 import de.onetwotree.margaux.entity.Harvest;
 import de.onetwotree.margaux.entity.Resource;
 import org.springframework.stereotype.Service;
@@ -49,6 +52,40 @@ public class ChartServiceImpl implements ChartService {
             e.printStackTrace();
         }
         System.out.println(myGraphData.toString());
+        return myGraphData;
+    }
+
+    @Override
+    public String buildLineChartHarvestWithYear(Map<Resource, Map<Integer, BigDecimal>> map) {
+        List<String> x = new ArrayList<>();
+        List<String> y = new ArrayList<>();
+        DatumLine datumLine = new DatumLine();
+        List<DatumLine> data = new ArrayList<>();
+        for (Map.Entry<Resource, Map<Integer, BigDecimal>> entry : map.entrySet()) {
+            for (Map.Entry<Integer, BigDecimal> subEntry : entry.getValue().entrySet()) {
+                x.add(subEntry.getKey().toString());
+                y.add(subEntry.getValue().toString());
+            }
+            datumLine = new DatumLine();
+            datumLine.setMode("lines");
+            datumLine.setY(y);
+            datumLine.setX(x);
+            y = new ArrayList<>();
+            x = new ArrayList<>();
+            datumLine.setType("scatter");
+            datumLine.setName(entry.getKey().getName());
+            data.add(datumLine);
+        }
+        PlotLyLayout layout = new PlotLyLayout();
+        layout.setAutosize(true);
+        PlotLyJsLine plotLyJsLine = new PlotLyJsLine(layout, data);
+        ObjectMapper mapper = new ObjectMapper();
+        String myGraphData = "";
+        try {
+            myGraphData = mapper.writeValueAsString(plotLyJsLine);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         return myGraphData;
     }
 }

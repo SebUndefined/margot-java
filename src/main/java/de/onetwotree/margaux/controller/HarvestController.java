@@ -78,7 +78,7 @@ public class HarvestController {
         else {
             resourceTypeId = Long.valueOf(1);
         }
-        String allGroupByResourceType = harvestService.getAllGroupByResourceTypeJson(resourceTypeId);
+        String allGroupByResourceType = harvestService.findAllGroupByResourceTypeJson(resourceTypeId);
         model.addAttribute("myGraphData", allGroupByResourceType);
         return "Harvest/harvestTimeline";
     }
