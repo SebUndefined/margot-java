@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,10 +48,10 @@ public class GlobalDefaultExceptionHandler {
         return "database_error";
     }
     @ExceptionHandler(ConstraintViolationException.class)
-    public ModelAndView handleDataIntegrityViolationException(ConstraintViolationException e, RedirectAttributes redirectAttributes) {
-        logger.info("Prout#########################################");
+    public ModelAndView handleDataIntegrityViolationException(ConstraintViolationException e,
+                                                              RedirectAttributes redirectAttributes, HttpServletRequest request) {
         redirectAttributes.addFlashAttribute("alert", e.getCause().getMessage());
-        String url = "redirect:/";
+        String url = "redirect:" + request.getRequestURI();
         ModelAndView modelAndView = new ModelAndView(url);
         return modelAndView;
     }

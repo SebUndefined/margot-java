@@ -22,7 +22,7 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Project extends MainEntity {
 
-    @Column(name = "project_name")
+    @Column(name = "project_name", nullable = false, unique = true)
     private String name;
     @Column(name = "project_begin_date")
     private LocalDate beginDate;

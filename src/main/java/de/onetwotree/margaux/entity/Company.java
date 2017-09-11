@@ -18,7 +18,7 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Company extends MainEntity {
 
-    @Column(name = "company_name")
+    @Column(name = "company_name", unique = true)
     @NotNull
     private String name;
 

@@ -9,6 +9,7 @@ import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.service.*;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -60,11 +61,11 @@ public class MainCompanyController {
     public String addMainCompanySubmit(RedirectAttributes redirectAttributes,
                                        @ModelAttribute("MainCompany") MainCompany mainCompany,
                                        BindingResult result) {
-        MainCompany mainCompanySaved = mainCompanyRepository.saveAndFlush(mainCompany);
-        if (mainCompanySaved != null) {
-            String message = "The MainCompany " + mainCompanySaved.getName()
-                    + "</br> has been saved";
-            redirectAttributes.addFlashAttribute("info", message);
+        //MainCompany mainCompanySaved = mainCompanyRepository.saveAndFlush(mainCompany);
+        try {
+            mainCompanyRepository.saveAndFlush(mainCompany);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
         }
         return "redirect:/maincompany/";
     }
@@ -114,8 +115,8 @@ public class MainCompanyController {
             @PathVariable(value = "id") String id,
             @RequestParam(value = "graphType", required = false)String graphType,
             Model model) {
-        /*model.addAttribute("urlId", id);
-        long idMainCompany = Long.parseLong(id);
+        model.addAttribute("urlId", id);
+        /*long idMainCompany = Long.parseLong(id);
         if (graphType !=null && !graphType.isEmpty()) {
             if (graphType.equals("date")) {
                 String resources= resourceService.getAllResourceByMainCompanyByResIdWithHarvestPlotLy(idMainCompany, (long)1);

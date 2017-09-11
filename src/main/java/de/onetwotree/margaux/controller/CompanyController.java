@@ -55,8 +55,6 @@ public class CompanyController {
     @PostMapping(value = "/add")
     public String addCompanySubmit(@ModelAttribute("Company") Company company,
                                    BindingResult result){
-        //System.out.println("First name of manager ==>" + company.getManager().getFirstname());
-        System.out.println("First name of manager ==>" + company.getMainCompany().toString());
         try {
             companyRepository.saveAndFlush(company);
         } catch (ConstraintViolationException e) {

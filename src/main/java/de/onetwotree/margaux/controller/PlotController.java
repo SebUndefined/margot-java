@@ -72,8 +72,18 @@ public class PlotController {
         return "Plot/viewPlot";
     }
     @RequestMapping(value = "/view/{id}/harvests/")
-    public String viewHarvestOfPlot(@PathVariable(value = "id") String id, Model model) {
-        String graphHarvestsPlot = harvestService.findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long.valueOf(id), Long.valueOf(1));
+    public String viewHarvestOfPlot(@PathVariable(value = "id") String id,
+                                    Model model,
+                                    @RequestParam(name = "resourcetype", defaultValue = "wood", required = false) String resourceType) {
+        Long resourceTypeId;
+        if (resourceType.equals("wood")) {
+            resourceTypeId = Long.valueOf(1);
+        } else if (resourceType.equals("alimentary")){
+            resourceTypeId = Long.valueOf(2);
+        } else {
+            resourceTypeId = Long.valueOf(1);
+        }
+        String graphHarvestsPlot = harvestService.findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long.valueOf(id), Long.valueOf(resourceTypeId));
         model.addAttribute("myGraphData", graphHarvestsPlot);
         model.addAttribute("urlId", id);
         return "Plot/viewHarvestsOfPlot";

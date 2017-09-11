@@ -19,6 +19,7 @@
                         <th>Location</th>
                         <th>Project</th>
                         <th>Manager</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -29,6 +30,11 @@
                         <td>undefined</td>
                         <td th:text="${plot.project.name}">undefined</td>
                         <td>undefined</td>
+                        <td>
+                            <a th:href="@{'/plot/view/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
+                            <i class="material-icons">visibility</i>
+                            </a>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

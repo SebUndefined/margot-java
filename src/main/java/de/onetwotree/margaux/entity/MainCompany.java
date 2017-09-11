@@ -18,7 +18,8 @@ public class MainCompany extends MainEntity {
 
     @Column(
             name = "main_company_name",
-            nullable = false
+            nullable = false,
+            unique = true
     )
     private String name;
     @OneToMany(
