@@ -9,5 +9,5 @@ import java.util.List;
  */
 public interface ResourceService {
 
-    String getAllResourceByMainCompanyByResIdWithHarvestPlotLy(long idMainCompany, long idResourceType);
+
 }

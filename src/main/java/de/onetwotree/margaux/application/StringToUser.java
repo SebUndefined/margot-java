@@ -1,6 +1,6 @@
 package de.onetwotree.margaux.application;
 
-import de.onetwotree.margaux.dao.UserDao;
+
 import de.onetwotree.margaux.entity.User;
 import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

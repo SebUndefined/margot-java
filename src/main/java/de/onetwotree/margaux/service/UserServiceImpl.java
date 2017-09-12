@@ -1,6 +1,7 @@
 package de.onetwotree.margaux.service;
 
-import de.onetwotree.margaux.dao.UserDao;
+
+import de.onetwotree.margaux.dao.UserRepository;
 import de.onetwotree.margaux.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +19,15 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserDao userDao;
+    private UserRepository userRepository;
 
     @Override
-    public User getUser(long id) {
-        return userDao.getUser(id);
+    public User getUser(Long id) {
+        return userRepository.findOne(id);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userDao.getAllUsers();
+        return userRepository.findAll();
     }
 }

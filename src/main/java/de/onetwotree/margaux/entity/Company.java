@@ -3,9 +3,11 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,9 +21,12 @@ import java.util.List;
 public class Company extends MainEntity {
 
     @Column(name = "company_name", unique = true)
-    @NotNull
+    @NotNull(message = "Name Cannot be null ! ")
+    @NotEmpty(message = "Please enter a name")
+    @Size(min = 1, max = 155, message = "Size should be between 1 and 155 characteres")
     private String name;
 
+    @NotNull(message = "Please choose")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_company_id")
     @JsonIgnore
@@ -30,7 +35,8 @@ public class Company extends MainEntity {
     @OneToMany(
             mappedBy = "company",
             cascade = CascadeType.ALL,
-            orphanRemoval = true
+            orphanRemoval = true,
+            fetch = FetchType.LAZY
     )
     @JsonIgnore
     private List<Project> projects = new ArrayList<Project>();

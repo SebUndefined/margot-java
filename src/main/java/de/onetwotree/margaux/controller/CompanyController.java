@@ -12,7 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import javax.jws.WebParam;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -42,6 +45,7 @@ public class CompanyController {
         Long idCompany = Long.valueOf(id);
         Company company = companyRepository.findOne(idCompany);
         if (company == null) throw new ItemNotFoundException(idCompany, "company/");
+        model.addAttribute("urlId", id);
         model.addAttribute("company", company);
         return "Company/viewCompany";
     }
@@ -53,10 +57,39 @@ public class CompanyController {
     }
 
     @PostMapping(value = "/add")
-    public String addCompanySubmit(@ModelAttribute("Company") Company company,
-                                   BindingResult result){
+    public String addCompanySubmit(@ModelAttribute("Company") @Valid Company company,
+                                   BindingResult result, Model model){
+        if (result.hasErrors()) {
+            model.addAttribute("company", new Company());
+            return "Company/editCompany";
+        }
         try {
             companyRepository.saveAndFlush(company);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/company/";
+    }
+    @GetMapping(value = "/update/{id}")
+    public String updateCompany(@ModelAttribute("company") Company company,
+                                    Model model,
+                                    @PathVariable(value = "id") String id) {
+        model.addAttribute("company", companyRepository.findOne(Long.valueOf(id)));
+        model.addAttribute("mainCompanies", mainCompanyRepository.findAll());
+        return "Company/updateCompany";
+    }
+    @PostMapping(value = "/update/{id}")
+    public String updateCompanySubmit(@ModelAttribute("company") Company company,
+                                          Model model,
+                                          @PathVariable(value = "id") String id) throws ItemNotFoundException {
+        Company companyOrigin = companyRepository.findOne(Long.valueOf(id));
+        if (companyOrigin == null) {
+            throw new ItemNotFoundException(Long.valueOf(id), "company/");
+        }
+        try {
+            companyOrigin.setName(company.getName());
+            companyOrigin.setMainCompany(company.getMainCompany());
+            companyRepository.saveAndFlush(companyOrigin);
         } catch (ConstraintViolationException e) {
             e.printStackTrace();
         }

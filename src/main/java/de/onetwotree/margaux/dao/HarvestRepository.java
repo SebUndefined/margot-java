@@ -39,7 +39,7 @@ public interface HarvestRepository extends BaseRepository<Harvest> {
             "JOIN company.mainCompany mainCompany " +
             "WHERE mainCompany.id = :idMainCompany " +
             "AND resource.resourceType.id = :idResourceType " +
-            "ORDER BY h.year, h.date ASC ")
+            "ORDER BY h.date ASC ")
     List<Harvest> findAllByMainCompanyIdAnAndResourceTypeId(
             @Param("idMainCompany") Long idMainCompany,
             @Param("idResourceType") Long idResourceType);

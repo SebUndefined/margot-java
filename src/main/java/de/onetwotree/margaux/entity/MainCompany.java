@@ -3,8 +3,11 @@ package de.onetwotree.margaux.entity;
 
 import com.fasterxml.jackson.annotation.*;
 import de.onetwotree.margaux.entityJson.MainEntityView;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +24,9 @@ public class MainCompany extends MainEntity {
             nullable = false,
             unique = true
     )
+    @NotNull(message = "Name Cannot be null ! ")
+    @NotEmpty(message = "Please enter a name")
+    @Size(min = 1, max = 155, message = "Size should be between 1 and 155 characteres")
     private String name;
     @OneToMany(
             mappedBy = "mainCompany",

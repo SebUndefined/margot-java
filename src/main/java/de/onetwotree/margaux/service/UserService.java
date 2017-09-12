@@ -9,6 +9,8 @@ import java.util.List;
  */
 public interface UserService {
 
-    User getUser(long id);
+
+    User getUser(Long id);
+
     List<User> getAllUsers();
 }

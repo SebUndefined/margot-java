@@ -13,13 +13,14 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
 /**
  * Created by SebUndefined on 20/07/17.
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class GlobalDefaultExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";
     private static final Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
@@ -42,6 +43,13 @@ public class GlobalDefaultExceptionHandler {
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
     }*/
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ModelAndView handleEntityNotFoundException(EntityNotFoundException e, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        redirectAttributes.addFlashAttribute("alert", e.getMessage());
+        String url = "redirect:" + request.getRequestURI() ;
+        ModelAndView modelAndView = new ModelAndView(url);
+        return modelAndView;
+    }
     @ExceptionHandler(SQLException.class)
     public String handleSQLException(HttpServletRequest request, Exception ex){
         logger.info("SQLException Occured:: URL="+request.getRequestURL());

@@ -29,8 +29,7 @@ import java.util.stream.Collectors;
 //@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 @Transactional(readOnly = true)
 public class HarvestServiceImpl implements HarvestService {
-    @Autowired
-    HarvestDAO harvestDAO;
+
     @Autowired
     HarvestRepository harvestRepository;
     @Autowired
@@ -40,7 +39,7 @@ public class HarvestServiceImpl implements HarvestService {
 
     @Override
     public List getAllHarvest() {
-        return harvestDAO.getAllHarvest();
+        return harvestRepository.findAll();
     }
 
     @Override
@@ -76,6 +75,12 @@ public class HarvestServiceImpl implements HarvestService {
         return myGraphData;
     }
 
+    /**
+     * Find All harvest of a specific plot and a specific resourceType
+     * @param idPlot
+     * @param idResourceType
+     * @return String
+     */
     @Override
     public String findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long idPlot, Long idResourceType) {
         List<Harvest> harvestList = harvestRepository.findAllByWherePlotIdAndResourceTypeIdOrderByDate(idPlot, idResourceType);
@@ -88,16 +93,29 @@ public class HarvestServiceImpl implements HarvestService {
         return myGraphData;
     }
 
+    @Override
+    public String findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType) {
+        List<Harvest> harvestList = harvestRepository.findAllByMainCompanyIdAnAndResourceTypeId(idMainCompany, idResourceType);
+        Map<Resource, Map<Integer, BigDecimal>> resourceWithSumHarvestPerYear;
+        resourceWithSumHarvestPerYear = harvestList.stream()
+                .collect(Collectors.groupingBy(Harvest::getResource,
+                        Collectors.groupingBy(Harvest::getYear,
+                                Collectors.mapping(Harvest::getQuantityPerHa, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)))));
+        String myGraphData = chartService.buildLineChartHarvestWithYear(resourceWithSumHarvestPerYear);
+        System.out.println(myGraphData);
+        return myGraphData;
+    }
+
 
 
     @Override
-    public List getAllHarvestByMainCompanyByResource(long idMainCompany, long idResource) {
-        return harvestDAO.getAllHarvestByMainCompanyByResource(idMainCompany, idResource);
+    public List getAllHarvestByMainCompanyByResource(Long idMainCompany, Long idResource) {
+        return harvestRepository.findAllByMainCompanyIdAnAndResourceTypeId(idMainCompany, idResource);
     }
 
     @Override
     public String getSumHarvestByMCompanyByResourceJson(Long idMainCompany, Long idResource) {
-        List<Object[]> results = harvestDAO.getAllHarvestByMainCompanyByResource(idMainCompany, idResource);
+        /*List<Object[]> results = harvestDAO.getAllHarvestByMainCompanyByResource(idMainCompany, idResource);
         List<String> x = new ArrayList<String>();
         List<BigDecimal> y = new ArrayList<BigDecimal>();
         for (Object[] row: results) {
@@ -114,13 +132,13 @@ public class HarvestServiceImpl implements HarvestService {
             myGraphData = mapper.writeValueAsString(plotLyChart);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }
+        }*/
+        String myGraphData = "test";
         return myGraphData;
     }
     @Override
     public String getHarvestsbyMainCompanyPlotLy(long idMainCompany)
     {
-        System.out.println(harvestDAO.getAllHarvestByMainCompanyByResourceWithDate(idMainCompany, (long) 1));
         return "prout";
 
     }
