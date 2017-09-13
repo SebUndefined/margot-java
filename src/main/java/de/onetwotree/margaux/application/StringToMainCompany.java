@@ -16,8 +16,6 @@ public class StringToMainCompany implements Converter<String, MainCompany> {
 
     public MainCompany convert(String id) {
         MainCompany mainCompany = mainCompanyRepository.findOne(Long.valueOf(id));
-        System.out.println("###############String to main company loaded");
-        System.out.println("user email-->" + mainCompany.getName());
         return mainCompany;
     }
 }

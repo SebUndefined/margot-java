@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.jws.WebParam;
 import javax.validation.Valid;
@@ -58,10 +60,13 @@ public class CompanyController {
 
     @PostMapping(value = "/add")
     public String addCompanySubmit(@ModelAttribute("Company") @Valid Company company,
-                                   BindingResult result, Model model){
+                                   BindingResult result, RedirectAttributes redirectAttributes){
         if (result.hasErrors()) {
-            model.addAttribute("company", new Company());
-            return "Company/editCompany";
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/company/add/";
         }
         try {
             companyRepository.saveAndFlush(company);
@@ -73,15 +78,26 @@ public class CompanyController {
     @GetMapping(value = "/update/{id}")
     public String updateCompany(@ModelAttribute("company") Company company,
                                     Model model,
-                                    @PathVariable(value = "id") String id) {
-        model.addAttribute("company", companyRepository.findOne(Long.valueOf(id)));
+                                    @PathVariable(value = "id") String id) throws ItemNotFoundException {
+        company = companyRepository.findOne(Long.valueOf(id));
+        if (company == null){
+            throw new ItemNotFoundException(Long.valueOf(id), "company/");
+        }
+        model.addAttribute("company", company);
         model.addAttribute("mainCompanies", mainCompanyRepository.findAll());
         return "Company/updateCompany";
     }
     @PostMapping(value = "/update/{id}")
-    public String updateCompanySubmit(@ModelAttribute("company") Company company,
-                                          Model model,
-                                          @PathVariable(value = "id") String id) throws ItemNotFoundException {
+    public String updateCompanySubmit(@Valid Company company, BindingResult result,
+                                          @PathVariable(value = "id") String id,
+                                      RedirectAttributes redirectAttributes) throws ItemNotFoundException {
+        if (result.hasErrors()) {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/company/update/" + id;
+        }
         Company companyOrigin = companyRepository.findOne(Long.valueOf(id));
         if (companyOrigin == null) {
             throw new ItemNotFoundException(Long.valueOf(id), "company/");

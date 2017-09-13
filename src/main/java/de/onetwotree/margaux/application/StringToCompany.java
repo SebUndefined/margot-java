@@ -15,8 +15,6 @@ public class StringToCompany implements Converter<String, Company> {
 
     public Company convert(String id) {
         Company company = companyRepository.findOne(Long.valueOf(id));
-        System.out.println("###############String to company loaded");
-        System.out.println("user email-->" + company.getName());
         return company;
     }
 }

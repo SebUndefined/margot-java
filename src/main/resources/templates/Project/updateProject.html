@@ -11,7 +11,7 @@
                     <h2>Add a Project</h2>
                 </div>
                 <!--/*@thymesVar id="MainCompany" type="de.onetwotree.margaux.entity.MainCompany"*/-->
-                <form action="#" th:action="@{/project/add/}" th:object="${project}" method="post" class="col s12">
+                <form action="#" th:action="@{'/project/update/'+ ${project.id}}" th:object="${project}" th:method="post" class="col s12">
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
                             <input id="projectName" type="text" class="validate" th:field="*{name}" />

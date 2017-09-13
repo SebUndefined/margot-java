@@ -7,6 +7,7 @@ import de.onetwotree.margaux.exception.PlotResourceException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -20,7 +21,7 @@ import java.sql.SQLException;
 /**
  * Created by SebUndefined on 20/07/17.
  */
-//@ControllerAdvice
+@ControllerAdvice
 public class GlobalDefaultExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";
     private static final Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
@@ -85,4 +86,6 @@ public class GlobalDefaultExceptionHandler {
         ModelAndView modelAndView = new ModelAndView(url);
         return modelAndView;
     }
+
+
 }

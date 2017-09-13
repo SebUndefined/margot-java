@@ -32,10 +32,9 @@
                             <a th:href="@{'/project/view/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">visibility</i>
                             </a>
-                            <a th:href="@{'/project/view/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                            <a th:href="@{'/project/update/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
                                 <i class="material-icons">edit</i>
                             </a>
-                            <a class="waves-effect waves-light btn modal-trigger" th:href="'#modal1' + ${project.id}">Modal</a>
                         </td>
                     </tr>
                     </tbody>

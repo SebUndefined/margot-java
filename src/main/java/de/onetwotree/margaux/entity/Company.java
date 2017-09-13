@@ -21,14 +21,14 @@ import java.util.List;
 public class Company extends MainEntity {
 
     @Column(name = "company_name", unique = true)
-    @NotNull(message = "Name Cannot be null ! ")
+    @NotNull(message = "Name Cannot be null !")
     @NotEmpty(message = "Please enter a name")
     @Size(min = 1, max = 155, message = "Size should be between 1 and 155 characteres")
     private String name;
 
     @NotNull(message = "Please choose")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "main_company_id")
+    @JoinColumn(name = "main_company_id", nullable = false)
     @JsonIgnore
     private MainCompany mainCompany;
 

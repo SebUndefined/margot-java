@@ -5,9 +5,12 @@ package de.onetwotree.margaux.entity;
 import com.fasterxml.jackson.annotation.*;
 import de.onetwotree.margaux.application.StringToMainCompany;
 import org.apache.tomcat.jni.Local;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,15 +25,20 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Project extends MainEntity {
 
+    @NotNull(message = "Name cannot be null")
+    @NotEmpty(message = "Name cannot be empty")
+    @Size(min = 4, max = 155, message = "Name size should be between 4 and 155 characteres")
     @Column(name = "project_name", nullable = false, unique = true)
     private String name;
-    @Column(name = "project_begin_date")
+    @NotNull(message = "Begin date cannot be null")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Column(name = "project_begin_date", nullable = false)
     private LocalDate beginDate;
-    @Column(name = "project_end_date")
+    @Column(name = "project_end_date", nullable = true)
     private LocalDate endDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "company_id")
+    @JoinColumn(name = "company_id", nullable = false)
     @JsonManagedReference
     private Company company;
     @OneToMany(

@@ -9,4 +9,5 @@ import java.util.List;
  */
 public interface ProjectService {
 
+    void updateProject(Project project, Project projectOrigin);
 }

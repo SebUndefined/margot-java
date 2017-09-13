@@ -27,10 +27,10 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Plot extends MainEntity implements Serializable {
 
-    @Column(name = "plot_name")
+    @Column(name = "plot_name", nullable = false)
     @JsonView(PlotView.PlotBasic.class)
     private String name;
-    @Column(name = "plot_creation_date")
+    @Column(name = "plot_creation_date", nullable = false)
     @JsonView(PlotView.PlotBasic.class)
     private LocalDate creationDate;
     @Column(name = "plot_size")

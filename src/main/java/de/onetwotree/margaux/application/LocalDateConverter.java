@@ -1,6 +1,7 @@
 package de.onetwotree.margaux.application;
 
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -20,12 +21,13 @@ public class LocalDateConverter implements Converter<String, LocalDate> {
     @Override
     public LocalDate convert(String source) {
         if (source == null || source.isEmpty()) {
-            System.out.println("Va à null");
             return null;
         }
-        System.out.println(source);
+        if (source.matches("\\d{4}-\\d{2}-\\d{2}")) {
+            LocalDate localDate = LocalDate.parse(source, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            return localDate;
+        }
         LocalDate dateFormated = LocalDate.parse(source, formatter);
-        System.out.println(dateFormated.getDayOfMonth());
         return dateFormated;
     }
 }

@@ -12,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -68,9 +71,13 @@ public class MainCompanyController {
      */
     @PostMapping(value = "add/")
     public String addMainCompanySubmit(@ModelAttribute("MainCompany") @Valid MainCompany mainCompany,
-                                       BindingResult result) {
+                                       BindingResult result, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
-            return "MainCompany/editMainCompany";
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/maincompany/add/";
         }
         try {
             mainCompanyRepository.saveAndFlush(mainCompany);
@@ -94,9 +101,18 @@ public class MainCompanyController {
         return "MainCompany/updateMainCompany";
     }
     @PostMapping(value = "/update/{id}")
-    public String updateMainCompanySubmit(@ModelAttribute("MainCompany") MainCompany mainCompany,
-                                    Model model,
-                                    @PathVariable(value = "id") String id) throws ItemNotFoundException {
+    public String updateMainCompanySubmit(@Valid MainCompany mainCompany, BindingResult result,
+                                    @PathVariable(value = "id") String id,
+                                           RedirectAttributes redirectAttributes) throws ItemNotFoundException {
+        System.out.println(mainCompany.getName());
+        if (result.hasErrors())
+        {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/maincompany/update/" + id;
+        }
         mainCompany.setId(Long.valueOf(id));
         MainCompany mainCompanyOrigin = mainCompanyRepository.findOne(Long.valueOf(id));
         if (mainCompanyOrigin == null) {
