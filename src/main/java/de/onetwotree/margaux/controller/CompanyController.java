@@ -1,5 +1,7 @@
 package de.onetwotree.margaux.controller;
 
+import de.onetwotree.margaux.dao.ProjectRepository;
+import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.dao.CompanyRepository;
 import de.onetwotree.margaux.dao.MainCompanyRepository;
@@ -8,6 +10,10 @@ import de.onetwotree.margaux.service.CompanyService;
 import de.onetwotree.margaux.service.UserService;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,6 +37,8 @@ public class CompanyController {
     CompanyService companyService;
     @Autowired
     CompanyRepository companyRepository;
+    @Autowired
+    ProjectRepository projectRepository;
     @Autowired
     UserService userService;
     @Autowired
@@ -110,6 +118,18 @@ public class CompanyController {
             e.printStackTrace();
         }
         return "redirect:/company/";
+    }
+
+    @GetMapping(value = "/view/{id}/projects/")
+    public String viewProjectsOfCompany(@PathVariable(value = "id") String id,
+                                        Model model,
+                                        @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                        @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Project> projectPage = projectRepository.findAllByCompanyId(Long.valueOf(id), pageable);
+        model.addAttribute("projectPage", projectPage);
+        model.addAttribute("urlId", id);
+        return "Company/viewProjectsofCompany";
     }
 
 

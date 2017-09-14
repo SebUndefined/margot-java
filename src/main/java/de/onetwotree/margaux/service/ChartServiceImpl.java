@@ -43,7 +43,6 @@ public class ChartServiceImpl implements ChartService {
                 y = new ArrayList<>();
         }
         PlotLy plotLyChart = new PlotLy(data);
-        System.out.println(plotLyChart.toString());
         ObjectMapper mapper = new ObjectMapper();
         String myGraphData = "";
         try {
@@ -59,7 +58,7 @@ public class ChartServiceImpl implements ChartService {
     public String buildLineChartHarvestWithYear(Map<Resource, Map<Integer, BigDecimal>> map) {
         List<String> x = new ArrayList<>();
         List<String> y = new ArrayList<>();
-        DatumLine datumLine = new DatumLine();
+        DatumLine datumLine;
         List<DatumLine> data = new ArrayList<>();
         for (Map.Entry<Resource, Map<Integer, BigDecimal>> entry : map.entrySet()) {
             for (Map.Entry<Integer, BigDecimal> subEntry : entry.getValue().entrySet()) {
@@ -76,8 +75,7 @@ public class ChartServiceImpl implements ChartService {
             datumLine.setName(entry.getKey().getName());
             data.add(datumLine);
         }
-        PlotLyLayout layout = new PlotLyLayout();
-        layout.setAutosize(true);
+        PlotLyLayout layout = PlotLyLayout.simplePlotLyLayout("Harvest");
         PlotLyJsLine plotLyJsLine = new PlotLyJsLine(layout, data);
         ObjectMapper mapper = new ObjectMapper();
         String myGraphData = "";

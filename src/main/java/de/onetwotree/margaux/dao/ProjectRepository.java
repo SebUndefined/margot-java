@@ -1,6 +1,8 @@
 package de.onetwotree.margaux.dao;
 
 import de.onetwotree.margaux.entity.Project;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +20,7 @@ public interface ProjectRepository extends BaseRepository<Project> {
             "JOIN company.mainCompany mc " +
             "where mc.id = :id")
     List<Project> findAllByMainCompanyId(@Param("id") Long id);
+
+
+    Page<Project> findAllByCompanyId(Long id, Pageable pageable);
 }

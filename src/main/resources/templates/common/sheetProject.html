@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:fragment="sheetProject">
+    <table class="bordered highlight responsive-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Begin date</th>
+            <th>End Date</th>
+            <th>Company</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="project : ${projectPage}">
+            <td th:text="${project.id}">undefined</td>
+            <td th:text="${project.name}">undefined</td>
+            <td th:text="${project.beginDate != null} ? ${#temporals.format(project.beginDate,'dd/MM/yyyy')} : 'null value!'">undefined</td>
+            <td th:text="${project.endDate != null} ?  ${project.endDate} : 'null value!'">undefined</td>
+            <td th:text="${project.company.name}">undefined</td>
+            <td>
+                <a th:href="@{'/project/view/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                    <i class="material-icons">visibility</i>
+                </a>
+                <a th:href="@{'/project/view/' + ${project.id}}" class="btn-floating btn-small waves-effect waves-light">
+                    <i class="material-icons">edit</i>
+                </a>
+                <a class="waves-effect waves-light btn modal-trigger" th:href="'#modal1' + ${project.id}">Modal</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div th:fragment="pagination" class="row center-align">
+        <ul class="pagination">
+            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+            <li th:each="i:${#numbers.sequence(0, projectPage.totalPages -1)}" class="waves-effect">
+                <a th:href="@{${url}(page=${i+1})}" th:text="${i+1}"></a>
+            </li>
+            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+        </ul>
+    </div>
+</div>
+</html>

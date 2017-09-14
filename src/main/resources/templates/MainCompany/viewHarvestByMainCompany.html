@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="common/head :: head"></div>
+<div th:replace="common/header :: header"></div>
+<main>
+    <div th:replace="common/headerMainCompany :: headerMainCompany"></div>
+    <div class="row">
+        <div class="col l12 m12 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <div class="row valign-wrapper">
+                        <div class="col l8">
+                            <h2 >Harvest</h2>
+                        </div>
+                        <div class="col l4">
+                            <select id="resourceType" class="input-field">
+                                <option id="default" value="0">Sheet</option>
+                                <option id="mainCompany" th:each="resourceType: ${resourceTypeList}" th:value="${resourceType.id}" th:text="${resourceType.description}"></option>
+                            </select>
+                            <label>Resource Type</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="map-panel" id="graph-content">
+                    <div th:replace="common/sheetHarvest :: sheetHarvest"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="common/footer :: footer"></div>
+<!-- Un test de map -->
+<script th:inline="javascript">
+
+    $(function() {
+        $('#resourceType').change(function() {
+            var entityId = [[${urlId}]];
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            if (valueSelected > 0) {
+                $body = $("body");
+                $.ajax({
+                    type: 'GET',
+                    url: '/maincompany/view/'+ entityId + '/harvests/' + valueSelected,
+                    timeout: 3000,
+                    beforeSend: function() { $body.addClass("loading"); },
+                    success: function (data) {
+                        $('#graph-content').load('/maincompany/view/'+ entityId + '/harvests/' + valueSelected);
+                    },
+                    complete: function() { $body.removeClass("loading"); },
+                    error: function () {
+                        alert("Cannot load data")
+                    }
+                });
+            }
+            else {
+                location.reload();
+            }
+        });
+    });
+</script>
+</html>

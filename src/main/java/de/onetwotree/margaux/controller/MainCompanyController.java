@@ -9,6 +9,10 @@ import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.*;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,7 +42,11 @@ public class MainCompanyController {
     @Autowired
     private PlotRepository plotRepository;
     @Autowired
+    private HarvestRepository harvestRepository;
+    @Autowired
     private HarvestService harvestService;
+    @Autowired
+    private ResourceTypeRepository resourceTypeRepository;
 
     /**
      * View All MainCompany
@@ -195,22 +203,33 @@ public class MainCompanyController {
         return "MainCompany/viewPlotsofMainCompany";
     }
 
-    /**
-     * View Harvest of main Company
-     * @param id
-     * @param graphType
-     * @param model
-     * @return
-     */
-    @GetMapping(value = "view/{id}/harvests/")
-    public String viewHarvestsOfMainCompany(
-            @PathVariable(value = "id") String id,
-            @RequestParam(value = "graphType", required = false)String graphType,
-            Model model) {
-        model.addAttribute("urlId", id);
-        String graphHarvestsPlot = harvestService.findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long.valueOf(id), Long.valueOf(1));
-        model.addAttribute("myGraphData", graphHarvestsPlot);
-        return "viewHarvestByEntity";
+
+    @RequestMapping(value = "view/{id}/harvests/")
+    public String harvestIndex(Model model,
+                               @PathVariable(value = "id") String idMainCompany,
+                               @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+    {
+        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Harvest> harvestPage = harvestRepository.findAllByMainCompanyId(Long.valueOf(idMainCompany), pageRequest);
+        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
+        model.addAttribute("urlId", idMainCompany);
+        model.addAttribute("harvests", harvestPage);
+        model.addAttribute("page", page);
+        return "MainCompany/viewHarvestByMainCompany";
     }
+
+    @GetMapping(value = "view/{idMainCompany}/harvests/{idResourceType}")
+    public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idMainCompany") String idMainCompany,
+                                                @PathVariable(value = "idResourceType") String idResourceType, Model model){
+
+        String graphHarvestsPlot = harvestService
+                .findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idMainCompany)
+                        , Long.valueOf(idResourceType));
+        model.addAttribute("myGraphData", graphHarvestsPlot);
+        return "common/graphHarvest";
+
+    }
+
 
 }
