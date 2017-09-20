@@ -1,12 +1,12 @@
 package de.onetwotree.margaux.controller;
 
-import de.onetwotree.margaux.dao.ProjectRepository;
+import de.onetwotree.margaux.dao.*;
+import de.onetwotree.margaux.entity.Harvest;
 import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
-import de.onetwotree.margaux.dao.CompanyRepository;
-import de.onetwotree.margaux.dao.MainCompanyRepository;
 import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.service.CompanyService;
+import de.onetwotree.margaux.service.HarvestService;
 import de.onetwotree.margaux.service.UserService;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,11 @@ public class CompanyController {
     @Autowired
     ProjectRepository projectRepository;
     @Autowired
-    UserService userService;
+    HarvestRepository harvestRepository;
+    @Autowired
+    HarvestService harvestService;
+    @Autowired
+    ResourceTypeRepository resourceTypeRepository;
     @Autowired
     MainCompanyRepository mainCompanyRepository;
 
@@ -132,5 +136,31 @@ public class CompanyController {
         return "Company/viewProjectsofCompany";
     }
 
+    @RequestMapping(value = "view/{id}/harvests/")
+    public String harvestIndex(Model model,
+                               @PathVariable(value = "id") String idMainCompany,
+                               @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+    {
+        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Harvest> harvestPage = harvestRepository.findAllByCompanyId(Long.valueOf(idMainCompany), pageRequest);
+        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
+        model.addAttribute("urlId", idMainCompany);
+        model.addAttribute("harvests", harvestPage);
+        model.addAttribute("page", page);
+        return "Company/viewHarvestByCompany";
+    }
+
+    @GetMapping(value = "view/{idCompany}/harvests/{idResourceType}")
+    public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idCompany") String idCompany,
+                                                @PathVariable(value = "idResourceType") String idResourceType, Model model){
+
+        String graphHarvestsPlot = harvestService
+                .findAllHarvestWhereCompanyidAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idCompany)
+                        , Long.valueOf(idResourceType));
+        model.addAttribute("myGraphData", graphHarvestsPlot);
+        return "common/graphHarvest";
+
+    }
 
 }

@@ -26,6 +26,8 @@ public interface HarvestService {
 
     String findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType);
 
+    String findAllHarvestWhereCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType);
+
     List getAllHarvestByMainCompanyByResource(Long idMainCompany, Long idResource);
 
     String getSumHarvestByMCompanyByResourceJson(Long idMainCompany, Long idResource);

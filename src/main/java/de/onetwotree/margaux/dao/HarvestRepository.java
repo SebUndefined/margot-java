@@ -34,6 +34,12 @@ public interface HarvestRepository extends BaseRepository<Harvest> {
     List<Harvest[]> findAllByResourceWhereIdResourceType(@Param("resourceTypeId") Long resourceTypeId);
 
 
+    /**
+     * Find all harvest for a main Company
+     * @param mainCompanyId
+     * @param pageRequest
+     * @return
+     */
     @Query(value = "SELECT h FROM Harvest as h " +
             "JOIN h.resource resource " +
             "JOIN h.plot plot " +
@@ -50,6 +56,32 @@ public interface HarvestRepository extends BaseRepository<Harvest> {
             "WHERE mainCompany.id = :idMainCompany ")
     Page<Harvest> findAllByMainCompanyId(@Param("idMainCompany") Long mainCompanyId, Pageable pageRequest);
 
+    /**
+     * Find all harvests for a Company
+     * @param companyId
+     * @param pageRequest
+     * @return
+     */
+    @Query(value = "SELECT h FROM Harvest as h " +
+            "JOIN h.resource resource " +
+            "JOIN h.plot plot " +
+            "JOIN plot.project project " +
+            "JOIN project.company company " +
+            "WHERE company.id = :idCompany " +
+            "ORDER BY h.date ASC ",
+            countQuery = "SELECT count(h) from Harvest as h " +
+                    "JOIN h.plot plot " +
+                    "JOIN plot.project project " +
+                    "JOIN project.company company " +
+                    "WHERE company.id = :idCompany ")
+    Page<Harvest> findAllByCompanyId(@Param("idCompany") Long companyId, Pageable pageRequest);
+
+    /**
+     * Find all by main company id and resource Type id
+     * @param idMainCompany
+     * @param idResourceType
+     * @return
+     */
     @Query("SELECT h FROM Harvest as h " +
             "JOIN h.resource resource " +
             "JOIN h.plot plot " +
@@ -63,6 +95,23 @@ public interface HarvestRepository extends BaseRepository<Harvest> {
             @Param("idMainCompany") Long idMainCompany,
             @Param("idResourceType") Long idResourceType);
 
+    /**
+     * Find all by main company id and resource Type id
+     * @param idCompany
+     * @param idResourceType
+     * @return
+     */
+    @Query("SELECT h FROM Harvest as h " +
+            "JOIN h.resource resource " +
+            "JOIN h.plot plot " +
+            "JOIN plot.project project " +
+            "JOIN project.company company " +
+            "WHERE company.id = :idCompany " +
+            "AND resource.resourceType.id = :idResourceType " +
+            "ORDER BY h.date ASC ")
+    List<Harvest> findAllByCompanyIdAnAndResourceTypeId(
+            @Param("idCompany") Long idCompany,
+            @Param("idResourceType") Long idResourceType);
 
     @Query("SELECT h FROM Harvest as h " +
             "join h.resource resource " +

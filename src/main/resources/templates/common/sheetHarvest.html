@@ -7,7 +7,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Date</th>
+                        <th>Year</th>
                         <th>Quantity</th>
+                        <th>Quantity per ha</th>
                         <th>Plot</th>
                         <th>Resource</th>
                         <th>Manager</th>
@@ -17,7 +19,9 @@
                     <tr th:each="harvest : ${harvests}">
                         <td th:text="${harvest.id}">undefined</td>
                         <td th:text="${harvest.date}">undefined</td>
+                        <td th:text="${harvest.year}">undefined</td>
                         <td th:text="${harvest.quantity}">undefined</td>
+                        <td th:text="${harvest.quantityPerHa}">undefined</td>
                         <td th:text="${harvest.plot.name}">undefined</td>
                         <td th:text="${harvest.resource.name}">undefined</td>
                         <td>undefined</td>
