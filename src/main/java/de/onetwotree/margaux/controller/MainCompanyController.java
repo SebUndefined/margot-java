@@ -200,7 +200,7 @@ public class MainCompanyController {
         System.out.println(result);
         model.addAttribute("urlId", id);
         model.addAttribute("plots", result);
-        return "MainCompany/viewPlotsofMainCompany";
+        return "MainCompany/viewPlotsofCompany";
     }
 
 

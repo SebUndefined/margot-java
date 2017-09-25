@@ -1,10 +1,15 @@
 package de.onetwotree.margaux.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.dao.CompanyRepository;
+import de.onetwotree.margaux.dao.PlotRepository;
 import de.onetwotree.margaux.dao.ProjectRepository;
 import de.onetwotree.margaux.entity.Company;
+import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.entity.User;
+import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.CompanyService;
 import de.onetwotree.margaux.service.ProjectService;
@@ -36,6 +41,8 @@ public class ProjectController {
     CompanyRepository companyRepository;
 
     @Autowired
+    PlotRepository plotRepository;
+    @Autowired
     UserService userService;
 
     @RequestMapping(value = "/")
@@ -50,6 +57,7 @@ public class ProjectController {
         Long projectId = Long.valueOf(id);
         Project project = projectRepository.findOne(projectId);
         model.addAttribute("project", project);
+        model.addAttribute("urlId", id);
         return "Project/viewProject";
     }
 
@@ -112,6 +120,29 @@ public class ProjectController {
         projectService.updateProject(project, projectOrigin);
         redirectAttributes.addFlashAttribute("info", "Project " + project.getName() + " has been updated !");
         return "redirect:/project/view/" + id;
+    }
+
+    /**
+     * View plots of Company
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "view/{id}/plots/")
+    public String viewPlotsOfProject(@PathVariable(value = "id") String id, Model model) {
+        Long idProject = Long.valueOf(id);
+        List<Plot> plotList = plotRepository.findAllByProjectId(idProject);
+        ObjectMapper mapper = new ObjectMapper();
+        String result = null;
+        try {
+            result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plotList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(result);
+        model.addAttribute("urlId", id);
+        model.addAttribute("plots", result);
+        return "Project/viewPlotsofProject";
     }
 
 

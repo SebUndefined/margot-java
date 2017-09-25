@@ -1,8 +1,12 @@
 package de.onetwotree.margaux.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.Harvest;
+import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Project;
+import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.entity.Company;
 import de.onetwotree.margaux.service.CompanyService;
@@ -41,6 +45,8 @@ public class CompanyController {
     ProjectRepository projectRepository;
     @Autowired
     HarvestRepository harvestRepository;
+    @Autowired
+    PlotRepository plotRepository;
     @Autowired
     HarvestService harvestService;
     @Autowired
@@ -134,6 +140,29 @@ public class CompanyController {
         model.addAttribute("projectPage", projectPage);
         model.addAttribute("urlId", id);
         return "Company/viewProjectsofCompany";
+    }
+
+    /**
+     * View plots of Company
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "view/{id}/plots/")
+    public String viewPlotsOfCompany(@PathVariable(value = "id") String id, Model model) {
+        Long idCompany = Long.valueOf(id);
+        List<Plot> plotList = plotRepository.findAllByCompanyId(idCompany);
+        ObjectMapper mapper = new ObjectMapper();
+        String result = null;
+        try {
+            result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plotList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        System.out.println(result);
+        model.addAttribute("urlId", id);
+        model.addAttribute("plots", result);
+        return "MainCompany/viewPlotsofMainCompany";
     }
 
     @RequestMapping(value = "view/{id}/harvests/")
