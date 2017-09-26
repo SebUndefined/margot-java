@@ -2,19 +2,19 @@ package de.onetwotree.margaux.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.onetwotree.margaux.dao.CompanyRepository;
-import de.onetwotree.margaux.dao.PlotRepository;
-import de.onetwotree.margaux.dao.ProjectRepository;
-import de.onetwotree.margaux.entity.Company;
-import de.onetwotree.margaux.entity.Plot;
-import de.onetwotree.margaux.entity.Project;
-import de.onetwotree.margaux.entity.User;
+import de.onetwotree.margaux.dao.*;
+import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.CompanyService;
+import de.onetwotree.margaux.service.HarvestService;
 import de.onetwotree.margaux.service.ProjectService;
 import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +40,12 @@ public class ProjectController {
     @Autowired
     CompanyRepository companyRepository;
 
+    @Autowired
+    HarvestRepository harvestRepository;
+    @Autowired
+    HarvestService harvestService;
+    @Autowired
+    ResourceTypeRepository resourceTypeRepository;
     @Autowired
     PlotRepository plotRepository;
     @Autowired
@@ -145,6 +151,36 @@ public class ProjectController {
         return "Project/viewPlotsofProject";
     }
 
+    /**
+     * @param idProject
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "view/{id}/harvests/")
+    public String viewHarvestsOfProject(Model model,
+                                        @PathVariable(value = "id") String idProject,
+                                        @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                        @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+    {
+        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Harvest> harvestPage = harvestRepository.findAllByProjectId(Long.valueOf(idProject), pageRequest);
+        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
+        model.addAttribute("urlId", idProject);
+        model.addAttribute("harvests", harvestPage);
+        model.addAttribute("page", page);
+        return "Project/viewHarvestByProject";
+    }
+    @GetMapping(value = "view/{idProject}/harvests/{idResourceType}")
+    public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idProject") String idProject,
+                                                @PathVariable(value = "idResourceType") String idResourceType, Model model){
+
+        String graphHarvestsPlot = harvestService
+                .findAllHarvestWhereProjectIdAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idProject)
+                        , Long.valueOf(idResourceType));
+        model.addAttribute("myGraphData", graphHarvestsPlot);
+        return "common/graphHarvest";
+
+    }
 
 
 }

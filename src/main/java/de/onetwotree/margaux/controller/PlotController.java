@@ -1,8 +1,6 @@
 package de.onetwotree.margaux.controller;
 
-import de.onetwotree.margaux.dao.PlotRepository;
-import de.onetwotree.margaux.dao.ProjectRepository;
-import de.onetwotree.margaux.dao.ResourceRepository;
+import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.exception.PlotResourceException;
@@ -10,6 +8,7 @@ import de.onetwotree.margaux.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -32,6 +31,10 @@ public class PlotController {
     PlotRepository plotRepository;
     @Autowired
     ResourceRepository resourceRepository;
+    @Autowired
+    HarvestRepository harvestRepository;
+    @Autowired
+    ResourceTypeRepository resourceTypeRepository;
     @Autowired
     ProjectRepository projectRepository;
     @Autowired
@@ -71,23 +74,7 @@ public class PlotController {
         model.addAttribute("plot", plot);
         return "Plot/viewPlot";
     }
-    @RequestMapping(value = "/view/{id}/harvests/")
-    public String viewHarvestOfPlot(@PathVariable(value = "id") String id,
-                                    Model model,
-                                    @RequestParam(name = "resourcetype", defaultValue = "wood", required = false) String resourceType) {
-        Long resourceTypeId;
-        if (resourceType.equals("wood")) {
-            resourceTypeId = Long.valueOf(1);
-        } else if (resourceType.equals("alimentary")){
-            resourceTypeId = Long.valueOf(2);
-        } else {
-            resourceTypeId = Long.valueOf(1);
-        }
-        String graphHarvestsPlot = harvestService.findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long.valueOf(id), Long.valueOf(resourceTypeId));
-        model.addAttribute("myGraphData", graphHarvestsPlot);
-        model.addAttribute("urlId", id);
-        return "Plot/viewHarvestsOfPlot";
-    }
+
     @RequestMapping(value = "/add")
     public String addPlotForm(Model model) {
         Plot plot = new Plot();
@@ -132,4 +119,29 @@ public class PlotController {
 
     }
 
+    @GetMapping(value = "view/{id}/harvests/")
+    public String viewHarvestsOfPlot(Model model,
+                                     @PathVariable(value = "id") String idPlot,
+                                     @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                     @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+    {
+        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Harvest> harvestPage = harvestRepository.findAllByPlotId(Long.valueOf(idPlot), pageRequest);
+        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
+        model.addAttribute("urlId", idPlot);
+        model.addAttribute("harvests", harvestPage);
+        model.addAttribute("page", page);
+        return "Plot/viewHarvestByPlot";
+    }
+    @GetMapping(value = "view/{idPlot}/harvests/{idResourceType}")
+    public String viewHarvestsOfProjectAjax(@PathVariable(value = "idPlot") String idPlot,
+                                                @PathVariable(value = "idResourceType") String idResourceType, Model model){
+
+        String graphHarvestsPlot = harvestService
+                .findAllHarvestWherePlotIdAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idPlot)
+                        , Long.valueOf(idResourceType));
+        model.addAttribute("myGraphData", graphHarvestsPlot);
+        return "common/graphHarvest";
+
+    }
 }

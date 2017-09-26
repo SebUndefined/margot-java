@@ -162,11 +162,11 @@ public class CompanyController {
         System.out.println(result);
         model.addAttribute("urlId", id);
         model.addAttribute("plots", result);
-        return "MainCompany/viewPlotsofMainCompany";
+        return "Company/viewPlotsofCompany";
     }
 
     @RequestMapping(value = "view/{id}/harvests/")
-    public String harvestIndex(Model model,
+    public String viewHarvestsOfCompany(Model model,
                                @PathVariable(value = "id") String idMainCompany,
                                @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)

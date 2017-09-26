@@ -22,17 +22,14 @@ public interface HarvestService {
 
     String findAllGroupByResourceTypeJson(Long idResourceType);
 
-    String findAllHarvestWherePlotIdAndResourceTypeIdAsJson(Long idPlot, Long idResourceType);
-
     String findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType);
 
     String findAllHarvestWhereCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType);
 
-    List getAllHarvestByMainCompanyByResource(Long idMainCompany, Long idResource);
+    String findAllHarvestWhereProjectIdAndResourceTypeIdGroupByYearAsJson(Long idProject, Long idResourceType);
 
-    String getSumHarvestByMCompanyByResourceJson(Long idMainCompany, Long idResource);
+    String findAllHarvestWherePlotIdAndResourceTypeIdGroupByYearAsJson(Long idPlot, Long idResourceType);
 
-    String getHarvestsbyMainCompanyPlotLy(long idMainCompany);
 
     Harvest addHarvest(Harvest harvest) throws AddHarvestException;
 }
