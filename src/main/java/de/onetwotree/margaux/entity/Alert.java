@@ -1,7 +1,10 @@
 package de.onetwotree.margaux.entity;
 
 
+import org.apache.tomcat.jni.Local;
+
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -15,9 +18,16 @@ public class Alert {
     @Column(name = "alert_id")
     private Long id;
 
+    private LocalDate date;
+
     private String level;
 
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "main_entity_id", nullable = false)
+    private MainEntity mainEntity;
+
 
     @OneToMany(
             mappedBy = "alert",
@@ -26,12 +36,24 @@ public class Alert {
             fetch = FetchType.LAZY)
     private List<AlertComment> alertComments;
 
+    public Alert() {
+        this.date = LocalDate.now();
+    }
+
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getLevel() {
@@ -57,5 +79,13 @@ public class Alert {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public MainEntity getMainEntity() {
+        return mainEntity;
+    }
+
+    public void setMainEntity(MainEntity mainEntity) {
+        this.mainEntity = mainEntity;
     }
 }

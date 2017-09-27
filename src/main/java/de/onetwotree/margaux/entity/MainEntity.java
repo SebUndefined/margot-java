@@ -9,6 +9,8 @@ import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sebby on 10/07/17.
@@ -25,6 +27,13 @@ public abstract class MainEntity {
     @JsonView(MainEntityView.Simple.class)
     protected Long id;
 
+    @OneToMany(
+            mappedBy = "mainEntity",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<Alert> alerts = new ArrayList<Alert>();
 
     protected MainEntity() {
     }
@@ -37,7 +46,11 @@ public abstract class MainEntity {
         this.id = id;
     }
 
+    public List<Alert> getAlerts() {
+        return alerts;
+    }
 
-
-
+    public void setAlerts(List<Alert> alerts) {
+        this.alerts = alerts;
+    }
 }

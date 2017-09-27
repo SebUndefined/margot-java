@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<main>
+    <div th:fragment="addAlert">
+        <div id="modal-alert" class="modal modal-fixed-footer">
+            <div class="modal-content">
+                <h4>Modal Header</h4>
+                <p id="form-alert">A bunch of text</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            $(function() {
+                $("#alert-modal-open").click(function () {
+                    var entityId = [[${urlId}]];
+                    $.ajax({
+                        url: "/alert/add/" + entityId,
+                        success: function (data) {
+                            $("#form-alert").html(data);
+                        }
+                    });
+                    console.log(entityId);
+                    $('#modal-alert').modal('open');
+                });
+            });
+        </script>
+    </div>
+</main>
+
+
+
+
+</html>

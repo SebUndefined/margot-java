@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+    <div class="row">
+        <div class="col l12 m12 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Add a alert</h2>
+                </div>
+                <form action="#" th:action="@{'/alert/add/' + ${alert.mainEntity.id}}" th:object="${alert}" method="post" class="col s12">
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <input id="alertStatus" type="text" class="validate" th:field="*{status}" />
+                            <label for="alertStatus">Alert Status</label>
+                        </div>
+                    </div>
+
+                    <input class="waves-effect waves-light btn" type="submit" />
+                </form>
+            </div>
+        </div>
+    </div>
+
+</html>
