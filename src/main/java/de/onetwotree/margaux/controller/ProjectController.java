@@ -108,6 +108,16 @@ public class ProjectController {
         model.addAttribute("companies", companyRepository.findAll());
         return "Project/updateProject";
     }
+
+    /**
+     * Update a Plot
+     * @param project
+     * @param result
+     * @param id
+     * @param redirectAttributes
+     * @return
+     * @throws ItemNotFoundException
+     */
     @PostMapping(value = "/update/{id}")
     public String updateProjectSubmit(@Valid @ModelAttribute("project") Project project, BindingResult result,
                                       @PathVariable(value = "id") String id,

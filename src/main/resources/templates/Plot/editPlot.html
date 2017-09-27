@@ -14,7 +14,7 @@
                 <form action="#" th:action="@{/plot/add/}" th:object="${plot}" method="post" class="col s12">
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="projectName" type="text" class="validate" th:field="*{name}" required="required" />
+                            <input id="projectName" type="text" class="validate" th:field="*{name}" />
                             <label for="projectName">Plot Name</label>
                         </div>
                     </div>

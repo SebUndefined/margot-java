@@ -11,7 +11,33 @@
                 <div class="panel_title">
                     <h1>Plot <span th:text="${plot.name}"></span></h1>
                 </div>
-                This page is a particular plot
+                <table class="bordered highlight responsive-table">
+                    <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Value</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>ID</td>
+                        <td th:text="${plot.id}"></td>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td th:text="${plot.name}"></td>
+                    </tr>
+                    <tr>
+                        <td>Creation Date</td>
+                        <td th:text="${plot.creationDate != null} ? ${#temporals.format(plot.creationDate,'dd/MM/yyyy')} : 'null value!'"></td>
+                    </tr>
+                    <tr>
+                        <td>Size</td>
+                        <td th:text="${plot.size}+ ' ha'"></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

@@ -13,9 +13,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -84,9 +87,21 @@ public class PlotController {
         return "Plot/editPlot";
     }
     @PostMapping(value="/add")
-    public String addPlotSubmit(@ModelAttribute("Plot") Plot plot, BindingResult result) {
-        plotRepository.saveAndFlush(plot);
-        return "redirect:/plot/add/";
+    public String addPlotSubmit(@Valid @ModelAttribute("Plot") Plot plot, BindingResult result, RedirectAttributes redirectAttributes) {
+
+        if (result.hasErrors()) {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/plot/add/";
+        }
+        try {
+            plotRepository.saveAndFlush(plot);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+        }
+        return "redirect:/project/";
 
     }
     @GetMapping(value = "/view/{id}/add-resource")
