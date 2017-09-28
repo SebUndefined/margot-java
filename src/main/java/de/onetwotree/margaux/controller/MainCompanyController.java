@@ -2,6 +2,7 @@ package de.onetwotree.margaux.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
@@ -43,6 +44,8 @@ public class MainCompanyController {
     private PlotRepository plotRepository;
     @Autowired
     private HarvestRepository harvestRepository;
+    @Autowired
+    private AlertRepository alertRepository;
     @Autowired
     private HarvestService harvestService;
     @Autowired
@@ -145,6 +148,7 @@ public class MainCompanyController {
         Long idMainCompany = Long.valueOf(id);
         MainCompany mainCompany = mainCompanyRepository.findOne(idMainCompany);
         if (mainCompany == null) throw new ItemNotFoundException(idMainCompany, "maincompany/");
+        model.addAttribute("alertsMainCompany", alertRepository.findFirst10ByMainEntityIdAndStatusOrderByDateDesc(idMainCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
         model.addAttribute("maincompany", mainCompany);
         return "MainCompany/viewMainCompany";
@@ -200,7 +204,7 @@ public class MainCompanyController {
         System.out.println(result);
         model.addAttribute("urlId", id);
         model.addAttribute("plots", result);
-        return "MainCompany/viewPlotsofCompany";
+        return "MainCompany/viewPlotsofMainCompany";
     }
 
 

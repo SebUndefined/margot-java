@@ -2,6 +2,7 @@ package de.onetwotree.margaux.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.Harvest;
 import de.onetwotree.margaux.entity.Plot;
@@ -38,8 +39,6 @@ import java.util.List;
 public class CompanyController {
 
     @Autowired
-    CompanyService companyService;
-    @Autowired
     CompanyRepository companyRepository;
     @Autowired
     ProjectRepository projectRepository;
@@ -47,6 +46,8 @@ public class CompanyController {
     HarvestRepository harvestRepository;
     @Autowired
     PlotRepository plotRepository;
+    @Autowired
+    AlertRepository alertRepository;
     @Autowired
     HarvestService harvestService;
     @Autowired
@@ -65,6 +66,7 @@ public class CompanyController {
         Long idCompany = Long.valueOf(id);
         Company company = companyRepository.findOne(idCompany);
         if (company == null) throw new ItemNotFoundException(idCompany, "company/");
+        model.addAttribute("alertsCompany", alertRepository.findFirst10ByMainEntityIdAndStatusOrderByDateDesc(idCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
         model.addAttribute("company", company);
         return "Company/viewCompany";
@@ -190,6 +192,13 @@ public class CompanyController {
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";
 
+    }
+
+
+    @GetMapping(value = "view/{idCompany}/alerts")
+    public String viewAlertsOfCompany(@PathVariable(value = "idCompany") Company company, Model model) {
+        model.addAttribute("alertItems", company.getAlerts());
+        return "common/sheetAlert";
     }
 
 }

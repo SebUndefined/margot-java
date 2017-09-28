@@ -1,25 +1,53 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-
+<div th:replace="common/head :: head"></div>
+<div th:replace="common/header :: header"></div>
+<main>
     <div class="row">
         <div class="col l12 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h2>Add a alert</h2>
+                    <h2>Add a Project</h2>
                 </div>
-                <form action="#" th:action="@{'/alert/add/' + ${alert.mainEntity.id}}" th:object="${alert}" method="post" class="col s12">
+                <form action="#" th:action="@{'/alert/add/' + ${alertNew.mainEntity.id}}" th:object="${alertNew}" method="post" class="col s12">
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="alertStatus" type="text" class="validate" th:field="*{status}" />
-                            <label for="alertStatus">Alert Status</label>
+                            <select th:field="*{status}" class="input-field">
+                                <option id="alertStatus" th:each="status : ${T(de.onetwotree.margaux.Enum.AlertStatus).values()}" th:value="${status}" th:text="${status.displayName}"></option>
+                            </select>
+                            <label for="alertStatus">Status</label>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <select th:field="*{level}" class="input-field">
+                                <option id="alertlevel" th:each="level : ${T(de.onetwotree.margaux.Enum.AlertLevel).values()}" th:value="${level}" th:text="${level.displayName}"></option>
+                            </select>
+                            <label for="alertlevel">Level</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="input-field col l6 m6 s12">
+                                <input id="subject" type="text" class="validate" th:field="*{subject}" />
+                                <label for="subject">Subject</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <textarea id="comment" class="materialize-textarea" th:field="*{comment}"></textarea>
+                                    <label for="comment">Comment</label>
+                                </div>
+                            </div>
+                    </div>
                     <input class="waves-effect waves-light btn" type="submit" />
                 </form>
             </div>
         </div>
     </div>
+</main>
 
-</html>
+<div th:replace="common/footer :: footer"></div>

@@ -1,10 +1,13 @@
 package de.onetwotree.margaux.entity;
 
 
+import de.onetwotree.margaux.Enum.AlertLevel;
+import de.onetwotree.margaux.Enum.AlertStatus;
 import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -18,11 +21,16 @@ public class Alert {
     @Column(name = "alert_id")
     private Long id;
 
-    private LocalDate date;
 
-    private String level;
+    private LocalDateTime date;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private AlertLevel level;
+    @Enumerated(EnumType.STRING)
+    private AlertStatus status;
+
+    private String subject;
+    private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_entity_id", nullable = false)
@@ -37,7 +45,7 @@ public class Alert {
     private List<AlertComment> alertComments;
 
     public Alert() {
-        this.date = LocalDate.now();
+        this.date = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -48,20 +56,28 @@ public class Alert {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public String getLevel() {
+    public AlertLevel getLevel() {
         return level;
     }
 
-    public void setLevel(String level) {
+    public void setLevel(AlertLevel level) {
         this.level = level;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
     public List<AlertComment> getAlertComments() {
@@ -73,12 +89,20 @@ public class Alert {
     }
 
 
-    public String getStatus() {
+    public AlertStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(AlertStatus status) {
         this.status = status;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public MainEntity getMainEntity() {
