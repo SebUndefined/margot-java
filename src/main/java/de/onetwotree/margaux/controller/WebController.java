@@ -32,4 +32,9 @@ public class WebController {
         return "home";
     }
 
+    @GetMapping(value = "/login")
+    public String loginAction(Model model) {
+        return "login";
+    }
+
 }
