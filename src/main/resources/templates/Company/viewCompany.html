@@ -31,6 +31,8 @@
                 <div th:with="alertItems=${alertsCompany}">
                     <div th:replace="common/sheetAlert :: sheetAlert"></div>
                 </div>
+                <p class="center-align"><a th:href="@{'/company/view/'+ ${urlId}}+'/alerts' "> See all...</a></p>
+            </div>
         </div>
         <div class="col l6 m6 s12">
             <div class="panel6">

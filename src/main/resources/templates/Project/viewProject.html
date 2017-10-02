@@ -26,69 +26,35 @@
         <div class="col l6 m6 s12">
             <div class="panel6">
                 <div class="panel_title">
+                    <h2>Alerts</h2>
+                </div>
+                <div th:with="alertItems=${alertsProject}">
+                    <div th:replace="common/sheetAlert :: sheetAlert"></div>
+                </div>
+                <p class="center-align"><a th:href="@{'/project/view/'+ ${urlId}}+'/alerts' "> See all...</a></p>
+            </div>
+        </div>
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
                     <h2>Company</h2>
                 </div>
                 Name: <span th:text="${project.company.name}"></span><br/>
 
         </div>
     </div>
-    <div class="row">
-        <div class="col l12 m12 s12">
-            <div class="panel6">
-                <div class="panel_title">
-                    <h2>Plots</h2>
-                </div>
-                <p>This plots belongs to <span th:text="${project.name}"></span> </p>
-                <table class="bordered highlight responsive-table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="plot : ${project.plots}">
-                        <td th:text="${plot.id}">undefined</td>
-                        <td th:text="${plot.name}">undefined</td>
-                        <td>
-                            <a th:href="@{'/project/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
-                                <i class="material-icons">visibility</i>
-                            </a>
-                            <a th:href="@{'/project/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
-                                <i class="material-icons">edit</i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col l12 m12 s12">
-            <div class="panel6">
-                <div class="panel_title">
-                    <h2>Plots</h2>
-                </div>
-                <div class="map-panel">
-                    <div id="map"></div>
-                </div>
-                <!-- Un test de map -->
-                <script th:inline="javascript">
-                    var plots = /*[[${project.plots}]]*/ '';
-                </script>
-                <div th:replace="common/map :: map"></div>
-                <!-- Un test deux -->
-            </div>
-        </div>
-    </div>
     <!--Add button-->
-    <div class="fixed-action-btn horizontal">
-        <a th:href="@{/project/add/}" class="btn-floating btn-large waves-effect waves-light">
-            <i class="material-icons">add</i>
-        </a>
-    </div>
+        <div class="fixed-action-btn horizontal click-to-toggle">
+            <a class="btn-floating btn-large">
+                <i class="material-icons">menu</i>
+            </a>
+            <ul>
+                <li><a th:href="@{'/alert/add/' + ${urlId}}" class="btn-floating red"><i class="material-icons">report_problem</i></a></li>
+                <!--<li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+                <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+                <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>-->
+            </ul>
+        </div>
     <!-- end Add button-->
 </main>
 

@@ -55,6 +55,7 @@
                 <div th:with="alertItems=${alertsMainCompany}">
                     <div th:replace="common/sheetAlert :: sheetAlert"></div>
                 </div>
+                <p class="center-align"><a th:href="@{'/maincompany/view/'+ ${urlId}}+'/alerts' "> See all...</a></p>
             </div>
     </div>
     <!--Add button-->

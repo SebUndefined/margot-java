@@ -100,7 +100,7 @@ public class HarvestController {
     }
 
     @PostMapping(value="/add")
-    public String addPlotSubmit(RedirectAttributes redirectAttributes,
+    public String addHarvestSubmit(RedirectAttributes redirectAttributes,
                                 @ModelAttribute("Harvest") Harvest harvest,
                                 BindingResult result) {
         Harvest harvestSaved = harvestService.addHarvest(harvest);

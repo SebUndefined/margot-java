@@ -6,11 +6,13 @@ import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.PlotResource;
 import de.onetwotree.margaux.entity.PlotResourcePK;
 import de.onetwotree.margaux.entity.Resource;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -18,7 +20,6 @@ import java.util.List;
  * Created by SebUndefined on 29/07/17.
  */
 @Service("plotService")
-//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 @Transactional(readOnly = true)
 public class PlotServiceImpl implements PlotService {
 
@@ -58,6 +59,19 @@ public class PlotServiceImpl implements PlotService {
         }
         else {
             return false;
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updatePlot(Plot plot, Plot plotOrigin) {
+        System.out.println(plot.getId());
+        BeanUtils.copyProperties(plot, plotOrigin, "plotResources","alerts");
+        System.out.println(plotOrigin.getId());
+        try {
+            plotRepository.saveAndFlush(plotOrigin);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
         }
     }
 

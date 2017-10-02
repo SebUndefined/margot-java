@@ -2,6 +2,7 @@ package de.onetwotree.margaux.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
@@ -43,6 +44,8 @@ public class ProjectController {
     @Autowired
     HarvestRepository harvestRepository;
     @Autowired
+    AlertRepository alertRepository;
+    @Autowired
     HarvestService harvestService;
     @Autowired
     ResourceTypeRepository resourceTypeRepository;
@@ -59,11 +62,12 @@ public class ProjectController {
     }
 
     @RequestMapping(value = "/view/{id}")
-    public  String viewProject(@PathVariable(value = "id") String id, Model model) {
-        Long projectId = Long.valueOf(id);
+    public  String viewProject(@PathVariable(value = "id") String idProject, Model model) {
+        Long projectId = Long.valueOf(idProject);
         Project project = projectRepository.findOne(projectId);
+        model.addAttribute("alertsProject", alertRepository.findFirst10ByMainEntityIdAndStatusOrderByDateDesc(projectId, AlertStatus.OPEN));
         model.addAttribute("project", project);
-        model.addAttribute("urlId", id);
+        model.addAttribute("urlId", idProject);
         return "Project/viewProject";
     }
 
@@ -110,7 +114,7 @@ public class ProjectController {
     }
 
     /**
-     * Update a Plot
+     * Update a Project
      * @param project
      * @param result
      * @param id
@@ -190,6 +194,11 @@ public class ProjectController {
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";
 
+    }
+    @GetMapping(value = "view/{idProject}/alerts")
+    public String viewAlertsOfProject(@PathVariable(value = "idProject") Project project, Model model) {
+        model.addAttribute("alertItems", project.getAlerts());
+        return "common/sheetAlert";
     }
 
 

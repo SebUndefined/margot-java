@@ -7,10 +7,12 @@ import de.onetwotree.margaux.dao.MainEntityRepository;
 import de.onetwotree.margaux.entity.Alert;
 import de.onetwotree.margaux.entity.MainEntity;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
+import de.onetwotree.margaux.service.AlertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * Created by SebUndefined on 27/09/17.
@@ -27,16 +30,17 @@ import java.time.LocalDate;
 public class AlertController {
 
     @Autowired
-    AlertRepository alertRepository;
+    AlertService alertService;
     @Autowired
     MainEntityRepository mainEntityRepository;
 
     @GetMapping(value = "add/{mainEntityId}")
-    public String addAlertForm(Model model, @PathVariable(name = "mainEntityId") MainEntity mainEntity) {
+    public String addAlertForm(Model model, @PathVariable(name = "mainEntityId") Long idMainEntity) throws ItemNotFoundException {
         Alert alert = new Alert();
-        /*if (mainEntity == null) {
-            throw new ItemNotFoundException(Long.valueOf(id), "company/");
-        }*/
+        MainEntity mainEntity = mainEntityRepository.findOne(idMainEntity);
+        if (mainEntity == null) {
+            throw new ItemNotFoundException(Long.valueOf(idMainEntity), "alert/");
+        }
         alert.setMainEntity(mainEntity);
         model.addAttribute("alertNew", alert);
         return "Alert/addAlert";
@@ -44,16 +48,19 @@ public class AlertController {
     @PostMapping(value = "add/{mainEntityId}")
     public String addAlertSubmit(@PathVariable(name = "mainEntityId") MainEntity mainEntity, @ModelAttribute("Alert") @Valid Alert alert,
                                BindingResult result, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        String redirectURL = "/";
         if (!result.hasErrors()) {
-            try {
-                alert.setMainEntity(mainEntity);
-                mainEntity.getAlerts().add(alert);
-                mainEntityRepository.save(mainEntity);
-            } catch (ConstraintViolationException e) {
-                e.printStackTrace();
-            }
+            redirectURL = alertService.addAlertToMainEntity(mainEntity, alert);
         }
-        System.out.println(mainEntity.getClass());
-        return "redirect:" + request.getRequestURI();
+        else {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:" + request.getRequestURI();
+        }
+        redirectAttributes.addFlashAttribute("info", "Alert Saved !");
+
+        return "redirect:" + redirectURL;
     }
 }

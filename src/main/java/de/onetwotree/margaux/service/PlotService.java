@@ -15,4 +15,7 @@ public interface PlotService {
 
     @Transactional
     boolean addResourceToPlot(Long id, PlotResource plotResource);
+
+    @Transactional
+    void updatePlot(Plot plot, Plot plotOrigin);
 }

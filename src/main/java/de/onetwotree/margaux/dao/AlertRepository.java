@@ -13,5 +13,12 @@ import java.util.List;
 @Repository
 public interface AlertRepository extends JpaRepository<Alert, Long> {
 
+
+
+    List<Alert> findFirst20ByStatusOrderByDateDesc(AlertStatus alertStatus);
+
+
     List<Alert> findFirst10ByMainEntityIdAndStatusOrderByDateDesc(Long id, AlertStatus alertStatus );
+
+
 }

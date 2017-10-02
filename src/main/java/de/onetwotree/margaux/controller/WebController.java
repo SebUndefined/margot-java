@@ -1,7 +1,9 @@
 package de.onetwotree.margaux.controller;
 
+import de.onetwotree.margaux.Enum.AlertStatus;
+import de.onetwotree.margaux.dao.AlertRepository;
 import de.onetwotree.margaux.dao.PlotRepository;
-import de.onetwotree.margaux.dao.UserDao;
+import de.onetwotree.margaux.entity.Alert;
 import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.service.PlotService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +22,13 @@ import java.util.List;
 public class WebController {
 
     @Autowired
-    private PlotService plotService;
-    @Autowired
-    private PlotRepository plotRepository;
+    AlertRepository alertRepository;
 
     @RequestMapping("/")
     public String homeAction(Model model) {
-        List<Plot> plots = plotRepository.findAll();
-        model.addAttribute("plots", plots);
+
+        List<Alert> alertList = alertRepository.findFirst20ByStatusOrderByDateDesc(AlertStatus.OPEN);
+        model.addAttribute("alertList", alertList);
         return "home";
     }
 

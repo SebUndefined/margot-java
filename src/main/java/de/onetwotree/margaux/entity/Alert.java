@@ -4,8 +4,11 @@ package de.onetwotree.margaux.entity;
 import de.onetwotree.margaux.Enum.AlertLevel;
 import de.onetwotree.margaux.Enum.AlertStatus;
 import org.apache.tomcat.jni.Local;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,7 +32,11 @@ public class Alert {
     @Enumerated(EnumType.STRING)
     private AlertStatus status;
 
+    @NotEmpty(message = "Please enter a subject")
+    @Size(min = 6, max = 155, message = "Subject size should be between 6 and 155 characteres")
     private String subject;
+    @NotEmpty(message = "Please enter a comment")
+    @Size(min = 20, max = 155, message = "Comment size should be between 20 and 155 characteres")
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)

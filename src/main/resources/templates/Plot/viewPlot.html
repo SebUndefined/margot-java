@@ -122,9 +122,9 @@
                 <i class="material-icons">menu</i>
             </a>
             <ul>
-                <li><a class="btn-floating red" title="Add an harvest"><i class="material-icons">swap_calls</i></a></li>
+                <li><a class="btn-floating red" title="Add an harvest" th:href="@{'/plot/view/' + ${urlId}+'/add-harvest/'}"><i class="material-icons">swap_calls</i></a></li>
                 <li><a class="btn-floating yellow darken-1" title="Add a resource" th:href="@{'/plot/view/' + ${urlId}+'/add-resource/'}"><i class="material-icons">spa</i></a></li>
-                <li><a class="btn-floating green" title="Edit this plot"><i class="material-icons">edit</i></a></li>
+                <li><a class="btn-floating green" title="Edit this plot" th:href="@{'/plot/update/' + ${urlId}}"><i class="material-icons">edit</i></a></li>
             </ul>
         </div>
         <!-- end Add button-->

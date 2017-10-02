@@ -5,8 +5,13 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.apache.tomcat.jni.Local;
 import org.hibernate.annotations.Formula;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
@@ -18,10 +23,14 @@ import java.util.GregorianCalendar;
 @Table(name = "db_harvest")
 public class Harvest extends MainEntity{
 
+    @NotNull(message = "Date Cannot be null !")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "harvest_begin_date")
     private LocalDate date;
     @Column(name = "harvest_year")
     private Integer year;
+    @NotNull(message = "Quantity Cannot be null !")
+    @DecimalMin("0.01")
     @Column(name = "harvest_quantity")
     private BigDecimal quantity;
     @Column(name = "harvest_quantity_per_ha")

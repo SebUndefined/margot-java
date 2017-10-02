@@ -5,7 +5,7 @@
 <div th:replace="common/header :: header"></div>
 <main>
     <div class="row">
-        <div class="col l12 m12 s12">
+        <div class="col l6 m6 s12">
             <div class="panel6">
                 <div class="panel_title">
                     <h2>Plots</h2>
@@ -14,21 +14,22 @@
                     <div id="wind-speed"></div>
                 </div>
 
-                <!--<div th:replace="common/map :: map"></div>-->
-                <!-- Un test deux -->
+            </div>
+        </div>
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Alerts</h2>
+                </div>
+                <div th:with="alertItems=${alertList}">
+                    <div th:replace="common/sheetAlert :: sheetAlert"></div>
+                </div>
+                <p class="center-align"><a> See all...</a></p>
+
             </div>
         </div>
     </div>
 </main>
 
 <div th:replace="common/footer :: footer"></div>
-<!-- Un test de map -->
-<script th:inline="javascript">
-    var graph = /*[[${myGraphData}]]*/ '';
-    console.log(graph);
-    var figure = JSON.parse(/*[[${myGraphData}]]*/);
-
-    Plotly.newPlot('wind-speed', figure.data, figure.layout);
-</script>
-<!--<div th:replace="common/map :: map"></div>-->
 </html>

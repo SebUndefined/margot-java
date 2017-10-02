@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,6 +105,37 @@ public class PlotController {
         return "redirect:/project/";
 
     }
+
+    @GetMapping(value = "update/{plotId}")
+    public String updatePlot(@ModelAttribute("plot") Plot plot,
+                             Model model,
+                             @PathVariable(value = "plotId") String idPlot) throws ItemNotFoundException {
+        plot = plotRepository.findOne(Long.valueOf(idPlot));
+        if (plot == null) throw new ItemNotFoundException(Long.valueOf(idPlot), "plot/");
+        model.addAttribute("plot", plot);
+        model.addAttribute("projects", projectRepository.findAll());
+        return "Plot/updatePlot";
+
+    }
+    @PostMapping(value = "/update/{id}")
+    public String updatePlotSubmit(@Valid @ModelAttribute("plot") Plot plot, BindingResult result,
+                                      @PathVariable(value = "id") String id,
+                                      RedirectAttributes redirectAttributes) throws ItemNotFoundException {
+        if (result.hasErrors()) {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/plot/update/" + id;
+        }
+        Plot plotOrigin = plotRepository.findOne(Long.valueOf(id));
+        if (plotOrigin == null) {
+            throw new ItemNotFoundException(Long.valueOf(id), "plot/");
+        }
+        plotService.updatePlot(plot, plotOrigin);
+        redirectAttributes.addFlashAttribute("info", "Plot " + plot.getName() + " has been updated !");
+        return "redirect:/plot/view/" + id;
+    }
     @GetMapping(value = "/view/{id}/add-resource")
     public String addResourceToPlotForm(Model model, @PathVariable(value = "id") String id) {
         List<Resource> resources = resourceRepository.findAll();
@@ -158,5 +190,51 @@ public class PlotController {
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";
 
+    }
+
+    @GetMapping(value = "view/{idPlot}/add-harvest")
+    public String addHarvestToPlot(@PathVariable(value = "idPlot") String idPlot,
+                                   Model model) throws ItemNotFoundException {
+        Long plotId = Long.valueOf(idPlot);
+        Plot plot = plotRepository.findOne(plotId);
+        if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
+        Harvest harvest = new Harvest();
+        harvest.setPlot(plot);
+        List<Resource> resourceAvailables = new ArrayList<>();
+        for (PlotResource plotResource : plot.getPlotResources()) {
+            resourceAvailables.add(plotResource.getResource());
+        }
+        model.addAttribute("harvest", harvest);
+        model.addAttribute("resources", resourceAvailables);
+        return "Plot/addHarvestToPlot";
+    }
+    @PostMapping(value = "view/{idPlot}/add-harvest")
+    public String addHarvestToPlotSubmit(RedirectAttributes redirectAttributes,
+                                         @ModelAttribute("Harvest") @Valid Harvest harvest,
+                                         BindingResult result,
+                                         @PathVariable("idPlot") String idPlot) throws ItemNotFoundException {
+        Long plotId = Long.valueOf(idPlot);
+        Plot plot = plotRepository.findOne(plotId);
+        if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
+        String message;
+        String url = "";
+        if (!result.hasErrors()) {
+            harvest.setPlot(plot);
+            Harvest harvestSaved = harvestService.addHarvest(harvest);
+            if (harvestSaved != null) {
+                message = "The Harvest has been saved !";
+                redirectAttributes.addFlashAttribute("info", message);
+                url = "redirect:/plot/view/"+ harvest.getPlot().getId() +"/harvests/";
+            }
+
+        } else {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/plot/view/" + idPlot + "/add-harvest/";
+
+        }
+        return url;
     }
 }

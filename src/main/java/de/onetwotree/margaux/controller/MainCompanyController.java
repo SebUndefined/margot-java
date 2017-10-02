@@ -235,5 +235,10 @@ public class MainCompanyController {
 
     }
 
+    @GetMapping(value = "view/{idMainCompany}/alerts")
+    public String viewAlertsOfProject(@PathVariable(value = "idMainCompany") MainCompany mainCompany, Model model) {
+        model.addAttribute("alertItems", mainCompany.getAlerts());
+        return "common/sheetAlert";
+    }
 
 }

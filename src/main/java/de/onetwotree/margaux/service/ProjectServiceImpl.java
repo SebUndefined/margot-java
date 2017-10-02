@@ -22,7 +22,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void updateProject(Project project, Project projectOrigin) {
-        BeanUtils.copyProperties(project, projectOrigin, "plots", "budgets");
+        System.out.println("Yes" + project.getId());
+        BeanUtils.copyProperties(project, projectOrigin, "plots", "budgets", "alerts");
         try {
             projectRepository.saveAndFlush(projectOrigin);
         }catch (ConstraintViolationException e) {
