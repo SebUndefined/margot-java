@@ -2,18 +2,44 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <div th:replace="common/head :: head"></div>
-<main>
-    <div th:if="${param.error}">
-        Invalid username and password.
-    </div>
-    <div th:if="${param.logout}">
-        You have been logged out.
-    </div>
-    <form th:action="@{/login}" method="post">
-        <div><label> User Name : <input type="text" name="username"/> </label></div>
-        <div><label> Password: <input type="password" name="password"/> </label></div>
-        <div><input type="submit" value="Sign In"/></div>
-    </form>
-</main>
 
+<div class="login-main valign-wrapper">
+
+
+    <div class="row center-align">
+        <div id="logo" class="row">
+            <!--<img src="assets/img/logo_12Tree_resize.jpg">-->
+        </div>
+        <div class="row">
+            <div class="col s12" th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div class="col s12" th:if="${param.logout}">
+                You have been logged out.
+            </div>
+        </div>
+        <form th:action="@{/login}" method="post">
+            <div class="row">
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">account_circle</i>
+                    <input type="text" name="username" id="username"/>
+                    <label for="username">Username</label>
+                </div>
+                <div class="input-field col s12">
+                    <i class="material-icons prefix">vpn_key</i>
+                    <input type="password" name="password" id="password"/>
+                    <label for="password">Password</label>
+                </div>
+            </div>
+            <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                <i class="material-icons right">send</i>
+            </button>
+        </form>
+
+
+    </div>
+
+</div>
+
+<div th:replace="common/footer :: footer"></div>
 </html>

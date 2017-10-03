@@ -190,3 +190,7 @@ body.loading #ajax-loader {
         padding-left: 0;
     }
 }
+
+.login-main {
+    height: 100vh;
+}

@@ -2,9 +2,14 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,17 +26,38 @@ public class User {
     @Column(name = "user_id")
     private long id;
     @NotNull
-    @Column(name="user_username")
+    @Size(min = 1, max = 50)
+    @Column(name="username", length = 50, unique = true, nullable = false)
     private String userName;
+    @Column(name = "password")
+    @Length(min = 5, message = "*Your password must have at least 5 characters")
+    @NotEmpty(message = "*Please provide your password")
+    private String password;
     @NotNull
-    @Column(name="user_firstname")
+    @Column(name="firstname")
     private String firstname;
     @NotNull
-    @Column(name="user_lastname")
+    @Column(name="lastname")
     private String lastname;
-    @NotNull
-    @Column(name="user_email")
+    @Email(message = "*Please provide a valid Email")
+    @NotEmpty(message = "*Please provide an email")
+    @Column(name="email")
     private String email;
+
+    @Column(name="enabled")
+    private boolean enabled;
+    @Column(name="token_expired")
+    private boolean tokenExpired;
+
+    @ManyToMany
+    @JoinTable(
+            name = "db_users_roles",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "user_id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private List<Role> roles;
+
     /*@OneToMany(
             mappedBy = "manager",
             cascade = CascadeType.ALL,
@@ -58,6 +84,14 @@ public class User {
         this.userName = userName;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -82,6 +116,29 @@ public class User {
         this.email = email;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public boolean isTokenExpired() {
+        return tokenExpired;
+    }
+
+    public void setTokenExpired(boolean tokenExpired) {
+        this.tokenExpired = tokenExpired;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
     /*public List<MainEntity> getIsManagerOf() {
         return isManagerOf;
     }
@@ -97,4 +154,19 @@ public class User {
 
     //Equal HashCode test
 
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                ", enabled=" + enabled +
+                ", tokenExpired=" + tokenExpired +
+                ", roles=" + roles +
+                '}';
+    }
 }
