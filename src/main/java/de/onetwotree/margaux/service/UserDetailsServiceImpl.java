@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -29,11 +30,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         User user = userRepository.findByUserName(username);
 
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Role role : user.getRoles()){
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
-        return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthorities);
+        //return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthorities);
+        return new de.onetwotree.margaux.entity.UserDetails(
+                user,
+                true,
+                true,
+                true,
+                true,
+                grantedAuthorities);
     }
 }

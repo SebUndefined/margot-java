@@ -5,12 +5,12 @@ import de.onetwotree.margaux.entity.User;
 import de.onetwotree.margaux.service.RoleService;
 import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.jws.WebParam;
 import java.util.List;
@@ -26,6 +26,16 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @GetMapping(value = "/")
+    public String userIndex(Model model,
+                            @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
+        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<User> userPage = userService.findAll(pageRequest);
+        model.addAttribute("users", userPage);
+        return "User/user";
+    }
+
     @GetMapping(value = "/add")
     public String addUserForm(Model model) {
         List<Role> roleList = roleService.findAll();
@@ -36,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/add")
-    public String addUserSubmit(@ModelAttribute("project")User user) {
+    public String addUserSubmit(@ModelAttribute("user")User user) {
         userService.save(user);
         return "prout";
     }

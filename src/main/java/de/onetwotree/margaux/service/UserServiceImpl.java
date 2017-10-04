@@ -6,6 +6,8 @@ import de.onetwotree.margaux.dao.UserRepository;
 import de.onetwotree.margaux.entity.Role;
 import de.onetwotree.margaux.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -27,6 +29,11 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Override
+    public Page<User> findAll(PageRequest pageRequest) {
+        return userRepository.findAll(pageRequest);
+    }
 
     @Override
     @Transactional

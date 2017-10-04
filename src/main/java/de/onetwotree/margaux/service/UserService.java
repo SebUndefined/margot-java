@@ -1,6 +1,8 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
@@ -9,6 +11,8 @@ import java.util.List;
  */
 public interface UserService {
 
+
+    Page<User> findAll(PageRequest pageRequest);
 
     void save(User user);
 

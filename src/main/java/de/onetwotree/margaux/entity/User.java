@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.*;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,10 +41,18 @@ public class User {
     @NotNull
     @Column(name="lastname")
     private String lastname;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Column(name = "birthdate")
+    private LocalDate birthdate;
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")
     @Column(name="email")
     private String email;
+
+    @Column(name="phone")
+    private String phone;
+    @Column(name="localisation")
+    private String localisation;
 
     @Column(name="enabled")
     private boolean enabled;
@@ -108,12 +118,36 @@ public class User {
         this.lastname = lastname;
     }
 
+    public LocalDate getBirthdate() {
+        return birthdate;
+    }
+
+    public void setBirthdate(LocalDate birthdate) {
+        this.birthdate = birthdate;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getLocalisation() {
+        return localisation;
+    }
+
+    public void setLocalisation(String localisation) {
+        this.localisation = localisation;
     }
 
     public boolean isEnabled() {

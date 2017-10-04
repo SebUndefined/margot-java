@@ -12,7 +12,13 @@
                 </div>
                 <div class="map-panel">
                     Logged user: <span sec:authentication="name">Bob</span>
-                    Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span>
+                    Roles: <span sec:authentication="principal">[ROLE_USER, ROLE_ADMIN]</span>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <span th:text ="${#authentication.principal}"></span>
                 </div>
 
             </div>

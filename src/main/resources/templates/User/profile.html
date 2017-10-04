@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<div th:replace="common/head :: head"></div>
+<div th:replace="common/header :: header"></div>
+<main>
+    <div class="row">
+        <div class="col l12 m12 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Your profile</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>General informations</h2>
+                </div>
+                <table class="bordered">
+                    <tbody>
+                        <tr>
+                            <td>
+                                First name
+                            </td>
+                            <td th:text="${user.firstname}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Last name
+                            </td>
+                            <td th:text="${user.lastname}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Birtday date
+                            </td>
+                            <td
+                                    th:text="${user.birthdate != null} ?
+                                    ${#temporals.format(user.birthdate,'dd/MM/yyyy')}
+                                    : 'null value!'">undefined
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Contact Informations</h2>
+                </div>
+                <table class="bordered">
+                    <tbody>
+                    <tr>
+                        <td>
+                            Email
+                        </td>
+                        <td th:text="${user.email}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Phone
+                        </td>
+                        <td th:text="${user.phone}">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Login Informations</h2>
+                </div>
+                <table class="bordered">
+                    <tbody>
+                    <tr>
+                        <td>
+                            Login
+                        </td>
+                        <td th:text="${user.userName}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Password
+                        </td>
+                        <td>************</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Role informations</h2>
+                </div>
+                <table class="bordered">
+                    <tbody>
+                        <tr>
+                            <td>
+                                Role(s)
+                            </td>
+                            <td>
+                                <span th:each="role : ${user.roles}">
+                                    <span class="new badge" data-badge-caption="" th:text="${role.name}">
+
+                                    </span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div th:replace="common/footer :: footer"></div>
+</html>

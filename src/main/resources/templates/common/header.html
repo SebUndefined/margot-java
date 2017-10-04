@@ -6,10 +6,13 @@
     <nav>
         <a href="#" data-activates="slide-out" class="button-collapse grey-text text-darken-3"><i class="material-icons">menu</i></a>
             <div class="right drop-pmenu">
-                <a class='dropdown-button btn' href='#' data-activates='personnal-menu'>[[${#httpServletRequest.remoteUser}]]</a>
+                <a class='dropdown-button btn' href='#' data-activates='personnal-menu'>
+                    <span sec:authentication="principal.user.firstname"></span>
+                    <span sec:authentication="principal.user.lastname"></span>
+                </a>
                 <!-- Dropdown Structure -->
                 <ul id='personnal-menu' class='dropdown-content'>
-                    <li><a href="#!"><i class="material-icons">perm_identity</i>Profile</a></li>
+                    <li><a th:href="@{/profile}"><i class="material-icons">perm_identity</i>Profile</a></li>
                     <li class="divider"></li>
                     <li>
                         <form th:action="@{/logout}" method="post">
