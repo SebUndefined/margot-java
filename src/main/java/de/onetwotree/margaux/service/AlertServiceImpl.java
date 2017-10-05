@@ -1,5 +1,6 @@
 package de.onetwotree.margaux.service;
 
+import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.AlertRepository;
 import de.onetwotree.margaux.dao.MainEntityRepository;
 import de.onetwotree.margaux.entity.Alert;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolationException;
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created by SebUndefined on 02/10/17.
@@ -22,6 +23,10 @@ public class AlertServiceImpl implements AlertService {
     @Autowired
     MainEntityRepository mainEntityRepository;
 
+    @Override
+    public List<Alert> findLast10ByMainEntityId(Long idMainEntity, AlertStatus alertStatus) {
+        return alertRepository.findFirst10ByMainEntityIdAndStatusOrderByDateDesc(idMainEntity, alertStatus);
+    }
 
     @Override
     public String addAlertToMainEntity(MainEntity mainEntity, Alert alert) {

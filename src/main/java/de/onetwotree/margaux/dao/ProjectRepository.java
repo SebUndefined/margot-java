@@ -15,11 +15,16 @@ import java.util.List;
  */
 @Repository
 public interface ProjectRepository extends BaseRepository<Project> {
-    @Query("SELECT p FROM Project as p " +
+
+    @Query(value = "SELECT p FROM Project as p " +
             "JOIN p.company company " +
             "JOIN company.mainCompany mc " +
-            "where mc.id = :id")
-    List<Project> findAllByMainCompanyId(@Param("id") Long id);
+            "where mc.id = :idMainCompany",
+            countQuery = "SELECT count (p) FROM Project as p " +
+                    "JOIN p.company company " +
+                    "JOIN company.mainCompany mainCompany " +
+                    "WHERE mainCompany.id = :idMainCompany")
+    Page<Project> findByMainCompanyId(@Param("idMainCompany") Long id, Pageable pageable);
 
 
     Page<Project> findAllByCompanyId(Long id, Pageable pageable);

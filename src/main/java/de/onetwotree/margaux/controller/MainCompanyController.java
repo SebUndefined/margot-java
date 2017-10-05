@@ -33,110 +33,29 @@ import java.util.List;
 @RequestMapping(value = "maincompany")
 public class MainCompanyController {
 
-
     @Autowired
-    private MainCompanyRepository mainCompanyRepository;
+    private MainCompanyService mainCompanyService;
     @Autowired
-    private CompanyRepository companyRepository;
+    private AlertService alertService;
     @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private PlotRepository plotRepository;
-    @Autowired
-    private HarvestRepository harvestRepository;
-    @Autowired
-    private AlertRepository alertRepository;
-    @Autowired
-    private HarvestService harvestService;
-    @Autowired
-    private ResourceTypeRepository resourceTypeRepository;
+    private ResourceTypeService resourceTypeService;
 
     /**
-     * View All MainCompany
+     * Index of main Company. Pagination activated
      * @param model
+     * @param page
+     * @param size
      * @return
      */
     @GetMapping(value = "/")
-    public String MainCompanyIndex(Model model) {
-        List<MainCompany> mainCompanies = mainCompanyRepository.findAll();
-        model.addAttribute("MainCompanies", mainCompanies);
+    public String MainCompanyIndex(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                   @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<MainCompany> mainCompanyPage = mainCompanyService.findAllPaginated(pageable);
+        model.addAttribute("mainCompanyPage", mainCompanyPage);
         return "MainCompany/mainCompany";
     }
 
-    /**
-     * Add a MainCompany GET ACTION
-     * @param model
-     * @return
-     */
-    @GetMapping(value = "add/")
-    public String addMainCompanyForm(Model model) {
-        model.addAttribute("MainCompany", new MainCompany());
-        return "MainCompany/editMainCompany";
-    }
-
-    /**
-     * Add a mainCompany POST ACTION
-     * @param mainCompany
-     * @param result
-     * @return
-     */
-    @PostMapping(value = "add/")
-    public String addMainCompanySubmit(@ModelAttribute("MainCompany") @Valid MainCompany mainCompany,
-                                       BindingResult result, RedirectAttributes redirectAttributes) {
-        if (result.hasErrors()) {
-            List<ObjectError> errors = result.getAllErrors();
-            for(ObjectError error : errors) {
-                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
-            }
-            return "redirect:/maincompany/add/";
-        }
-        try {
-            mainCompanyRepository.saveAndFlush(mainCompany);
-        } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/maincompany/";
-    }
-    /**
-     * Update a mainCompany GET ACTION
-     * @param mainCompany
-     * @param model
-     * @param id
-     * @return
-     */
-    @GetMapping(value = "/update/{id}")
-    public String updateMainCompany(@ModelAttribute("MainCompany") MainCompany mainCompany,
-                                    Model model,
-                                    @PathVariable(value = "id") String id) {
-        model.addAttribute("mainCompany", mainCompanyRepository.findOne(Long.valueOf(id)));
-        return "MainCompany/updateMainCompany";
-    }
-    @PostMapping(value = "/update/{id}")
-    public String updateMainCompanySubmit(@Valid MainCompany mainCompany, BindingResult result,
-                                    @PathVariable(value = "id") String id,
-                                           RedirectAttributes redirectAttributes) throws ItemNotFoundException {
-        System.out.println(mainCompany.getName());
-        if (result.hasErrors())
-        {
-            List<ObjectError> errors = result.getAllErrors();
-            for(ObjectError error : errors) {
-                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
-            }
-            return "redirect:/maincompany/update/" + id;
-        }
-        mainCompany.setId(Long.valueOf(id));
-        MainCompany mainCompanyOrigin = mainCompanyRepository.findOne(Long.valueOf(id));
-        if (mainCompanyOrigin == null) {
-            throw new ItemNotFoundException(Long.valueOf(id), "maincompany/");
-        }
-
-        try {
-            mainCompanyRepository.saveAndFlush(mainCompany);
-        } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/maincompany/";
-    }
     /**
      * View MainCompany
      * @param id
@@ -146,13 +65,87 @@ public class MainCompanyController {
     @GetMapping(value = "view/{id}")
     public String viewMainCompany(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long idMainCompany = Long.valueOf(id);
-        MainCompany mainCompany = mainCompanyRepository.findOne(idMainCompany);
+        MainCompany mainCompany = mainCompanyService.findOne(idMainCompany);
         if (mainCompany == null) throw new ItemNotFoundException(idMainCompany, "maincompany/");
-        model.addAttribute("alertsMainCompany", alertRepository.findFirst10ByMainEntityIdAndStatusOrderByDateDesc(idMainCompany, AlertStatus.OPEN));
+        model.addAttribute("alertsMainCompany", alertService.findLast10ByMainEntityId(idMainCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
         model.addAttribute("maincompany", mainCompany);
         return "MainCompany/viewMainCompany";
     }
+
+    /**
+     * Add a MainCompany GET ACTION
+     * @param model
+     * @return
+     */
+    @GetMapping(value = "add/")
+    public String addMainCompanyForm(Model model) {
+        model.addAttribute("mainCompany", new MainCompany());
+        return "MainCompany/editMainCompany";
+    }
+
+    /**
+     * Add a mainCompany POST ACTION
+     * @param mainCompany
+     * @param result
+     * @return
+     */
+    @PostMapping(value = "/add/")
+    public String saveMainCompany(@ModelAttribute("mainCompany") @Valid MainCompany mainCompany,
+                                       BindingResult result, RedirectAttributes redirectAttributes){
+        if (result.hasErrors()) {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/maincompany/add/";
+        }
+        mainCompanyService.saveMainCompany(mainCompany);
+        return "redirect:/maincompany/view/" + mainCompany.getId();
+    }
+    /**
+     * Update a mainCompany GET ACTION
+     * @param model
+     * @param id
+     * @return
+     */
+    @GetMapping(value = "/update/{id}")
+    public String updateMainCompany(Model model,
+                                    @PathVariable(value = "id") String id) throws ItemNotFoundException {
+        Long idMainCompany = Long.valueOf(id);
+        MainCompany mainCompany = mainCompanyService.findOne(idMainCompany);
+        if (mainCompany == null) {
+            throw new ItemNotFoundException(idMainCompany, "maincompany/");
+        }
+        model.addAttribute("mainCompany", mainCompany);
+        return "MainCompany/updateMainCompany";
+    }
+
+    /**
+     *
+     * @param mainCompany
+     * @param result
+     * @param id
+     * @param redirectAttributes
+     * @return
+     */
+    @PostMapping(value = "/update/{id}")
+    public String updateMainCompanySubmit(@Valid MainCompany mainCompany, BindingResult result,
+                                    @PathVariable(value = "id") String id,
+                                           RedirectAttributes redirectAttributes){
+        if (result.hasErrors())
+        {
+            List<ObjectError> errors = result.getAllErrors();
+            for(ObjectError error : errors) {
+                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
+            }
+            return "redirect:/maincompany/update/" + id;
+        }
+        mainCompanyService.updateMainCompany(mainCompany);
+        redirectAttributes.addFlashAttribute("info", "Company " + mainCompany.getName() + " updated !");
+        return "redirect:/maincompany/view/"+ mainCompany.getId();
+    }
+
 
     /**
      * View Companies of MainCompany
@@ -161,11 +154,14 @@ public class MainCompanyController {
      * @return
      */
     @GetMapping(value = "view/{id}/companies/")
-    public String viewCompaniesOfMainCompany(@PathVariable(value = "id") String id, Model model){
+    public String viewCompaniesOfMainCompany(@PathVariable(value = "id") String id, Model model,
+                                             @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size){
         Long idMainCompany = Long.valueOf(id);
-        List<Company> companyList = companyRepository.findCompaniesByMainCompanyId(idMainCompany);
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Company> companyPage = mainCompanyService.findCompaniesPaginated(idMainCompany, pageable);
         model.addAttribute("urlId", id);
-        model.addAttribute("companies", companyList);
+        model.addAttribute("companies", companyPage);
         return "MainCompany/viewCompanyofMainCompany";
     }
 
@@ -176,11 +172,14 @@ public class MainCompanyController {
      * @return
      */
     @GetMapping(value = "view/{id}/projects/")
-    public String viewProjectsOfMainCompany(@PathVariable(value = "id") String id, Model model){
+    public String viewProjectsOfMainCompany(@PathVariable(value = "id") String id, Model model,
+                                            @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size){
         Long idMainCompany = Long.valueOf(id);
-        List<Project> projects= projectRepository.findAllByMainCompanyId(idMainCompany);
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Project> projectPage = mainCompanyService.findProjectsPaginated(idMainCompany, pageable);
         model.addAttribute("urlId", id);
-        model.addAttribute("projects", projects);
+        model.addAttribute("projects", projectPage);
         return "MainCompany/viewProjectsofMainCompany";
     }
 
@@ -193,7 +192,7 @@ public class MainCompanyController {
     @GetMapping(value = "view/{id}/plots/")
     public String viewPlotsOfMainCompany(@PathVariable(value = "id") String id, Model model) {
         Long idMainCompany = Long.valueOf(id);
-        List<Plot> plotList = plotRepository.findAllByMainCompanyId(idMainCompany);
+        List<Plot> plotList = mainCompanyService.findPlots(idMainCompany);
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
         try {
@@ -209,15 +208,16 @@ public class MainCompanyController {
 
 
     @RequestMapping(value = "view/{id}/harvests/")
-    public String harvestIndex(Model model,
-                               @PathVariable(value = "id") String idMainCompany,
+    public String viewHarvestOfMainCompany(Model model,
+                               @PathVariable(value = "id") String id,
                                @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
     {
+        Long idMainCompany = Long.valueOf(id);
         Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Harvest> harvestPage = harvestRepository.findAllByMainCompanyId(Long.valueOf(idMainCompany), pageRequest);
-        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
-        model.addAttribute("urlId", idMainCompany);
+        Page<Harvest> harvestPage = mainCompanyService.findHarvestsPaginated(idMainCompany, pageRequest);
+        model.addAttribute("resourceTypeList", resourceTypeService.findAll());
+        model.addAttribute("urlId", id);
         model.addAttribute("harvests", harvestPage);
         model.addAttribute("page", page);
         return "MainCompany/viewHarvestByMainCompany";
@@ -227,9 +227,7 @@ public class MainCompanyController {
     public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idMainCompany") String idMainCompany,
                                                 @PathVariable(value = "idResourceType") String idResourceType, Model model){
 
-        String graphHarvestsPlot = harvestService
-                .findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idMainCompany)
-                        , Long.valueOf(idResourceType));
+        String graphHarvestsPlot = mainCompanyService.findHarvestsByResourcesForGraph(Long.valueOf(idMainCompany), Long.valueOf(idResourceType));
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";
 

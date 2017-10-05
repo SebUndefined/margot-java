@@ -12,6 +12,7 @@
                 </div>
                 <!--/*@thymesVar id="MainCompany" type="de.onetwotree.margaux.entity.MainCompany"*/-->
                 <form action="#" th:action="@{'/maincompany/update/'+ ${mainCompany.id}}" th:object="${mainCompany}" method="post" class="col s12">
+                    <input type="hidden" th:field="*{id}"/>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
                             <input id="mainCompanyName" type="text" class="validate" th:field="*{name}" />

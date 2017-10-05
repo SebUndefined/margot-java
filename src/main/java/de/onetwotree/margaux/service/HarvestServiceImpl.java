@@ -37,10 +37,6 @@ public class HarvestServiceImpl implements HarvestService {
     @Autowired
     PlotResourceRepository plotResourceRepository;
 
-    @Override
-    public List getAllHarvest() {
-        return harvestRepository.findAll();
-    }
 
     @Override
     public String getSumByResourceWhereResourceTypeId(Long resourceTypeId) {
@@ -75,41 +71,6 @@ public class HarvestServiceImpl implements HarvestService {
         return myGraphData;
     }
 
-
-    @Override
-    public String findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType) {
-        List<Harvest> harvestList = harvestRepository.findAllByMainCompanyIdAndResourceTypeId(idMainCompany, idResourceType);
-        Map<Resource, Map<Integer, BigDecimal>> resourceWithSumHarvestPerYear;
-        resourceWithSumHarvestPerYear = harvestList.stream()
-                .collect(Collectors.groupingBy(Harvest::getResource,
-                        Collectors.groupingBy(Harvest::getYear,
-                                Collectors.mapping(Harvest::getQuantityPerHa, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)))));
-        String myGraphData = chartService.buildLineChartHarvestWithYear(resourceWithSumHarvestPerYear);
-        return myGraphData;
-    }
-    @Override
-    public String findAllHarvestWhereCompanyidAndResourceTypeIdGroupByYearAsJson(Long idCompany, Long idResourceType) {
-        List<Harvest> harvestList = harvestRepository.findAllByCompanyIdAndResourceTypeId(idCompany, idResourceType);
-        Map<Resource, Map<Integer, BigDecimal>> resourceWithSumHarvestPerYear;
-        resourceWithSumHarvestPerYear = harvestList.stream()
-                .collect(Collectors.groupingBy(Harvest::getResource,
-                        Collectors.groupingBy(Harvest::getYear,
-                                Collectors.mapping(Harvest::getQuantityPerHa, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)))));
-        String myGraphData = chartService.buildLineChartHarvestWithYear(resourceWithSumHarvestPerYear);
-        return myGraphData;
-    }
-
-    @Override
-    public String findAllHarvestWhereProjectIdAndResourceTypeIdGroupByYearAsJson(Long idProject, Long idResourceType) {
-        List<Harvest> harvestList = harvestRepository.findAllByProjectIdAndResourceTypeId(idProject, idResourceType);
-        Map<Resource, Map<Integer, BigDecimal>> resourceWithSumHarvestPerYear;
-        resourceWithSumHarvestPerYear = harvestList.stream()
-                .collect(Collectors.groupingBy(Harvest::getResource,
-                        Collectors.groupingBy(Harvest::getYear,
-                                Collectors.mapping(Harvest::getQuantityPerHa, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)))));
-        String myGraphData = chartService.buildLineChartHarvestWithYear(resourceWithSumHarvestPerYear);
-        return myGraphData;
-    }
 
     @Override
     public String findAllHarvestWherePlotIdAndResourceTypeIdGroupByYearAsJson(Long idPlot, Long idResourceType) {

@@ -37,6 +37,15 @@
                     </tr>
                     </tbody>
                 </table>
+                <div th:fragment="pagination" class="row center-align">
+                    <ul class="pagination">
+                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                        <li th:each="i:${#numbers.sequence(0, companies.totalPages -1)}" class="waves-effect">
+                            <a th:href="@{${url}(page=${i+1})}" th:text="${i+1}"></a>
+                        </li>
+                        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

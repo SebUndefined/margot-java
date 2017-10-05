@@ -4,15 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.*;
-import de.onetwotree.margaux.entity.Harvest;
-import de.onetwotree.margaux.entity.Plot;
-import de.onetwotree.margaux.entity.Project;
+import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
-import de.onetwotree.margaux.entity.Company;
-import de.onetwotree.margaux.service.CompanyService;
-import de.onetwotree.margaux.service.HarvestService;
-import de.onetwotree.margaux.service.UserService;
+import de.onetwotree.margaux.service.*;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,41 +34,35 @@ import java.util.List;
 public class CompanyController {
 
     @Autowired
-    CompanyRepository companyRepository;
+    private CompanyService companyService;
     @Autowired
-    ProjectRepository projectRepository;
+    private MainCompanyService mainCompanyService;
     @Autowired
-    HarvestRepository harvestRepository;
+    private AlertService alertService;
     @Autowired
-    PlotRepository plotRepository;
-    @Autowired
-    AlertRepository alertRepository;
-    @Autowired
-    HarvestService harvestService;
-    @Autowired
-    ResourceTypeRepository resourceTypeRepository;
-    @Autowired
-    MainCompanyRepository mainCompanyRepository;
+    private ResourceTypeService resourceTypeService;
 
     @GetMapping(value = "/")
-    public String indexCompany(Model model) {
-        List<Company> companies = companyRepository.findAll();
-        model.addAttribute("companies", companies);
+    public String indexCompany(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Company> companyPage = companyService.findAllPaginated(pageable);
+        model.addAttribute("companies", companyPage);
         return "Company/company";
     }
     @GetMapping(value = "view/{id}")
     public String viewCompany(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long idCompany = Long.valueOf(id);
-        Company company = companyRepository.findOne(idCompany);
+        Company company = companyService.findOne(idCompany);
         if (company == null) throw new ItemNotFoundException(idCompany, "company/");
-        model.addAttribute("alertsCompany", alertRepository.findFirst10ByMainEntityIdAndStatusOrderByDateDesc(idCompany, AlertStatus.OPEN));
+        model.addAttribute("alertsCompany", alertService.findLast10ByMainEntityId(idCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
         model.addAttribute("company", company);
         return "Company/viewCompany";
     }
     @GetMapping(value = "/add")
     public String addCompanyForm(Model model) {
-        model.addAttribute("mainCompanies", mainCompanyRepository.findAll());
+        model.addAttribute("mainCompanies", mainCompanyService.findAll());
         model.addAttribute("company", new Company());
         return "Company/editCompany";
     }
@@ -88,48 +77,35 @@ public class CompanyController {
             }
             return "redirect:/company/add/";
         }
-        try {
-            companyRepository.saveAndFlush(company);
-        } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/company/";
+        companyService.saveCompany(company);
+        return "redirect:/company/view/" + company.getId();
     }
     @GetMapping(value = "/update/{id}")
-    public String updateCompany(@ModelAttribute("company") Company company,
-                                    Model model,
+    public String updateCompany(Model model,
                                     @PathVariable(value = "id") String id) throws ItemNotFoundException {
-        company = companyRepository.findOne(Long.valueOf(id));
+        Company company = companyService.findOne(Long.valueOf(id));
         if (company == null){
             throw new ItemNotFoundException(Long.valueOf(id), "company/");
         }
         model.addAttribute("company", company);
-        model.addAttribute("mainCompanies", mainCompanyRepository.findAll());
+        model.addAttribute("mainCompanies", mainCompanyService.findAll());
         return "Company/updateCompany";
     }
     @PostMapping(value = "/update/{id}")
     public String updateCompanySubmit(@Valid Company company, BindingResult result,
                                           @PathVariable(value = "id") String id,
                                       RedirectAttributes redirectAttributes) throws ItemNotFoundException {
-        if (result.hasErrors()) {
+        if (result.hasErrors())
+        {
             List<ObjectError> errors = result.getAllErrors();
             for(ObjectError error : errors) {
                 redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
             }
             return "redirect:/company/update/" + id;
         }
-        Company companyOrigin = companyRepository.findOne(Long.valueOf(id));
-        if (companyOrigin == null) {
-            throw new ItemNotFoundException(Long.valueOf(id), "company/");
-        }
-        try {
-            companyOrigin.setName(company.getName());
-            companyOrigin.setMainCompany(company.getMainCompany());
-            companyRepository.saveAndFlush(companyOrigin);
-        } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/company/";
+        companyService.updateCompany(company);
+        redirectAttributes.addFlashAttribute("info", "Company " + company.getName() + " updated !");
+        return "redirect:/company/view/"+ company.getId();
     }
 
     @GetMapping(value = "/view/{id}/projects/")
@@ -138,7 +114,7 @@ public class CompanyController {
                                         @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                         @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
         Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Project> projectPage = projectRepository.findAllByCompanyId(Long.valueOf(id), pageable);
+        Page<Project> projectPage = companyService.findProjectsPaginated(Long.valueOf(id), pageable);
         model.addAttribute("projectPage", projectPage);
         model.addAttribute("urlId", id);
         return "Company/viewProjectsofCompany";
@@ -153,7 +129,7 @@ public class CompanyController {
     @GetMapping(value = "view/{id}/plots/")
     public String viewPlotsOfCompany(@PathVariable(value = "id") String id, Model model) {
         Long idCompany = Long.valueOf(id);
-        List<Plot> plotList = plotRepository.findAllByCompanyId(idCompany);
+        List<Plot> plotList = companyService.findPlots(idCompany);
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
         try {
@@ -174,8 +150,8 @@ public class CompanyController {
                                @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
     {
         Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Harvest> harvestPage = harvestRepository.findAllByCompanyId(Long.valueOf(idMainCompany), pageRequest);
-        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
+        Page<Harvest> harvestPage = companyService.findHarvestsPaginated(Long.valueOf(idMainCompany), pageRequest);
+        model.addAttribute("resourceTypeList", resourceTypeService.findAll());
         model.addAttribute("urlId", idMainCompany);
         model.addAttribute("harvests", harvestPage);
         model.addAttribute("page", page);
@@ -186,9 +162,7 @@ public class CompanyController {
     public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idCompany") String idCompany,
                                                 @PathVariable(value = "idResourceType") String idResourceType, Model model){
 
-        String graphHarvestsPlot = harvestService
-                .findAllHarvestWhereCompanyidAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idCompany)
-                        , Long.valueOf(idResourceType));
+        String graphHarvestsPlot = companyService.findHarvestsByResourcesForGraph(Long.valueOf(idCompany), Long.valueOf(idResourceType));
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";
 

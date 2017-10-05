@@ -7,10 +7,7 @@ import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
-import de.onetwotree.margaux.service.CompanyService;
-import de.onetwotree.margaux.service.HarvestService;
-import de.onetwotree.margaux.service.ProjectService;
-import de.onetwotree.margaux.service.UserService;
+import de.onetwotree.margaux.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,35 +34,29 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
     @Autowired
-    ProjectRepository projectRepository;
+    CompanyService companyService;
     @Autowired
-    CompanyRepository companyRepository;
-
+    AlertService alertService;
     @Autowired
-    HarvestRepository harvestRepository;
-    @Autowired
-    AlertRepository alertRepository;
-    @Autowired
-    HarvestService harvestService;
-    @Autowired
-    ResourceTypeRepository resourceTypeRepository;
-    @Autowired
-    PlotRepository plotRepository;
+    ResourceTypeService resourceTypeService;
     @Autowired
     UserService userService;
 
     @RequestMapping(value = "/")
-    public String mainProjectIndex(Model model) {
-        List<Project> projects = projectRepository.findAll();
-        model.addAttribute("projects", projects);
+    public String projectIndex(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                   @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Project> projectPage = projectService.findAllPaginated(pageable);
+        model.addAttribute("projectPage", projectPage);
         return "Project/project";
     }
 
     @RequestMapping(value = "/view/{id}")
-    public  String viewProject(@PathVariable(value = "id") String idProject, Model model) {
+    public  String viewProject(@PathVariable(value = "id") String idProject, Model model) throws ItemNotFoundException {
         Long projectId = Long.valueOf(idProject);
-        Project project = projectRepository.findOne(projectId);
-        model.addAttribute("alertsProject", alertRepository.findFirst10ByMainEntityIdAndStatusOrderByDateDesc(projectId, AlertStatus.OPEN));
+        Project project = projectService.findOne(projectId);
+        if (project == null) throw new ItemNotFoundException(projectId, "project/");
+        model.addAttribute("alertsProject", alertService.findLast10ByMainEntityId(projectId, AlertStatus.OPEN));
         model.addAttribute("project", project);
         model.addAttribute("urlId", idProject);
         return "Project/viewProject";
@@ -74,7 +65,7 @@ public class ProjectController {
     @RequestMapping(value = "/add")
     public String addProjectForm(Model model) {
         List<User> users = userService.getAllUsers();
-        List<Company> companies = companyRepository.findAll();
+        List<Company> companies = companyService.findAll();
         Project project = new Project();
         model.addAttribute("users", users);
         model.addAttribute("companies", companies);
@@ -92,24 +83,19 @@ public class ProjectController {
             }
             return "redirect:/project/add/";
         }
-        try {
-            projectRepository.saveAndFlush(project);
-        } catch (ConstraintViolationException e) {
-            e.printStackTrace();
-        }
-        return "redirect:/project/";
+        projectService.saveProject(project);
+        return "redirect:/project/" + project.getId();
     }
     @GetMapping(value = "/update/{id}")
-    public String updateProject(@ModelAttribute("project") Project project,
-                                Model model,
+    public String updateProject(Model model,
                                 @PathVariable(value = "id") String id) throws ItemNotFoundException {
-        project = projectRepository.findOne(Long.valueOf(id));
+        Project project = projectService.findOne(Long.valueOf(id));
         if (project == null){
             throw new ItemNotFoundException(Long.valueOf(id), "project/");
         }
 
         model.addAttribute("project", project);
-        model.addAttribute("companies", companyRepository.findAll());
+        model.addAttribute("companies", companyService.findAll());
         return "Project/updateProject";
     }
 
@@ -120,12 +106,11 @@ public class ProjectController {
      * @param id
      * @param redirectAttributes
      * @return
-     * @throws ItemNotFoundException
      */
     @PostMapping(value = "/update/{id}")
     public String updateProjectSubmit(@Valid @ModelAttribute("project") Project project, BindingResult result,
                                       @PathVariable(value = "id") String id,
-                                      RedirectAttributes redirectAttributes) throws ItemNotFoundException {
+                                      RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
             for(ObjectError error : errors) {
@@ -133,11 +118,7 @@ public class ProjectController {
             }
             return "redirect:/project/update/" + id;
         }
-        Project projectOrigin = projectRepository.findOne(Long.valueOf(id));
-        if (projectOrigin == null) {
-            throw new ItemNotFoundException(Long.valueOf(id), "project/");
-        }
-        projectService.updateProject(project, projectOrigin);
+        projectService.updateProject(project);
         redirectAttributes.addFlashAttribute("info", "Project " + project.getName() + " has been updated !");
         return "redirect:/project/view/" + id;
     }
@@ -151,7 +132,7 @@ public class ProjectController {
     @GetMapping(value = "view/{id}/plots/")
     public String viewPlotsOfProject(@PathVariable(value = "id") String id, Model model) {
         Long idProject = Long.valueOf(id);
-        List<Plot> plotList = plotRepository.findAllByProjectId(idProject);
+        List<Plot> plotList = projectService.findPlots(idProject);
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
         try {
@@ -177,8 +158,8 @@ public class ProjectController {
                                         @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
     {
         Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Harvest> harvestPage = harvestRepository.findAllByProjectId(Long.valueOf(idProject), pageRequest);
-        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
+        Page<Harvest> harvestPage = projectService.findHarvestsPaginated(Long.valueOf(idProject), pageRequest);
+        model.addAttribute("resourceTypeList", resourceTypeService.findAll());
         model.addAttribute("urlId", idProject);
         model.addAttribute("harvests", harvestPage);
         model.addAttribute("page", page);
@@ -188,8 +169,7 @@ public class ProjectController {
     public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idProject") String idProject,
                                                 @PathVariable(value = "idResourceType") String idResourceType, Model model){
 
-        String graphHarvestsPlot = harvestService
-                .findAllHarvestWhereProjectIdAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idProject)
+        String graphHarvestsPlot = projectService.findHarvestsByResourcesForGraph(Long.valueOf(idProject)
                         , Long.valueOf(idResourceType));
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";

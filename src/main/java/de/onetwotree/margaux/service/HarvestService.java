@@ -15,18 +15,12 @@ import java.util.Map;
  */
 public interface HarvestService {
 
-    List getAllHarvest();
 
     String getSumByResourceWhereResourceTypeId(Long resourceTypeId);
 
 
     String findAllGroupByResourceTypeJson(Long idResourceType);
 
-    String findAllHarvestWhereMainCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType);
-
-    String findAllHarvestWhereCompanyidAndResourceTypeIdGroupByYearAsJson(Long idMainCompany, Long idResourceType);
-
-    String findAllHarvestWhereProjectIdAndResourceTypeIdGroupByYearAsJson(Long idProject, Long idResourceType);
 
     String findAllHarvestWherePlotIdAndResourceTypeIdGroupByYearAsJson(Long idPlot, Long idResourceType);
 

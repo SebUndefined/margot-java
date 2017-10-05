@@ -67,6 +67,7 @@ public class GlobalDefaultExceptionHandler {
     @ExceptionHandler(ItemNotFoundException.class)
     public ModelAndView handleItemNotFoundException(ItemNotFoundException e, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("alert", "Item Not Found");
+        System.out.println("error Item not found ############");
         String url = "redirect:/" + e.getUrl();
         ModelAndView modelAndView = new ModelAndView(url);
         return modelAndView;
