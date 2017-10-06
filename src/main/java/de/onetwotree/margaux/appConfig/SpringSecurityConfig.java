@@ -45,6 +45,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 
       auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+      //auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
   }
 
 

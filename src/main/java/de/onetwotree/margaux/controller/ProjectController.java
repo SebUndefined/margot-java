@@ -84,7 +84,7 @@ public class ProjectController {
             return "redirect:/project/add/";
         }
         projectService.saveProject(project);
-        return "redirect:/project/" + project.getId();
+        return "redirect:/project/view/" + project.getId();
     }
     @GetMapping(value = "/update/{id}")
     public String updateProject(Model model,

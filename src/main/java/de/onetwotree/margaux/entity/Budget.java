@@ -16,8 +16,12 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_budget")
-public class Budget extends MainEntity {
+public class Budget {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "budget_id")
+    private Long id;
     @Column(name = "budget_begin_date")
     private GregorianCalendar begindate;
     @Column(name = "budget_end_date")
@@ -29,6 +33,14 @@ public class Budget extends MainEntity {
     private Project project;
 
     public Budget() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public GregorianCalendar getBegindate() {

@@ -21,8 +21,12 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_harvest")
-public class Harvest extends MainEntity{
+public class Harvest {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "harvest_id")
+    private Long id;
     @NotNull(message = "Date Cannot be null !")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "harvest_begin_date")
@@ -50,6 +54,14 @@ public class Harvest extends MainEntity{
         this.quantity = quantity;
         this.quantityPerHa = quantityPerHa;
         this.resource = resource;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public LocalDate getDate() {

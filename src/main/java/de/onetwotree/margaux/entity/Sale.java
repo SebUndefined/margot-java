@@ -16,7 +16,11 @@ import java.util.GregorianCalendar;
  */
 @Entity
 @Table(name = "db_sale")
-public class Sale extends MainEntity {
+public class Sale {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "sale_id")
+    private Long id;
 
     @Column(name = "sale_date")
     private GregorianCalendar date;
@@ -27,6 +31,14 @@ public class Sale extends MainEntity {
     @JoinColumn(name = "harvest_id")
     private Harvest harvest;
     public Sale() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public GregorianCalendar getDate() {
