@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by SebUndefined on 29/08/17.
  */
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "autosize",

@@ -14,6 +14,8 @@ import java.util.List;
  */
 public interface ProjectService {
 
+    List<Project> findAll();
+
     Page<Project> findAllPaginated(Pageable pageable);
 
     Project findOne(Long idProject);

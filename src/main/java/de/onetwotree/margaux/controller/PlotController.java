@@ -32,15 +32,11 @@ public class PlotController {
     @Autowired
     PlotService plotService;
     @Autowired
-    PlotRepository plotRepository;
+    ResourceService resourceService;
     @Autowired
-    ResourceRepository resourceRepository;
+    ResourceTypeService resourceTypeService;
     @Autowired
-    HarvestRepository harvestRepository;
-    @Autowired
-    ResourceTypeRepository resourceTypeRepository;
-    @Autowired
-    ProjectRepository projectRepository;
+    ProjectService projectService;
     @Autowired
     PlotResourceService plotResourceService;
     @Autowired
@@ -51,16 +47,15 @@ public class PlotController {
                             @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
     {
-        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Plot> plotPage = plotRepository.findAll(pageRequest);
+        PageRequest pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Plot> plotPage = plotService.findAllPaginated(pageable);
         model.addAttribute("plots", plotPage);
-        model.addAttribute("page", page);
         return "Plot/plot";
     }
     @RequestMapping(value = "/map/")
     public String plotIndexMap(Model model)
     {
-        List<Plot> plots = plotRepository.findAll();
+        List<Plot> plots = plotService.findAll();
         model.addAttribute("plots", plots);
         return "Plot/plotMap";
     }
@@ -69,7 +64,7 @@ public class PlotController {
     public  String viewPlot(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long plotId = Long.valueOf(id);
 
-        Plot plot = plotRepository.findOne(plotId);
+        Plot plot = plotService.findOne(plotId);
         if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
         List<PlotResource> resourcePlotList = plot.getPlotResources();
         String myGraphData = plotResourceService.getPlotResourceAsJson(resourcePlotList);
@@ -82,7 +77,7 @@ public class PlotController {
     @RequestMapping(value = "/add")
     public String addPlotForm(Model model) {
         Plot plot = new Plot();
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = projectService.findAll();
         model.addAttribute("plot", plot);
         model.addAttribute("projects", projects);
         return "Plot/editPlot";
@@ -92,17 +87,18 @@ public class PlotController {
 
         if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
-            for(ObjectError error : errors) {
+            /*for(ObjectError error : errors) {
                 redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
-            }
+            }*/
+            redirectAttributes.addFlashAttribute("alerts", errors);
             return "redirect:/plot/add/";
         }
         try {
-            plotRepository.saveAndFlush(plot);
+            plotService.savePlot(plot);
         } catch (ConstraintViolationException e) {
             e.printStackTrace();
         }
-        return "redirect:/project/";
+        return "redirect:/plot/";
 
     }
 
@@ -110,10 +106,10 @@ public class PlotController {
     public String updatePlot(@ModelAttribute("plot") Plot plot,
                              Model model,
                              @PathVariable(value = "plotId") String idPlot) throws ItemNotFoundException {
-        plot = plotRepository.findOne(Long.valueOf(idPlot));
+        plot = plotService.findOne(Long.valueOf(idPlot));
         if (plot == null) throw new ItemNotFoundException(Long.valueOf(idPlot), "plot/");
         model.addAttribute("plot", plot);
-        model.addAttribute("projects", projectRepository.findAll());
+        model.addAttribute("projects", projectService.findAll());
         return "Plot/updatePlot";
 
     }
@@ -128,7 +124,7 @@ public class PlotController {
             }
             return "redirect:/plot/update/" + id;
         }
-        Plot plotOrigin = plotRepository.findOne(Long.valueOf(id));
+        Plot plotOrigin = plotService.findOne(Long.valueOf(id));
         if (plotOrigin == null) {
             throw new ItemNotFoundException(Long.valueOf(id), "plot/");
         }
@@ -138,9 +134,9 @@ public class PlotController {
     }
     @GetMapping(value = "/view/{id}/add-resource")
     public String addResourceToPlotForm(Model model, @PathVariable(value = "id") String id) {
-        List<Resource> resources = resourceRepository.findAll();
+        List<Resource> resources = resourceService.findAll();
         PlotResource plotResource = new PlotResource();
-        plotResource.setPlot(plotRepository.findOne(Long.valueOf(id)));
+        plotResource.setPlot(plotService.findOne(Long.valueOf(id)));
         model.addAttribute("resources", resources);
         model.addAttribute("plotResource", plotResource);
 
@@ -172,21 +168,18 @@ public class PlotController {
                                      @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                      @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
     {
-        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Harvest> harvestPage = harvestRepository.findAllByPlotId(Long.valueOf(idPlot), pageRequest);
-        model.addAttribute("resourceTypeList", resourceTypeRepository.findAll());
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<Harvest> harvestPage = plotService.findHarvestsPaginated(Long.valueOf(idPlot), pageable);
+        model.addAttribute("resourceTypeList", resourceTypeService.findAll());
         model.addAttribute("urlId", idPlot);
         model.addAttribute("harvests", harvestPage);
-        model.addAttribute("page", page);
         return "Plot/viewHarvestByPlot";
     }
     @GetMapping(value = "view/{idPlot}/harvests/{idResourceType}")
     public String viewHarvestsOfProjectAjax(@PathVariable(value = "idPlot") String idPlot,
                                                 @PathVariable(value = "idResourceType") String idResourceType, Model model){
 
-        String graphHarvestsPlot = harvestService
-                .findAllHarvestWherePlotIdAndResourceTypeIdGroupByYearAsJson(Long.valueOf(idPlot)
-                        , Long.valueOf(idResourceType));
+        String graphHarvestsPlot = plotService.findHarvestsByResourcesForGraph(Long.valueOf(idPlot), Long.valueOf(idResourceType));
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";
 
@@ -196,16 +189,11 @@ public class PlotController {
     public String addHarvestToPlot(@PathVariable(value = "idPlot") String idPlot,
                                    Model model) throws ItemNotFoundException {
         Long plotId = Long.valueOf(idPlot);
-        Plot plot = plotRepository.findOne(plotId);
+        Plot plot = plotService.findOne(plotId);
         if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
         Harvest harvest = new Harvest();
         harvest.setPlot(plot);
-        List<Resource> resourceAvailables = new ArrayList<>();
-        for (PlotResource plotResource : plot.getPlotResources()) {
-            resourceAvailables.add(plotResource.getResource());
-        }
         model.addAttribute("harvest", harvest);
-        model.addAttribute("resources", resourceAvailables);
         return "Plot/addHarvestToPlot";
     }
     @PostMapping(value = "view/{idPlot}/add-harvest")
@@ -214,7 +202,7 @@ public class PlotController {
                                          BindingResult result,
                                          @PathVariable("idPlot") String idPlot) throws ItemNotFoundException {
         Long plotId = Long.valueOf(idPlot);
-        Plot plot = plotRepository.findOne(plotId);
+        Plot plot = plotService.findOne(plotId);
         if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
         String message;
         String url = "";

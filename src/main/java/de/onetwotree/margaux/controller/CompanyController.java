@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -77,7 +78,8 @@ public class CompanyController {
             }
             return "redirect:/company/add/";
         }
-        companyService.saveCompany(company);
+        company = companyService.saveCompany(company);
+        redirectAttributes.addFlashAttribute("info", "Company " + company.getName() + " has been saved !");
         return "redirect:/company/view/" + company.getId();
     }
     @GetMapping(value = "/update/{id}")
@@ -104,7 +106,7 @@ public class CompanyController {
             return "redirect:/company/update/" + id;
         }
         companyService.updateCompany(company);
-        redirectAttributes.addFlashAttribute("info", "Company " + company.getName() + " updated !");
+        redirectAttributes.addFlashAttribute("info", "Company " + company.getName() + " has been updated !");
         return "redirect:/company/view/"+ company.getId();
     }
 

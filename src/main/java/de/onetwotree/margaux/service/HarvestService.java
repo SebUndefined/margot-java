@@ -22,8 +22,5 @@ public interface HarvestService {
     String findAllGroupByResourceTypeJson(Long idResourceType);
 
 
-    String findAllHarvestWherePlotIdAndResourceTypeIdGroupByYearAsJson(Long idPlot, Long idResourceType);
-
-
     Harvest addHarvest(Harvest harvest) throws AddHarvestException;
 }

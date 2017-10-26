@@ -10,43 +10,7 @@
                 <div class="panel_title">
                     <h2>Plots</h2>
                 </div>
-                <table class="bordered highlight responsive-table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Location</th>
-                        <th>Project</th>
-                        <th>Manager</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="plot : ${plots}">
-                        <td th:text="${plot.id}">undefined</td>
-                        <td th:text="${plot.name}">undefined</td>
-                        <td th:text="${plot.size}">undefined</td>
-                        <td>undefined</td>
-                        <td th:text="${plot.project.name}">undefined</td>
-                        <td>undefined</td>
-                        <td>
-                            <a th:href="@{'/plot/view/' + ${plot.id}}" class="btn-floating btn-small waves-effect waves-light">
-                            <i class="material-icons">visibility</i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div th:fragment="pagination" class="row center-align">
-                    <ul class="pagination">
-                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                        <li th:each="i:${#numbers.sequence(0, plots.totalPages -1)}" class="waves-effect">
-                            <a th:href="@{${url}(page=${i+1})}" th:text="${i+1}"></a>
-                        </li>
-                        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                    </ul>
-                </div>
+                <div th:replace="common/sheetPlot :: sheetPlot"></div>
             </div>
         </div>
     </div>

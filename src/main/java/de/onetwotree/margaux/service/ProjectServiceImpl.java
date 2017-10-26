@@ -36,6 +36,12 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ChartService chartService;
 
+
+    @Override
+    public List<Project> findAll() {
+        return projectRepository.findAll();
+    }
+
     @Override
     public Page<Project> findAllPaginated(Pageable pageable) {
         Page<Project> projectPage = projectRepository.findAll(pageable);

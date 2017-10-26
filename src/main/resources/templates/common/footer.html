@@ -14,9 +14,19 @@
     <script th:src="@{/assets/js/graph.js}"></script>
     <p th:if="${alert!=null}">
         <script th:inline="javascript">
+            console.log([[${alert}]]);
             var message = "<i class=\"material-icons\">warning</i> " + [[${alert}]];
             console.log(message);
             Materialize.toast(message.toString(), 6000, 'red');
+        </script>
+    </p>
+    <p th:if="${alerts!=null}">
+        <script th:inline="javascript">
+            var alerts = [[${alerts}]];
+            alerts.forEach(function (alertRised) {
+                var message = "<i class=\"material-icons\">warning</i> " + alertRised.defaultMessage;
+                Materialize.toast(message.toString(), 6000, 'red');
+            })
         </script>
     </p>
     <p th:if="${info!=null}">

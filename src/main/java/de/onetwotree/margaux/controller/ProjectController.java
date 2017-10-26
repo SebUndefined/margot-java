@@ -78,12 +78,14 @@ public class ProjectController {
 
         if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
+            System.out.println(errors);
             for(ObjectError error : errors) {
                 redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
             }
             return "redirect:/project/add/";
         }
-        projectService.saveProject(project);
+        project = projectService.saveProject(project);
+        redirectAttributes.addFlashAttribute("info", "Company " + project.getName() + " has been saved !");
         return "redirect:/project/view/" + project.getId();
     }
     @GetMapping(value = "/update/{id}")

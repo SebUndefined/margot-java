@@ -71,20 +71,6 @@ public class HarvestServiceImpl implements HarvestService {
         return myGraphData;
     }
 
-
-    @Override
-    public String findAllHarvestWherePlotIdAndResourceTypeIdGroupByYearAsJson(Long idPlot, Long idResourceType) {
-        List<Harvest> harvestList = harvestRepository.findAllByPlotIdAndResourceTypeId(idPlot, idResourceType);
-        Map<Resource, Map<Integer, BigDecimal>> resourceWithSumHarvestPerYear;
-        resourceWithSumHarvestPerYear = harvestList.stream()
-                .collect(Collectors.groupingBy(Harvest::getResource,
-                        Collectors.groupingBy(Harvest::getYear,
-                                Collectors.mapping(Harvest::getQuantityPerHa, Collectors.reducing(BigDecimal.ZERO, BigDecimal::add)))));
-        String myGraphData = chartService.buildLineChartHarvestWithYear(resourceWithSumHarvestPerYear);
-        return myGraphData;
-    }
-
-
     @Override
     @Transactional
     public Harvest addHarvest(Harvest harvest) throws AddHarvestException {
