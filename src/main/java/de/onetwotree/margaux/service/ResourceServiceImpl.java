@@ -25,4 +25,16 @@ public class ResourceServiceImpl implements ResourceService {
         return resourceRepository.findAll();
     }
 
+    @Override
+    public Resource findOne(Long idResource) {
+        return resourceRepository.findOne(idResource);
+    }
+
+    @Override
+    @Transactional
+    public Resource saveResource(Resource resource) {
+        resource = resourceRepository.saveAndFlush(resource);
+        return resource;
+    }
+
 }

@@ -1,6 +1,7 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.Resource;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -11,4 +12,9 @@ public interface ResourceService {
 
 
     List<Resource> findAll();
+
+    @Transactional
+    Resource saveResource(Resource resource);
+
+    Resource findOne(Long id);
 }
