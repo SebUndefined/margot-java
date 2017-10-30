@@ -19,15 +19,6 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class MainCompany extends MainEntity {
 
-    /*@Column(
-            name = "main_company_name",
-            nullable = false,
-            unique = true
-    )
-    @NotNull(message = "Name Cannot be null ! ")
-    @NotEmpty(message = "Please enter a name")
-    @Size(min = 1, max = 155, message = "Size should be between 1 and 155 characteres")
-    private String name;*/
     @OneToMany(
             mappedBy = "mainCompany",
             cascade = CascadeType.ALL,
@@ -39,14 +30,6 @@ public class MainCompany extends MainEntity {
     public MainCompany() {
 
     }
-
-    /*public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }*/
 
     public List<Company> getCompanies() {
         return companies;
