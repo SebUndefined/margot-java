@@ -5,8 +5,8 @@
 <div th:replace="common/header :: header"></div>
 <main>
     <div th:fragment="sheetAlert">
-        <ul class="collapsible" data-collapsible="accordion" th:each="alertItem : ${alertItems}">
-            <li>
+        <ul class="collapsible popout" data-collapsible="accordion">
+            <li th:each="alertItem : ${alertItems}">
                 <div class="collapsible-header">
                 <span th:switch="${alertItem.level}">
                     <i th:case="${T(de.onetwotree.margaux.Enum.AlertLevel).NOTICE}" class="material-icons cyan-text">
@@ -20,7 +20,7 @@
                     </i>
                 </span>
                     <span th:text="${alertItem.subject}"></span>
-                    <span class="badge" th:text="${alertItem.date}"></span>
+                    <span class="badge" th:text="${#temporals.format(alertItem.date,'dd/MM/yyyy HH:mm')}"></span>
                     <span th:switch="${alertItem.status}">
                         <i th:case="${T(de.onetwotree.margaux.Enum.AlertStatus).OPEN}" class="material-icons red-text">
                             cancel
@@ -30,7 +30,7 @@
                         </i>
                     </span>
                 </div>
-                <div class="collapsible-body" th:text="${alertItem.comment}"><p></p></div>
+                <div class="collapsible-body" th:text="${alertItem.comment}"></div>
             </li>
         </ul>
 

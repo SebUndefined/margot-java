@@ -60,7 +60,6 @@ public class AlertController {
             return "redirect:" + request.getRequestURI();
         }
         redirectAttributes.addFlashAttribute("info", "Alert Saved !");
-
         return "redirect:" + redirectURL;
     }
 }
