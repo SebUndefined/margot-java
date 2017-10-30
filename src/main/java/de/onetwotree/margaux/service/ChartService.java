@@ -2,6 +2,7 @@ package de.onetwotree.margaux.service;
 
 
 import de.onetwotree.margaux.entity.Harvest;
+import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Resource;
 import de.onetwotree.margaux.entity.ResourceType;
 
@@ -18,4 +19,6 @@ public interface ChartService {
     String buildLineChartByDate(Map<Resource, List<Harvest>> resourceWithHarvests);
 
     String buildLineChartHarvestWithYear(Map<Resource, Map<Integer, BigDecimal>> map);
+
+    String buildLineChartHarvestWithYearByPlot(Map<String, Map<Integer, BigDecimal>> map);
 }

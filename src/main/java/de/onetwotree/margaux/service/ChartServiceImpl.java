@@ -8,6 +8,7 @@ import de.onetwotree.margaux.chartData.plotLyJs.PlotLyJsLine;
 import de.onetwotree.margaux.chartData.plotLyJs.datum.DatumLine;
 import de.onetwotree.margaux.chartData.plotLyJs.plotLyLayout.PlotLyLayout;
 import de.onetwotree.margaux.entity.Harvest;
+import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.Resource;
 import org.springframework.stereotype.Service;
 
@@ -86,4 +87,37 @@ public class ChartServiceImpl implements ChartService {
         }
         return myGraphData;
     }
+    @Override
+    public String buildLineChartHarvestWithYearByPlot(Map<String, Map<Integer, BigDecimal>> map) {
+        List<String> x = new ArrayList<>();
+        List<String> y = new ArrayList<>();
+        DatumLine datumLine;
+        List<DatumLine> data = new ArrayList<>();
+        for (Map.Entry<String, Map<Integer, BigDecimal>> entry : map.entrySet()) {
+            for (Map.Entry<Integer, BigDecimal> subEntry : entry.getValue().entrySet()) {
+                x.add(subEntry.getKey().toString());
+                y.add(subEntry.getValue().toString());
+            }
+            datumLine = new DatumLine();
+            datumLine.setMode("lines");
+            datumLine.setY(y);
+            datumLine.setX(x);
+            y = new ArrayList<>();
+            x = new ArrayList<>();
+            datumLine.setType("scatter");
+            datumLine.setName(entry.getKey());
+            data.add(datumLine);
+        }
+        PlotLyLayout layout = PlotLyLayout.simplePlotLyLayout("Harvest");
+        PlotLyJsLine plotLyJsLine = new PlotLyJsLine(layout, data);
+        ObjectMapper mapper = new ObjectMapper();
+        String myGraphData = "";
+        try {
+            myGraphData = mapper.writeValueAsString(plotLyJsLine);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return myGraphData;
+    }
+
 }

@@ -106,6 +106,9 @@ public interface HarvestRepository extends JpaRepository<Harvest, Long> {
      */
     Page<Harvest> findAllByPlotId(@Param("dPlot") Long plotId, Pageable pageRequest);
 
+    Page<Harvest> findAllByResourceId(@Param("idResource") Long resourceId, Pageable pageable);
+
+    List<Harvest> findAllByResourceId(@Param("idResource") Long resourceId);
     /*
     ############################DAO FOR ENTITY AND RESOURCE TYPE#########################
      */
