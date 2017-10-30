@@ -7,8 +7,11 @@ import de.onetwotree.margaux.entity.User;
 import de.onetwotree.margaux.entityJson.MainEntityView;
 import org.hibernate.annotations.LazyToOne;
 import org.hibernate.annotations.LazyToOneOption;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +19,8 @@ import java.util.List;
  * Created by sebby on 10/07/17.
  */
 @Entity
-@Table(name = "db_main_entity")
+@Table(name = "db_main_entity",
+        uniqueConstraints = @UniqueConstraint(name="name_uc", columnNames = {"name"}))
 @Inheritance(
         strategy = InheritanceType.JOINED
 )
@@ -26,6 +30,14 @@ public abstract class MainEntity {
     @Column(name = "main_entity_id")
     @JsonView(MainEntityView.Simple.class)
     protected Long id;
+    @Column(
+            name = "name",
+            nullable = false
+    )
+    @NotNull(message = "Name Cannot be null ! ")
+    @NotEmpty(message = "Please enter a name")
+    @Size(min = 4, max = 155, message = "Size should be between 1 and 155 characteres")
+    private String name;
 
     @OneToMany(
             mappedBy = "mainEntity",
@@ -44,6 +56,14 @@ public abstract class MainEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public List<Alert> getAlerts() {

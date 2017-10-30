@@ -15,16 +15,15 @@ import java.util.List;
  * Created by sebby on 10/07/17.
  */
 @Entity
-@Table(name = "db_company", uniqueConstraints = @UniqueConstraint(name="name_company_uc",
-        columnNames = "company_name"))
+@Table(name = "db_company")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Company extends MainEntity {
 
-    @Column(name = "company_name", unique = true)
+    /*@Column(name = "company_name", unique = true)
     @NotNull(message = "Name Cannot be null !")
     @NotEmpty(message = "Please enter a name")
     @Size(min = 1, max = 155, message = "Size should be between 1 and 155 characteres")
-    private String name;
+    private String name;*/
 
     @NotNull(message = "Please choose")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -45,13 +44,13 @@ public class Company extends MainEntity {
     }
 
 
-    public String getName() {
+    /*public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
+    }*/
 
     public MainCompany getMainCompany() {
         return mainCompany;

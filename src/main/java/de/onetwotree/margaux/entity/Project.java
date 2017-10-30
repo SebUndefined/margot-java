@@ -25,11 +25,11 @@ import java.util.List;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Project extends MainEntity {
 
-    @NotNull(message = "Name cannot be null")
+   /* @NotNull(message = "Name cannot be null")
     @NotEmpty(message = "Name cannot be empty")
     @Size(min = 4, max = 155, message = "Name size should be between 4 and 155 characteres")
     @Column(name = "project_name", nullable = false, unique = true)
-    private String name;
+    private String name;*/
     @NotNull(message = "Begin date cannot be null")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Column(name = "project_begin_date", nullable = false)
@@ -84,13 +84,13 @@ public class Project extends MainEntity {
         this.company = company;
     }
 
-    public String getName() {
+    /*public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
+    }*/
 
 
     public List<Plot> getPlots() {
