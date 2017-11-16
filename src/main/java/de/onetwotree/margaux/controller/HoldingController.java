@@ -70,8 +70,8 @@ public class HoldingController {
         if (holding == null) throw new ItemNotFoundException(idMainCompany, "maincompany/");
         model.addAttribute("alertsMainCompany", alertService.findLast10ByMainEntityId(idMainCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
-        model.addAttribute("maincompany", holding);
-        return "Holding/viewMainCompany";
+        model.addAttribute("holding", holding);
+        return "Holding/viewHolding";
     }
 
     /**

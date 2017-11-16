@@ -9,9 +9,9 @@
         <div class="col l12 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h1>Main Company <span th:text="${maincompany.name}"></span></h1>
+                    <h1>Holding <span th:text="${holding.name}"></span></h1>
                 </div>
-                This page is a particular MainCompany
+                SubTitle
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
                 <div class="panel_title">
                     <h2>Companies</h2>
                 </div>
-                <p>This companies belong to <span th:text="${maincompany.name}"></span> </p>
+                <p>This companies belong to <span th:text="${holding.name}"></span> </p>
                 <table class="bordered highlight responsive-table">
                     <thead>
                     <tr>
@@ -31,7 +31,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="company : ${maincompany.companies}">
+                    <tr th:each="company : ${holding.companies}">
                         <td th:text="${company.id}">undefined</td>
                         <td th:text="${company.name}">undefined</td>
                         <td>
@@ -52,10 +52,10 @@
                 <div class="panel_title">
                     <h2>Alerts</h2>
                 </div>
-                <div th:with="alertItems=${alertsMainCompany}">
+                <div th:with="alertItems=${alertsHolding}">
                     <div th:replace="common/sheetAlert :: sheetAlert"></div>
                 </div>
-                <p class="center-align"><a th:href="@{'/maincompany/view/'+ ${urlId}}+'/alerts' "> See all...</a></p>
+                <p class="center-align"><a th:href="@{'/holding/view/'+ ${urlId}}+'/alerts' "> See all...</a></p>
             </div>
     </div>
     <!--Add button-->
