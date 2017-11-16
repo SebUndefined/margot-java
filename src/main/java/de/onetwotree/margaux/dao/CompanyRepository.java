@@ -14,5 +14,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CompanyRepository extends BaseRepository<Company> {
 
-    Page<Company> findByMainCompanyId(Long idMainCompany, Pageable pageable);
+    Page<Company> findByHoldingId(Long holdingId, Pageable pageable);
 }

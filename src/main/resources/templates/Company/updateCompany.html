@@ -21,10 +21,10 @@
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <select th:field="*{mainCompany}" class="input-field">
-                                <option id="mainCompany" th:each="mainCompany: ${mainCompanies}" th:value="${mainCompany.id}" th:text="${mainCompany.name}"></option>
+                            <select th:field="*{holding}" class="input-field">
+                                <option id="mainCompany" th:each="holding: ${holdings}" th:value="${holding.id}" th:text="${holding.name}"></option>
                             </select>
-                            <label for="mainCompany">Main Company</label>
+                            <label for="mainCompany">Holding</label>
                         </div>
                     </div>
                     <input class="waves-effect waves-light btn" type="submit" />

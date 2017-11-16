@@ -3,18 +3,12 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
-import de.onetwotree.margaux.application.StringToMainCompany;
-import org.apache.tomcat.jni.Local;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 /**

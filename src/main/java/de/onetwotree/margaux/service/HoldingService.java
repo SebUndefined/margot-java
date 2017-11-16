@@ -1,9 +1,7 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.*;
-import de.onetwotree.margaux.exception.ItemNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,21 +10,21 @@ import java.util.List;
 /**
  * Created by SebUndefined on 20/07/17.
  */
-public interface MainCompanyService {
+public interface HoldingService {
 
 
-    List<MainCompany> findAll();
+    List<Holding> findAll();
 
-    Page<MainCompany> findAllPaginated(Pageable pageable);
+    Page<Holding> findAllPaginated(Pageable pageable);
 
-    MainCompany findOne(Long idMainCompany);
+    Holding findOne(Long idMainCompany);
 
-
-    MainCompany saveMainCompany(MainCompany mainCompany);
 
     @Transactional
-    MainCompany updateMainCompany(MainCompany mainCompany);
+    Holding saveHolding(Holding holding);
 
+    @Transactional
+    Holding updateHolding(Holding holding);
 
     Page<Company> findCompaniesPaginated(Long idMainCompany, Pageable pageable);
 

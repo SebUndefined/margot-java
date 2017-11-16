@@ -8,15 +8,15 @@
         <div class="col l12 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h2>Update a Main Companies</h2>
+                    <h2>Add an holding</h2>
                 </div>
-                <!--/*@thymesVar id="MainCompany" type="de.onetwotree.margaux.entity.MainCompany"*/-->
-                <form action="#" th:action="@{'/maincompany/update/'+ ${mainCompany.id}}" th:object="${mainCompany}" method="post" class="col s12">
-                    <input type="hidden" th:field="*{id}"/>
+                <!--/*@thymesVar id="holding" type="de.onetwotree.margaux.entity.Holding"*/-->
+                <form action="#" th:action="@{/holding/add/}" th:object="${holding}" method="post" class="col s12">
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="mainCompanyName" type="text" class="validate" th:field="*{name}" />
-                            <label for="mainCompanyName">Company Name</label>
+                            <input id="holdingName" type="text" class="validate" th:field="*{name}" />
+                            <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td>
+                            <label for="holdingName">Holding Name</label>
                         </div>
                     </div>
                     <div class="row">

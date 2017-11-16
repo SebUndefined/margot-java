@@ -17,17 +17,17 @@ import java.util.List;
 @Entity
 @Table(name = "db_main_company")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class MainCompany extends MainEntity {
+public class Holding extends MainEntity {
 
     @OneToMany(
-            mappedBy = "mainCompany",
+            mappedBy = "holding",
             cascade = CascadeType.ALL,
             orphanRemoval = true,
             fetch = FetchType.LAZY)
     @JsonBackReference
     private List<Company> companies = new ArrayList<Company>();
 
-    public MainCompany() {
+    public Holding() {
 
     }
 

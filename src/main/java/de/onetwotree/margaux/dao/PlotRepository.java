@@ -16,9 +16,9 @@ public interface PlotRepository extends BaseRepository<Plot> {
     @Query("SELECT p FROM Plot as p " +
             "JOIN p.project project " +
             "JOIN project.company company " +
-            "JOIN company.mainCompany mc " +
-            "where mc.id = :id")
-    List<Plot> findAllByMainCompanyId(@Param("id") Long id);
+            "JOIN company.holding h " +
+            "where h.id = :id")
+    List<Plot> findAllByHoldingId(@Param("id") Long id);
 
     @Query("SELECT p FROM Plot as p " +
             "JOIN p.project project " +

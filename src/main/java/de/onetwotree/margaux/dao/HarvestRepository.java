@@ -40,7 +40,7 @@ public interface HarvestRepository extends JpaRepository<Harvest, Long> {
 
     /**
      * Find all harvest for a main Company
-     * @param mainCompanyId
+     * @param holdingId
      * @param pageRequest
      * @return
      */
@@ -49,16 +49,16 @@ public interface HarvestRepository extends JpaRepository<Harvest, Long> {
             "JOIN h.plot plot " +
             "JOIN plot.project project " +
             "JOIN project.company company " +
-            "JOIN company.mainCompany mainCompany " +
-            "WHERE mainCompany.id = :idMainCompany " +
+            "JOIN company.holding holding " +
+            "WHERE holding.id = :holdingId " +
             "ORDER BY h.date ASC ",
             countQuery = "SELECT count(h) from Harvest as h " +
                     "JOIN h.plot plot " +
                     "JOIN plot.project project " +
                     "JOIN project.company company " +
-                    "JOIN company.mainCompany mainCompany " +
-                    "WHERE mainCompany.id = :idMainCompany ")
-    Page<Harvest> findAllByMainCompanyId(@Param("idMainCompany") Long mainCompanyId, Pageable pageRequest);
+                    "JOIN company.holding holding " +
+                    "WHERE holding.id = :holdingId ")
+    Page<Harvest> findAllByHoldingId(@Param("holdingId") Long holdingId, Pageable pageRequest);
 
     /**
      * Find all harvests for a Company
@@ -125,12 +125,12 @@ public interface HarvestRepository extends JpaRepository<Harvest, Long> {
             "JOIN h.plot plot " +
             "JOIN plot.project project " +
             "JOIN project.company company " +
-            "JOIN company.mainCompany mainCompany " +
-            "WHERE mainCompany.id = :idMainCompany " +
+            "JOIN company.holding holding " +
+            "WHERE holding.id = :holdingId " +
             "AND resource.resourceType.id = :idResourceType " +
             "ORDER BY h.date ASC ")
-    List<Harvest> findAllByMainCompanyIdAndResourceTypeId(
-            @Param("idMainCompany") Long idMainCompany,
+    List<Harvest> findAllByHoldingIdAndResourceTypeId(
+            @Param("holdingId") Long idMainCompany,
             @Param("idResourceType") Long idResourceType);
 
     /**

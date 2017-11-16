@@ -1,7 +1,7 @@
 package de.onetwotree.margaux.temp;
 
 import de.onetwotree.margaux.Utils.MargauxException;
-import de.onetwotree.margaux.entity.MainCompany;
+import de.onetwotree.margaux.entity.Holding;
 
 import java.util.List;
 
@@ -9,9 +9,9 @@ import java.util.List;
  * Created by SebUndefined on 18/07/17.
  */
 public interface MainCompanyDAO {
-    List<MainCompany> findAll();
+    List<Holding> findAll();
 
-    void addMainCompany(MainCompany mainCompany);
+    void addMainCompany(Holding holding);
 
-    MainCompany findOnebyId(long id) throws MargauxException;
+    Holding findOnebyId(long id) throws MargauxException;
 }

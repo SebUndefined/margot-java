@@ -3,27 +3,22 @@ package de.onetwotree.margaux.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Enum.AlertStatus;
-import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.*;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.jws.WebParam;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -37,7 +32,7 @@ public class CompanyController {
     @Autowired
     private CompanyService companyService;
     @Autowired
-    private MainCompanyService mainCompanyService;
+    private HoldingService holdingService;
     @Autowired
     private AlertService alertService;
     @Autowired
@@ -63,7 +58,7 @@ public class CompanyController {
     }
     @GetMapping(value = "/add")
     public String addCompanyForm(Model model) {
-        model.addAttribute("mainCompanies", mainCompanyService.findAll());
+        model.addAttribute("holdings", holdingService.findAll());
         model.addAttribute("company", new Company());
         return "Company/editCompany";
     }
@@ -90,7 +85,7 @@ public class CompanyController {
             throw new ItemNotFoundException(Long.valueOf(id), "company/");
         }
         model.addAttribute("company", company);
-        model.addAttribute("mainCompanies", mainCompanyService.findAll());
+        model.addAttribute("holdings", holdingService.findAll());
         return "Company/updateCompany";
     }
     @PostMapping(value = "/update/{id}")

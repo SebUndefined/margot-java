@@ -6,10 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.orm.jpa.vendor.HibernateJpaSessionFactoryBean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
-import org.thymeleaf.spring4.SpringTemplateEngine;
 
 /**
  * Created by SebUndefined on 19/07/17.
@@ -30,8 +27,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         return new StringToUser();
     }
     @Bean
-    public StringToMainCompany getStringToMainCompany(){
-        return new StringToMainCompany();
+    public StringToHolding getStringToMainCompany(){
+        return new StringToHolding();
     }
     @Bean
     public StringToCompany getStringToCompany() {

@@ -40,8 +40,8 @@ public class AlertServiceImpl implements AlertService {
         String className = mainEntity.getClass().getSimpleName();
         String redirectUrl = "/";
         switch (className) {
-            case "MainCompany":
-                redirectUrl = "/maincompany/view/" + mainEntity.getId();
+            case "Holding":
+                redirectUrl = "/holding/view/" + mainEntity.getId();
                 break;
             case "Company":
                 redirectUrl = "/company/view/" + mainEntity.getId();

@@ -8,7 +8,7 @@
         <div class="col l12 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h2>Main Companies</h2>
+                    <h2>Holdings</h2>
                 </div>
                 <table class="bordered highlight responsive-table">
                     <thead>
@@ -19,14 +19,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                            <tr th:each="maincompany : ${mainCompanyPage}">
-                                    <td th:text="${maincompany.id}">undefined</td>
-                                    <td th:text="${maincompany.name}">undefined</td>
+                            <tr th:each="holding : ${holdingPage}">
+                                    <td th:text="${holding.id}">undefined</td>
+                                    <td th:text="${holding.name}">undefined</td>
                                     <td>
-                                        <a th:href="@{'/maincompany/view/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                        <a th:href="@{'/holding/view/' + ${holding.id}}" class="btn-floating btn-small waves-effect waves-light">
                                             <i class="material-icons">visibility</i>
                                         </a>
-                                        <a th:href="@{'/maincompany/update/' + ${maincompany.id}}" class="btn-floating btn-small waves-effect waves-light">
+                                        <a th:href="@{'/holding/update/' + ${holding.id}}" class="btn-floating btn-small waves-effect waves-light">
                                             <i class="material-icons">edit</i>
                                         </a>
                                     </td>
@@ -36,7 +36,7 @@
                 <div th:fragment="pagination" class="row center-align">
                     <ul class="pagination">
                         <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                        <li th:each="i:${#numbers.sequence(0, mainCompanyPage.totalPages -1)}" class="waves-effect">
+                        <li th:each="i:${#numbers.sequence(0, holdingPage.totalPages -1)}" class="waves-effect">
                             <a th:href="@{${url}(page=${i+1})}" th:text="${i+1}"></a>
                         </li>
                         <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
@@ -47,7 +47,7 @@
     </div>
     <!--Add button-->
     <div class="fixed-action-btn horizontal">
-        <a th:href="@{/maincompany/add/}" class="btn-floating btn-large waves-effect waves-light">
+        <a th:href="@{/holding/add/}" class="btn-floating btn-large waves-effect waves-light">
             <i class="material-icons">add</i>
         </a>
     </div>

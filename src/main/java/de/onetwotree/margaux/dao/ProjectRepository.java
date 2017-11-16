@@ -18,13 +18,13 @@ public interface ProjectRepository extends BaseRepository<Project> {
 
     @Query(value = "SELECT p FROM Project as p " +
             "JOIN p.company company " +
-            "JOIN company.mainCompany mc " +
-            "where mc.id = :idMainCompany",
+            "JOIN company.holding h " +
+            "where h.id = :holdingId",
             countQuery = "SELECT count (p) FROM Project as p " +
                     "JOIN p.company company " +
-                    "JOIN company.mainCompany mainCompany " +
-                    "WHERE mainCompany.id = :idMainCompany")
-    Page<Project> findByMainCompanyId(@Param("idMainCompany") Long id, Pageable pageable);
+                    "JOIN company.holding holding " +
+                    "WHERE holding.id = :holdingId")
+    Page<Project> findByHoldingId(@Param("holdingId") Long id, Pageable pageable);
 
 
     Page<Project> findAllByCompanyId(Long id, Pageable pageable);

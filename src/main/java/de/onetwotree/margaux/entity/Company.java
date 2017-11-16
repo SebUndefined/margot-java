@@ -3,11 +3,9 @@ package de.onetwotree.margaux.entity;
 
 
 import com.fasterxml.jackson.annotation.*;
-import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +21,7 @@ public class Company extends MainEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "main_company_id", nullable = false)
     @JsonIgnore
-    private MainCompany mainCompany;
+    private Holding holding;
 
     @OneToMany(
             mappedBy = "company",
@@ -38,12 +36,12 @@ public class Company extends MainEntity {
     }
 
 
-    public MainCompany getMainCompany() {
-        return mainCompany;
+    public Holding getHolding() {
+        return holding;
     }
 
-    public void setMainCompany(MainCompany mainCompany) {
-        this.mainCompany = mainCompany;
+    public void setHolding(Holding holding) {
+        this.holding = holding;
     }
 
     public List<Project> getProjects() {

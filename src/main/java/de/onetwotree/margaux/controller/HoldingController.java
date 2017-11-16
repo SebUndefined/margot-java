@@ -3,12 +3,10 @@ package de.onetwotree.margaux.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Enum.AlertStatus;
-import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.*;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,11 +27,11 @@ import java.util.List;
  * Created by SebUndefined on 18/07/17.
  */
 @Controller
-@RequestMapping(value = "maincompany")
-public class MainCompanyController {
+@RequestMapping(value = "holding")
+public class HoldingController {
 
     @Autowired
-    private MainCompanyService mainCompanyService;
+    private HoldingService holdingService;
     @Autowired
     private AlertService alertService;
     @Autowired
@@ -48,121 +45,121 @@ public class MainCompanyController {
      * @return
      */
     @GetMapping(value = "/")
-    public String MainCompanyIndex(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+    public String holdingIndex(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                    @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
         Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<MainCompany> mainCompanyPage = mainCompanyService.findAllPaginated(pageable);
-        model.addAttribute("mainCompanyPage", mainCompanyPage);
-        return "MainCompany/mainCompany";
+        Page<Holding> holdingPage = holdingService.findAllPaginated(pageable);
+        model.addAttribute("holdingPage", holdingPage);
+        return "Holding/holding";
     }
 
     /**
-     * View MainCompany
+     * View Holding
      * @param id
      * @param model
      * @return
      */
     @GetMapping(value = "view/{id}")
-    public String viewMainCompany(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
+    public String viewHolding(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long idMainCompany = Long.valueOf(id);
-        MainCompany mainCompany = mainCompanyService.findOne(idMainCompany);
-        if (mainCompany == null) throw new ItemNotFoundException(idMainCompany, "maincompany/");
+        Holding holding = holdingService.findOne(idMainCompany);
+        if (holding == null) throw new ItemNotFoundException(idMainCompany, "maincompany/");
         model.addAttribute("alertsMainCompany", alertService.findLast10ByMainEntityId(idMainCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
-        model.addAttribute("maincompany", mainCompany);
-        return "MainCompany/viewMainCompany";
+        model.addAttribute("maincompany", holding);
+        return "Holding/viewMainCompany";
     }
 
     /**
-     * Add a MainCompany GET ACTION
+     * Add a Holding GET ACTION
      * @param model
      * @return
      */
     @GetMapping(value = "add/")
-    public String addMainCompanyForm(Model model) {
-        model.addAttribute("mainCompany", new MainCompany());
-        return "MainCompany/editMainCompany";
+    public String addHoldingForm(Model model) {
+        model.addAttribute("holding", new Holding());
+        return "Holding/editHolding";
     }
 
     /**
-     * Add a mainCompany POST ACTION
-     * @param mainCompany
+     * Add a holding POST ACTION
+     * @param holding
      * @param result
      * @return
      */
     @PostMapping(value = "/add/")
-    public String saveMainCompany(@ModelAttribute("mainCompany") @Valid MainCompany mainCompany,
+    public String saveHolding(@ModelAttribute("holding") @Valid Holding holding,
                                        BindingResult result, RedirectAttributes redirectAttributes){
         if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
             for(ObjectError error : errors) {
                 redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
             }
-            return "redirect:/maincompany/add/";
+            return "redirect:/holding/add/";
         }
-        mainCompanyService.saveMainCompany(mainCompany);
-        return "redirect:/maincompany/view/" + mainCompany.getId();
+        holdingService.saveHolding(holding);
+        return "redirect:/holding/view/" + holding.getId();
     }
     /**
-     * Update a mainCompany GET ACTION
+     * Update a holding GET ACTION
      * @param model
      * @param id
      * @return
      */
     @GetMapping(value = "/update/{id}")
-    public String updateMainCompany(Model model,
+    public String updateHolding(Model model,
                                     @PathVariable(value = "id") String id) throws ItemNotFoundException {
-        Long idMainCompany = Long.valueOf(id);
-        MainCompany mainCompany = mainCompanyService.findOne(idMainCompany);
-        if (mainCompany == null) {
-            throw new ItemNotFoundException(idMainCompany, "maincompany/");
+        Long holdingId = Long.valueOf(id);
+        Holding holding = holdingService.findOne(holdingId);
+        if (holding == null) {
+            throw new ItemNotFoundException(holdingId, "holding/");
         }
-        model.addAttribute("mainCompany", mainCompany);
-        return "MainCompany/updateMainCompany";
+        model.addAttribute("holding", holding);
+        return "Holding/updateHolding";
     }
 
     /**
      *
-     * @param mainCompany
+     * @param holding
      * @param result
      * @param id
      * @param redirectAttributes
      * @return
      */
     @PostMapping(value = "/update/{id}")
-    public String updateMainCompanySubmit(@Valid MainCompany mainCompany, BindingResult result,
-                                    @PathVariable(value = "id") String id,
-                                           RedirectAttributes redirectAttributes){
+    public String updateHoldingSubmit(@Valid Holding holding, BindingResult result,
+                                          @PathVariable(value = "id") String id,
+                                          RedirectAttributes redirectAttributes){
         if (result.hasErrors())
         {
             List<ObjectError> errors = result.getAllErrors();
             for(ObjectError error : errors) {
                 redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
             }
-            return "redirect:/maincompany/update/" + id;
+            return "redirect:/holding/update/" + id;
         }
-        mainCompanyService.updateMainCompany(mainCompany);
-        redirectAttributes.addFlashAttribute("info", "Company " + mainCompany.getName() + " updated !");
-        return "redirect:/maincompany/view/"+ mainCompany.getId();
+        holdingService.updateHolding(holding);
+        redirectAttributes.addFlashAttribute("info", "Holding " + holding.getName() + " updated !");
+        return "redirect:/holding/view/"+ holding.getId();
     }
 
 
     /**
-     * View Companies of MainCompany
+     * View Companies of Holding
      * @param id
      * @param model
      * @return
      */
     @GetMapping(value = "view/{id}/companies/")
-    public String viewCompaniesOfMainCompany(@PathVariable(value = "id") String id, Model model,
+    public String viewCompaniesOfHolding(@PathVariable(value = "id") String id, Model model,
                                              @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                              @RequestParam(name = "size", defaultValue = "10", required = false) Integer size){
-        Long idMainCompany = Long.valueOf(id);
+        Long holdingId = Long.valueOf(id);
         Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Company> companyPage = mainCompanyService.findCompaniesPaginated(idMainCompany, pageable);
+        Page<Company> companyPage = holdingService.findCompaniesPaginated(holdingId, pageable);
         model.addAttribute("urlId", id);
         model.addAttribute("companies", companyPage);
-        return "MainCompany/viewCompanyofMainCompany";
+        return "Holding/viewCompanyofHolding";
     }
 
     /**
@@ -172,27 +169,27 @@ public class MainCompanyController {
      * @return
      */
     @GetMapping(value = "view/{id}/projects/")
-    public String viewProjectsOfMainCompany(@PathVariable(value = "id") String id, Model model,
+    public String viewProjectsOfHolding(@PathVariable(value = "id") String id, Model model,
                                             @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size){
-        Long idMainCompany = Long.valueOf(id);
+        Long holdingId = Long.valueOf(id);
         Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Project> projectPage = mainCompanyService.findProjectsPaginated(idMainCompany, pageable);
+        Page<Project> projectPage = holdingService.findProjectsPaginated(holdingId, pageable);
         model.addAttribute("urlId", id);
         model.addAttribute("projects", projectPage);
-        return "MainCompany/viewProjectsofMainCompany";
+        return "Holding/viewProjectsofHolding";
     }
 
     /**
-     * View plots of MainCompany
+     * View plots of Holding
      * @param id
      * @param model
      * @return
      */
     @GetMapping(value = "view/{id}/plots/")
-    public String viewPlotsOfMainCompany(@PathVariable(value = "id") String id, Model model) {
-        Long idMainCompany = Long.valueOf(id);
-        List<Plot> plotList = mainCompanyService.findPlots(idMainCompany);
+    public String viewPlotsOfHolding(@PathVariable(value = "id") String id, Model model) {
+        Long holdingId = Long.valueOf(id);
+        List<Plot> plotList = holdingService.findPlots(holdingId);
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
         try {
@@ -203,39 +200,39 @@ public class MainCompanyController {
         System.out.println(result);
         model.addAttribute("urlId", id);
         model.addAttribute("plots", result);
-        return "MainCompany/viewPlotsofMainCompany";
+        return "Holding/viewPlotsofHolding";
     }
 
 
     @RequestMapping(value = "view/{id}/harvests/")
-    public String viewHarvestOfMainCompany(Model model,
+    public String viewHarvestOfHolding(Model model,
                                @PathVariable(value = "id") String id,
                                @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
     {
-        Long idMainCompany = Long.valueOf(id);
+        Long holdingId = Long.valueOf(id);
         Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Harvest> harvestPage = mainCompanyService.findHarvestsPaginated(idMainCompany, pageRequest);
+        Page<Harvest> harvestPage = holdingService.findHarvestsPaginated(holdingId, pageRequest);
         model.addAttribute("resourceTypeList", resourceTypeService.findAll());
         model.addAttribute("urlId", id);
         model.addAttribute("harvests", harvestPage);
         model.addAttribute("page", page);
-        return "MainCompany/viewHarvestByMainCompany";
+        return "Holding/viewHarvestByHolding";
     }
 
-    @GetMapping(value = "view/{idMainCompany}/harvests/{idResourceType}")
-    public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idMainCompany") String idMainCompany,
+    @GetMapping(value = "view/{id}/harvests/{idResourceType}")
+    public String viewHarvestsOfHoldingAjax(@PathVariable(value = "id") String id,
                                                 @PathVariable(value = "idResourceType") String idResourceType, Model model){
 
-        String graphHarvestsPlot = mainCompanyService.findHarvestsByResourcesForGraph(Long.valueOf(idMainCompany), Long.valueOf(idResourceType));
+        String graphHarvestsPlot = holdingService.findHarvestsByResourcesForGraph(Long.valueOf(id), Long.valueOf(idResourceType));
         model.addAttribute("myGraphData", graphHarvestsPlot);
         return "common/graphHarvest";
 
     }
 
-    @GetMapping(value = "view/{idMainCompany}/alerts")
-    public String viewAlertsOfProject(@PathVariable(value = "idMainCompany") MainCompany mainCompany, Model model) {
-        model.addAttribute("alertItems", mainCompany.getAlerts());
+    @GetMapping(value = "view/{id}/alerts")
+    public String viewAlertsOfProject(@PathVariable(value = "id") Holding holding, Model model) {
+        model.addAttribute("alertItems", holding.getAlerts());
         return "common/sheetAlert";
     }
 

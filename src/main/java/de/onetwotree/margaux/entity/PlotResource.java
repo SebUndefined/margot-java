@@ -18,8 +18,8 @@ import java.math.BigDecimal;
 @Table(name = "db_plot_resource")
 public class PlotResource {
 
-   @EmbeddedId
-   protected PlotResourcePK plotResourcePK;
+    @EmbeddedId
+    private PlotResourcePK plotResourcePK;
     @ManyToOne(optional = false)
     @JoinColumn(name = "plot_id", referencedColumnName = "main_entity_id",
     insertable = false, updatable = false)
