@@ -27,14 +27,19 @@ import java.util.stream.Collectors;
 @Service("projectService")
 @Transactional(readOnly = true)
 public class ProjectServiceImpl implements ProjectService {
+
+    private final ProjectRepository projectRepository;
+    private final HarvestRepository harvestRepository;
+    private final PlotRepository plotRepository;
+    private final ChartService chartService;
+
     @Autowired
-    ProjectRepository projectRepository;
-    @Autowired
-    HarvestRepository harvestRepository;
-    @Autowired
-    PlotRepository plotRepository;
-    @Autowired
-    ChartService chartService;
+    public ProjectServiceImpl(ProjectRepository projectRepository, HarvestRepository harvestRepository, PlotRepository plotRepository, ChartService chartService) {
+        this.projectRepository = projectRepository;
+        this.harvestRepository = harvestRepository;
+        this.plotRepository = plotRepository;
+        this.chartService = chartService;
+    }
 
 
     @Override

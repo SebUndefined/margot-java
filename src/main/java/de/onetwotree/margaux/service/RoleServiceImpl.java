@@ -15,8 +15,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class RoleServiceImpl implements RoleService {
 
-    @Autowired
+    private final
     RoleRepository roleRepository;
+
+    @Autowired
+    public RoleServiceImpl(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
 
 
     @Override

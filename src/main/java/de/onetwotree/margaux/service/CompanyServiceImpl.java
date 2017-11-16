@@ -26,16 +26,20 @@ import java.util.stream.Collectors;
 @Transactional(propagation = Propagation.SUPPORTS,readOnly = true)
 public class CompanyServiceImpl implements CompanyService {
 
+    private final CompanyRepository companyRepository;
+    private final ProjectRepository projectRepository;
+    private final PlotRepository plotRepository;
+    private final HarvestRepository harvestRepository;
+    private final ChartService chartService;
+
     @Autowired
-    private CompanyRepository companyRepository;
-    @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private PlotRepository plotRepository;
-    @Autowired
-    private HarvestRepository harvestRepository;
-    @Autowired
-    private ChartService chartService;
+    public CompanyServiceImpl(CompanyRepository companyRepository, ProjectRepository projectRepository, PlotRepository plotRepository, HarvestRepository harvestRepository, ChartService chartService) {
+        this.companyRepository = companyRepository;
+        this.projectRepository = projectRepository;
+        this.plotRepository = plotRepository;
+        this.harvestRepository = harvestRepository;
+        this.chartService = chartService;
+    }
 
 
     @Override

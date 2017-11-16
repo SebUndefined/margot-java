@@ -29,18 +29,28 @@ import java.util.List;
 @RequestMapping(value = "plot")
 public class PlotController {
 
-    @Autowired
+    private final
     PlotService plotService;
-    @Autowired
+    private final
     ResourceService resourceService;
-    @Autowired
+    private final
     ResourceTypeService resourceTypeService;
-    @Autowired
+    private final
     ProjectService projectService;
-    @Autowired
+    private final
     PlotResourceService plotResourceService;
-    @Autowired
+    private final
     HarvestService harvestService;
+
+    @Autowired
+    public PlotController(PlotService plotService, ResourceService resourceService, ResourceTypeService resourceTypeService, ProjectService projectService, PlotResourceService plotResourceService, HarvestService harvestService) {
+        this.plotService = plotService;
+        this.resourceService = resourceService;
+        this.resourceTypeService = resourceTypeService;
+        this.projectService = projectService;
+        this.plotResourceService = plotResourceService;
+        this.harvestService = harvestService;
+    }
 
     @RequestMapping(value = "/")
     public String plotIndex(Model model,

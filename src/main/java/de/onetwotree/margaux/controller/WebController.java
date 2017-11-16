@@ -24,11 +24,17 @@ import java.util.List;
 @RequestMapping("/")
 public class WebController {
 
-    @Autowired
+    private final
     AlertRepository alertRepository;
 
-    @Autowired
+    private final
     UserService userService;
+
+    @Autowired
+    public WebController(AlertRepository alertRepository, UserService userService) {
+        this.alertRepository = alertRepository;
+        this.userService = userService;
+    }
 
     @RequestMapping("/")
     public String homeAction(Model model) {

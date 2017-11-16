@@ -26,16 +26,19 @@ import java.util.stream.Collectors;
  * Created by SebUndefined on 02/08/17.
  */
 @Service("harvest")
-//@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 @Transactional(readOnly = true)
 public class HarvestServiceImpl implements HarvestService {
 
+    private final HarvestRepository harvestRepository;
+    private final ChartService chartService;
+    private final PlotResourceRepository plotResourceRepository;
+
     @Autowired
-    HarvestRepository harvestRepository;
-    @Autowired
-    ChartService chartService;
-    @Autowired
-    PlotResourceRepository plotResourceRepository;
+    public HarvestServiceImpl(HarvestRepository harvestRepository, ChartService chartService, PlotResourceRepository plotResourceRepository) {
+        this.harvestRepository = harvestRepository;
+        this.chartService = chartService;
+        this.plotResourceRepository = plotResourceRepository;
+    }
 
 
     @Override

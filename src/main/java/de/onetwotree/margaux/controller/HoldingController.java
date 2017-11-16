@@ -30,12 +30,16 @@ import java.util.List;
 @RequestMapping(value = "holding")
 public class HoldingController {
 
+    private final HoldingService holdingService;
+    private final AlertService alertService;
+    private final ResourceTypeService resourceTypeService;
+
     @Autowired
-    private HoldingService holdingService;
-    @Autowired
-    private AlertService alertService;
-    @Autowired
-    private ResourceTypeService resourceTypeService;
+    public HoldingController(HoldingService holdingService, AlertService alertService, ResourceTypeService resourceTypeService) {
+        this.holdingService = holdingService;
+        this.alertService = alertService;
+        this.resourceTypeService = resourceTypeService;
+    }
 
     /**
      * Index of main Company. Pagination activated

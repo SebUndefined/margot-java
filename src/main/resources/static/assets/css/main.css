@@ -69,7 +69,10 @@ nav {
 .side-nav > li a, .side-nav > li a i.material-icons{
     color: #FFFFFF;
 }
-
+.softversion {
+    position: absolute;
+    bottom: 0;
+}
 .panel6 {
     width: 100%;
     padding: 10px 17px;

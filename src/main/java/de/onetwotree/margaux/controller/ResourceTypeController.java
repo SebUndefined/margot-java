@@ -16,8 +16,13 @@ import java.util.List;
 @RequestMapping(value = "resource-type")
 public class ResourceTypeController {
 
-    @Autowired
+    private final
     ResourceTypeRepository resourceTypeRepository;
+
+    @Autowired
+    public ResourceTypeController(ResourceTypeRepository resourceTypeRepository) {
+        this.resourceTypeRepository = resourceTypeRepository;
+    }
 
     @RequestMapping(value = "/")
     public String mainResourceTypeIndex(Model model) {

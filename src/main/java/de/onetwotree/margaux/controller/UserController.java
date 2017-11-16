@@ -21,10 +21,16 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "user")
 public class UserController {
-    @Autowired
+    private final
     RoleService roleService;
-    @Autowired
+    private final
     UserService userService;
+
+    @Autowired
+    public UserController(RoleService roleService, UserService userService) {
+        this.roleService = roleService;
+        this.userService = userService;
+    }
 
     @GetMapping(value = "/")
     public String userIndex(Model model,

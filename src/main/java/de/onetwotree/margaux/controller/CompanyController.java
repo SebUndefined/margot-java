@@ -29,14 +29,18 @@ import java.util.List;
 @RequestMapping(value = "company")
 public class CompanyController {
 
+    private final CompanyService companyService;
+    private final HoldingService holdingService;
+    private final AlertService alertService;
+    private final ResourceTypeService resourceTypeService;
+
     @Autowired
-    private CompanyService companyService;
-    @Autowired
-    private HoldingService holdingService;
-    @Autowired
-    private AlertService alertService;
-    @Autowired
-    private ResourceTypeService resourceTypeService;
+    public CompanyController(CompanyService companyService, HoldingService holdingService, AlertService alertService, ResourceTypeService resourceTypeService) {
+        this.companyService = companyService;
+        this.holdingService = holdingService;
+        this.alertService = alertService;
+        this.resourceTypeService = resourceTypeService;
+    }
 
     @GetMapping(value = "/")
     public String indexCompany(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,

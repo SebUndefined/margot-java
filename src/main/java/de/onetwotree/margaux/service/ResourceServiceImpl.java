@@ -25,12 +25,19 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class ResourceServiceImpl implements ResourceService {
 
-    @Autowired
+    private final
     ResourceRepository resourceRepository;
-    @Autowired
+    private final
     HarvestRepository harvestRepository;
-    @Autowired
+    private final
     ChartService chartService;
+
+    @Autowired
+    public ResourceServiceImpl(ResourceRepository resourceRepository, HarvestRepository harvestRepository, ChartService chartService) {
+        this.resourceRepository = resourceRepository;
+        this.harvestRepository = harvestRepository;
+        this.chartService = chartService;
+    }
 
     @Override
     public List<Resource> findAll() {

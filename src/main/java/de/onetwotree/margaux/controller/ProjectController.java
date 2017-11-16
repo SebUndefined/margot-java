@@ -31,16 +31,25 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "project")
 public class ProjectController {
-    @Autowired
+    private final
     ProjectService projectService;
-    @Autowired
+    private final
     CompanyService companyService;
-    @Autowired
+    private final
     AlertService alertService;
-    @Autowired
+    private final
     ResourceTypeService resourceTypeService;
-    @Autowired
+    private final
     UserService userService;
+
+    @Autowired
+    public ProjectController(ProjectService projectService, CompanyService companyService, AlertService alertService, ResourceTypeService resourceTypeService, UserService userService) {
+        this.projectService = projectService;
+        this.companyService = companyService;
+        this.alertService = alertService;
+        this.resourceTypeService = resourceTypeService;
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/")
     public String projectIndex(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,

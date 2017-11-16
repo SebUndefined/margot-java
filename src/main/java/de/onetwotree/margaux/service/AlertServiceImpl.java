@@ -18,10 +18,16 @@ import java.util.List;
 @Service("AlertService")
 public class AlertServiceImpl implements AlertService {
 
-    @Autowired
+    private final
     AlertRepository alertRepository;
-    @Autowired
+    private final
     MainEntityRepository mainEntityRepository;
+
+    @Autowired
+    public AlertServiceImpl(AlertRepository alertRepository, MainEntityRepository mainEntityRepository) {
+        this.alertRepository = alertRepository;
+        this.mainEntityRepository = mainEntityRepository;
+    }
 
     @Override
     public List<Alert> findLast10ByMainEntityId(Long idMainEntity, AlertStatus alertStatus) {

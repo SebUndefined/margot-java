@@ -27,16 +27,18 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "harvest")
 public class HarvestController {
+    private final HarvestRepository harvestRepository;
+    private final HarvestService harvestService;
+    private final PlotRepository plotRepository;
+    private final ResourceRepository resourceRepository;
+
     @Autowired
-    HarvestRepository harvestRepository;
-    @Autowired
-    HarvestService harvestService;
-    @Autowired
-    PlotRepository plotRepository;
-    @Autowired
-    ResourceRepository resourceRepository;
-    @Autowired
-    ResourceTypeRepository resourceTypeRepository;
+    public HarvestController(HarvestRepository harvestRepository, HarvestService harvestService, PlotRepository plotRepository, ResourceRepository resourceRepository) {
+        this.harvestRepository = harvestRepository;
+        this.harvestService = harvestService;
+        this.plotRepository = plotRepository;
+        this.resourceRepository = resourceRepository;
+    }
 
     @RequestMapping(value = "/")
     public String harvestIndex(Model model,

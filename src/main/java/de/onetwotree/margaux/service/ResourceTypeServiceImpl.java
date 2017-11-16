@@ -15,8 +15,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ResourceTypeServiceImpl implements ResourceTypeService {
 
-    @Autowired
+    private final
     ResourceTypeRepository resourceTypeRepository;
+
+    @Autowired
+    public ResourceTypeServiceImpl(ResourceTypeRepository resourceTypeRepository) {
+        this.resourceTypeRepository = resourceTypeRepository;
+    }
 
     @Override
     public List<ResourceType> findAll() {

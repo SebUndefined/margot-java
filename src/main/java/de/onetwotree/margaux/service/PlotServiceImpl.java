@@ -26,14 +26,18 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class PlotServiceImpl implements PlotService {
 
+    private final PlotRepository plotRepository;
+    private final HarvestRepository harvestRepository;
+    private final PlotResourceRepository plotResourceRepository;
+    private final ChartService chartService;
+
     @Autowired
-    private PlotRepository plotRepository;
-    @Autowired
-    private HarvestRepository harvestRepository;
-    @Autowired
-    private PlotResourceRepository plotResourceRepository;
-    @Autowired
-    private ChartService chartService;
+    public PlotServiceImpl(PlotRepository plotRepository, HarvestRepository harvestRepository, PlotResourceRepository plotResourceRepository, ChartService chartService) {
+        this.plotRepository = plotRepository;
+        this.harvestRepository = harvestRepository;
+        this.plotResourceRepository = plotResourceRepository;
+        this.chartService = chartService;
+    }
 
 
     @Override

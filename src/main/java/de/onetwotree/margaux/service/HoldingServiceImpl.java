@@ -25,22 +25,26 @@ public class HoldingServiceImpl implements HoldingService {
      * Repository
      */
 
-    @Autowired
-    private HoldingRepository holdingRepository;
-    @Autowired
-    private CompanyRepository companyRepository;
-    @Autowired
-    private ProjectRepository projectRepository;
-    @Autowired
-    private PlotRepository plotRepository;
-    @Autowired
-    private HarvestRepository harvestRepository;
+    private final HoldingRepository holdingRepository;
+    private final CompanyRepository companyRepository;
+    private final ProjectRepository projectRepository;
+    private final PlotRepository plotRepository;
+    private final HarvestRepository harvestRepository;
 
     /**
      * Services
      */
+    private final ChartService chartService;
+
     @Autowired
-    ChartService chartService;
+    public HoldingServiceImpl(HoldingRepository holdingRepository, CompanyRepository companyRepository, ProjectRepository projectRepository, PlotRepository plotRepository, HarvestRepository harvestRepository, ChartService chartService) {
+        this.holdingRepository = holdingRepository;
+        this.companyRepository = companyRepository;
+        this.projectRepository = projectRepository;
+        this.plotRepository = plotRepository;
+        this.harvestRepository = harvestRepository;
+        this.chartService = chartService;
+    }
 
 
     @Override

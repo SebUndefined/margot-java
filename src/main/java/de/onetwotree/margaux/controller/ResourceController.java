@@ -29,10 +29,16 @@ import java.util.List;
 @RequestMapping(value = "resource")
 public class ResourceController {
 
-    @Autowired
+    private final
     ResourceService resourceService;
-    @Autowired
+    private final
     ResourceTypeService resourceTypeService;
+
+    @Autowired
+    public ResourceController(ResourceService resourceService, ResourceTypeService resourceTypeService) {
+        this.resourceService = resourceService;
+        this.resourceTypeService = resourceTypeService;
+    }
 
     @RequestMapping(value = "/")
     public String mainResourceIndex(Model model) {

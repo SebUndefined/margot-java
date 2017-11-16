@@ -29,10 +29,14 @@ import java.util.List;
 @RequestMapping(value = "alert")
 public class AlertController {
 
+    private final AlertService alertService;
+    private final MainEntityRepository mainEntityRepository;
+
     @Autowired
-    AlertService alertService;
-    @Autowired
-    MainEntityRepository mainEntityRepository;
+    public AlertController(AlertService alertService, MainEntityRepository mainEntityRepository) {
+        this.alertService = alertService;
+        this.mainEntityRepository = mainEntityRepository;
+    }
 
     @GetMapping(value = "add/{mainEntityId}")
     public String addAlertForm(Model model, @PathVariable(name = "mainEntityId") Long idMainEntity) throws ItemNotFoundException {
