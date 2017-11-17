@@ -1,0 +1,155 @@
+<ul id="slide-out" class="side-nav fixed">
+    <a th:href="@{/}">
+        <div id="logo">
+            <!--<img src="assets/img/logo_12Tree_resize.jpg">-->
+        </div>
+    </a>
+    <div class="row">
+        <div class="input-field col s12">
+            <i class="material-icons prefix">search</i>
+            <input id="icon_prefix" type="text" class="autocomplete" />
+            <label for="icon_prefix">Search</label>
+        </div>
+    </div>
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header">
+                    <i class="petite material-icons">business</i>
+                    Holding
+                    <i class="material-icons right extend-menu">
+                        arrow_drop_down
+                    </i>
+                </a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a th:href="@{/holding/}">All</a></li>
+                        <li class="sub-menu"><a th:href="@{/holding/add/}">Add</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">location_city</i>Companies<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a th:href="@{/company/}">All</a></li>
+                        <li class="sub-menu"><a th:href="@{/company/add/}">Add</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">work</i>Projects<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a th:href="@{/project/}">All</a></li>
+                        <li class="sub-menu"><a th:href="@{/project/add/}">Add</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">location_on</i>Plots<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a th:href="@{/plot/}">All</a></li>
+                        <li class="sub-menu"><a th:href="@{/plot/map/}">All (map)</a></li>
+                        <li class="sub-menu"><a th:href="@{/plot/add/}">Add</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">spa</i>Resource<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a th:href="@{/resource/}">All</a></li>
+                        <li class="sub-menu"><a th:href="@{/resource/add/}">Add</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">swap_calls</i>Harvests<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a th:href="@{/harvest/}">All</a></li>
+                        <li class="sub-menu"><a th:href="@{/harvest/add/}">Add</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">shopping_cart</i>Sales<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a href="#!">Check All</a></li>
+                        <li class="sub-menu"><a href="#!">Find one</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">report_problem</i>Alerts<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a href="#!">Check All</a></li>
+                        <li class="sub-menu"><a href="#!">Find one</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+    <!--DropDown-->
+    <li class="bold">
+        <ul class="collapsible collapsible-accordion">
+            <li>
+                <a class="collapsible-header"><i class="petite material-icons">supervisor_account</i>Users<i class="material-icons right">arrow_drop_down</i></a>
+                <div class="collapsible-body">
+                    <ul>
+                        <li class="sub-menu"><a href="#!">Check All</a></li>
+                        <li class="sub-menu"><a href="#!">Find one</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </li>
+    <!--End DropDown-->
+</ul>

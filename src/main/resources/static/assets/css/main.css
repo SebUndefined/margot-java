@@ -43,6 +43,7 @@ nav {
 }
 .side-nav li>a>i.material-icons {
     margin-right: 23px;
+    height:auto;
 }
 
 .sub-menu {
