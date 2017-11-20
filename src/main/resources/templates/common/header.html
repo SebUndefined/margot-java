@@ -11,7 +11,7 @@
             </a>
             <div class="right drop-pmenu">
 
-                <a class='dropdown-button btn' data-beloworigin="true" constrainWidth="true" href='#' data-activates='personnal-menu'>
+                <a class='btn' id="personnal-menu-button" href='#' data-activates='personnal'>
                     <span sec:authentication="principal.user.firstname"></span>
                     <span sec:authentication="principal.user.lastname"></span>
                 </a>
@@ -26,6 +26,7 @@
                         </form>
                     </li>
                 </ul>
+
             </div>
         </nav>
        <!-- LEFT MENU-->
@@ -72,8 +73,122 @@
                     </li>
                 </ul>
             </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="petite material-icons">work</i>Projects<i class="material-icons right">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="sub-menu"><a th:href="@{/project/}">All</a></li>
+                                <li class="sub-menu"><a th:href="@{/project/add/}">Add</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="petite material-icons">location_on</i>Plots<i class="material-icons right">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="sub-menu"><a th:href="@{/plot/}">All</a></li>
+                                <li class="sub-menu"><a th:href="@{/plot/map/}">All (map)</a></li>
+                                <li class="sub-menu"><a th:href="@{/plot/add/}">Add</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="petite material-icons">spa</i>Resource<i class="material-icons right">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="sub-menu"><a th:href="@{/resource/}">All</a></li>
+                                <li class="sub-menu"><a th:href="@{/resource/add/}">Add</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="petite material-icons">swap_calls</i>Harvests<i class="material-icons right">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="sub-menu"><a th:href="@{/harvest/}">All</a></li>
+                                <li class="sub-menu"><a th:href="@{/harvest/add/}">Add</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="petite material-icons">shopping_cart</i>Sales<i class="material-icons right">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="sub-menu"><a href="#!">Check All</a></li>
+                                <li class="sub-menu"><a href="#!">Find one</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="petite material-icons">report_problem</i>Alerts<i class="material-icons right">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="sub-menu"><a th:href="@{/alert/}">All</a></li>
+                                <li class="sub-menu"><a th:href="@{/alert/add/}">Add</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li>
+                        <a class="collapsible-header"><i class="petite material-icons">supervisor_account</i>Users<i class="material-icons right">arrow_drop_down</i></a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li class="sub-menu"><a th:href="@{/user/}">All</a></li>
+                                <li class="sub-menu"><a th:href="@{/user/add/}">Add</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <!--Test Personnal menu-->
+        <ul id="personnal" class="side-nav">
+            <li><div class="user-view">
+                <div class="background">
+                    <img src="images/office.jpg">
+                </div>
+                <a href="#!user"><img class="circle" src="images/yuna.jpg"></a>
+                <a href="#!name">
+                    <span class="white-text name">
+                        <span sec:authentication="principal.user.firstname"></span>
+                        <span sec:authentication="principal.user.lastname"></span>
+                    </span>
+                </a>
+                <a href="#!email"><span class="white-text email" sec:authentication="principal.user.email"></span></a>
+            </div></li>
+            <li><a th:href="@{/profile}"><i class="material-icons">perm_identity</i>Profile</a></li>
+            <li><div class="divider"></div></li>
+            <li><a class="subheader">Subheader</a></li>
+                <form th:action="@{/logout}" method="post">
+                    <!--<input type="submit" value="Sign Out"/>-->
+                    <li><a type="submit"><i class="material-icons">power_settings_new</i>Logout</a></li>
+                </form>
+        </ul>
 
         <!--end test personnal menu-->
     </header>

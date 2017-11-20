@@ -52,6 +52,7 @@ public class ResourceController {
         Resource resource = resourceService.findOne(Long.valueOf(idResource));
         if (resource == null) throw new ItemNotFoundException(Long.valueOf(idResource), "resource/");
         model.addAttribute("resource", resource);
+        model.addAttribute("urlId", idResource);
         return "Resource/viewResource";
     }
 
