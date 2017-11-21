@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 /**
  * Created by SebUndefined on 20/11/17.
  */
-@Service("StorageService")
+
 public interface StorageService {
 
     void init();

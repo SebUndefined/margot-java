@@ -11,7 +11,7 @@
                     <h2>Add a country</h2>
                 </div>
                 <!--/*@thymesVar id="holding" type="de.onetwotree.margaux.entity.Holding"*/-->
-                <form action="#" th:action="@{/country/add/}" th:object="${country}" method="post" class="col s12">
+                <form action="#" th:action="@{/country/add/}" th:object="${country}" method="post" class="col s12" enctype="multipart/form-data">
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
                             <input id="countryName" type="text" class="validate" th:field="*{name}" />
