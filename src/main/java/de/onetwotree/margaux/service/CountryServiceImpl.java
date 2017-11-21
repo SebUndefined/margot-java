@@ -25,6 +25,7 @@ public class CountryServiceImpl implements CountryService {
     public Country saveCountry(CountryDTO countryDTO) {
         Country country = new Country();
 
+        storageService.store(countryDTO.getFlag());
         return country;
     }
 }

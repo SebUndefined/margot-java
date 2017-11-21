@@ -11,10 +11,14 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.security.SecureRandom;
+import java.time.LocalDateTime;
+import java.util.Random;
 import java.util.stream.Stream;
 
 /**
@@ -43,15 +47,27 @@ public class StorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public String store(MultipartFile file) {
+        //getting the extension
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        String[] fileFrags = file.getOriginalFilename().split("\\.");
+        String extension = fileFrags[fileFrags.length-1];
+        //Replacing name by current time
+        filename = LocalDateTime.now().toString();
+        filename = StringUtils.replace(filename, ":", "");
+        filename = StringUtils.replace(filename, ".", "");
+        //Adding a random number
+        int random = (int) (Math.random() * (1024 - 10)) + 10;
+        filename = filename + "-" + random + "." + extension;
+        filename = StringUtils.cleanPath(filename);
+        //Saving the file
         try {
-            Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),
-                    StandardCopyOption.REPLACE_EXISTING);
+            Files.copy(file.getInputStream(), this.rootLocation.resolve(filename),StandardCopyOption.REPLACE_EXISTING);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
+        return filename;
     }
 
     @Override
