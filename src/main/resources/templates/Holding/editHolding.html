@@ -21,10 +21,10 @@
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <!--<select th:field="*{manager}" class="input-field">
-                                <option id="manager" th:each="user: ${users}" th:value="${user.id}" th:text="${user.firstname}"></option>
+                            <select th:field="*{country}" class="input-field">
+                                <option id="manager" class="left circle" th:each="country: ${countries}" th:data-icon="${'/files/' + country.flag}" th:value="${country.id}" th:text="${country.name}"></option>
                             </select>
-                            <label for="manager">Manager</label>-->
+                            <label for="manager">Manager</label>
                         </div>
                     </div>
 

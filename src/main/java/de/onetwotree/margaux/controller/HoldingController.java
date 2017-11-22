@@ -33,12 +33,14 @@ public class HoldingController {
     private final HoldingService holdingService;
     private final AlertService alertService;
     private final ResourceTypeService resourceTypeService;
+    private final CountryService countryService;
 
     @Autowired
-    public HoldingController(HoldingService holdingService, AlertService alertService, ResourceTypeService resourceTypeService) {
+    public HoldingController(HoldingService holdingService, AlertService alertService, ResourceTypeService resourceTypeService, CountryService countryService) {
         this.holdingService = holdingService;
         this.alertService = alertService;
         this.resourceTypeService = resourceTypeService;
+        this.countryService = countryService;
     }
 
     /**
@@ -82,6 +84,7 @@ public class HoldingController {
     @GetMapping(value = "add/")
     public String addHoldingForm(Model model) {
         model.addAttribute("holding", new Holding());
+        model.addAttribute("countries", countryService.findAll());
         return "Holding/editHolding";
     }
 

@@ -8,7 +8,7 @@
             <th>ID</th>
             <th>Name</th>
             <th>Size</th>
-            <th>Location</th>
+            <th>Country</th>
             <th>Project</th>
             <th>Manager</th>
             <th>Actions</th>
@@ -19,7 +19,9 @@
             <td th:text="${plot.id}">undefined</td>
             <td th:text="${plot.name}">undefined</td>
             <td th:text="${plot.size}">undefined</td>
-            <td>undefined</td>
+            <td>
+                <img class="responsive-img mini-pic" th:src="@{${'/files/' + plot.country.flag}}" th:title="${plot.country.name}">
+            </td>
             <td th:text="${plot.project.name}">undefined</td>
             <td>undefined</td>
             <td>

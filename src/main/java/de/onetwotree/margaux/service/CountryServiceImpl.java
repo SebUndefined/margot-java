@@ -6,6 +6,8 @@ import de.onetwotree.margaux.entity.Country;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by SebUndefined on 21/11/17.
  */
@@ -22,10 +24,15 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
+    public List<Country> findAll() {
+        return countryRepository.findAll();
+    }
+    @Override
     public Country saveCountry(CountryDTO countryDTO) {
         Country country = new Country();
-
-        storageService.store(countryDTO.getFlag());
+        country.setName(countryDTO.getName());
+        country.setFlag(storageService.store(countryDTO.getFlag()));
+        country = countryRepository.saveAndFlush(country);
         return country;
     }
 }

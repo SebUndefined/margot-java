@@ -39,6 +39,11 @@ public abstract class MainEntity {
     @Size(min = 4, max = 155, message = "Size should be between 1 and 155 characteres")
     private String name;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id")
+    @JsonIgnore
+    private Country country;
+
     @OneToMany(
             mappedBy = "mainEntity",
             cascade = CascadeType.ALL,
@@ -64,6 +69,14 @@ public abstract class MainEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public List<Alert> getAlerts() {

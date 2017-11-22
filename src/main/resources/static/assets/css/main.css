@@ -5,8 +5,17 @@ html {
     font-size: 16px;
     background-color: #F7F7F7;
 }
+body {
+    color: #73879C;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: inherit;
+}
+h1 {
+    font-size: 1.3em;
+}
 h2 {
-    font-size: 1.2em;
+    font-size: 1.1em;
     font-weight: 400;
 }
 
@@ -87,6 +96,9 @@ nav {
     opacity: 1;
     transition: all .2s ease;
 }
+div.row.small-margin {
+    margin-bottom: 6px;
+}
 .panel_title {
     border-bottom: 2px solid #E6E9ED;
     padding: 1px 0px 3px;
@@ -101,10 +113,18 @@ nav {
 }
 .panel_title input.select-dropdown, .panel_title div.select-wrapper.input-field {
     margin: 0;
+
 }
 .map-panel {
     min-height: 400px;
 }
+/*Sheet*/
+img.mini-pic {
+    width: 29px;
+}
+
+
+/*End Sheet*/
 /*Google Map*/
 #map {
     height: 400px;

@@ -4,6 +4,7 @@ import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.exception.PlotResourceException;
+import de.onetwotree.margaux.form.PlotResourceForm;
 import de.onetwotree.margaux.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -234,5 +235,14 @@ public class PlotController {
 
         }
         return url;
+    }
+
+    @GetMapping(value = "view/{plot}/edit-resources/")
+    public String editResourcesOfPlot(@PathVariable Plot plot, Model model) {
+        PlotResourceForm plotResourceForm = new PlotResourceForm(plot.getPlotResources());
+        System.out.println(plotResourceForm.getPlotResourceList().size());
+        model.addAttribute("plotResourceForm", plotResourceForm);
+        model.addAttribute("resources", resourceService.findAll());
+        return "Plot/editPlotResources :: editPlotResourceForm";
     }
 }

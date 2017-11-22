@@ -61,7 +61,15 @@
         <div class="col l6 m12 s12">
             <div class="panel6">
                 <div class="panel_title">
-                    <h2>Resources</h2>
+                    <div class="row small-margin">
+                        <div class="col l6 s6 ">
+                            <h2>Resources</h2>
+                        </div>
+                        <div class="col l6 s6 right-align">
+                            <a id="editResources" class="btn-floating btn btn-small waves-effect waves-light"><i class="material-icons">add</i></a>
+                        </div>
+                    </div>
+
                 </div>
                 <div id="plot-resource-graph"></div>
             </div>
@@ -141,4 +149,5 @@
     var figure = JSON.parse(graphJson);
     Plotly.newPlot('plot-resource-graph', figure.data, figure.layout);
 </script>
+<script th:src="@{/assets/js/edit.js}"></script>
 </html>

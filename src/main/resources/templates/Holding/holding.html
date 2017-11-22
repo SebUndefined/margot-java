@@ -10,11 +10,12 @@
                 <div class="panel_title">
                     <h2>Holdings</h2>
                 </div>
-                <table class="bordered highlight responsive-table">
+                <table class="bordered highlight responsive-table centered">
                     <thead>
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>Country</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -22,6 +23,10 @@
                             <tr th:each="holding : ${holdingPage}">
                                     <td th:text="${holding.id}">undefined</td>
                                     <td th:text="${holding.name}">undefined</td>
+                                    <td>
+                                        <img class="responsive-img mini-pic" th:src="@{${'/files/' + holding.country.flag}}" th:title="${holding.country.name}">
+                                    </td>
+                                
                                     <td>
                                         <a th:href="@{'/holding/view/' + ${holding.id}}" class="btn-floating btn-small waves-effect waves-light">
                                             <i class="material-icons">visibility</i>
