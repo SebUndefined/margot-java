@@ -1,4 +1,4 @@
-$(function(){
+$(document).ready(function(){
     // Activate the side menu
     $(".button-collapse").sideNav({
          menuWidth: 250, // Default is 300

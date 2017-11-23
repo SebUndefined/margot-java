@@ -13,7 +13,6 @@
             });
             for(var i = 0; i < plots.length; i++) {
                 var latlng = new google.maps.LatLng(plots[i].latitude, plots[i].longitude);
-                console.log(plots[i]);
                 var marker = new google.maps.Marker({
                     position: latlng,
                     map: map,

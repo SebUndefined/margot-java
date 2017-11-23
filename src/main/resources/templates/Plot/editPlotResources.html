@@ -11,25 +11,79 @@
                     <div class="panel_title">
                         <h2>Add a Resource to Plot</h2>
                     </div>
-                    <form action="#" th:object="${plotResourceForm}" method="post" class="col s12" th:fragment="editPlotResourceForm">
-                        <div th:each="plotResource, rowStat : *{plotResourceList}">
-                            <div class="row">
-                                <div class="input-field col l6 m6 s12">
-                                    <input type="text" th:field="*{plotResourceList[__${rowStat.index}__].plot.id}" />
-                                </div>
+                    <form id="editPlotResourceForm" action="#" th:object="${plotResourceForm}" method="post" class="col s12" th:fragment="editPlotResourceForm">
+                        <div class="row" th:each="plotResource, rowStat : *{plotResourceList}" th:id="${rowStat.index}">
+                            <div class="input-field col l5 m5 s5">
+                                <input type="hidden" th:field="*{plotResourceList[__${rowStat.index}__].plot}" />
+                                <select th:field="*{plotResourceList[__${rowStat.index}__].resource}">
+                                    <option id="resourceForm" th:each="resource: ${resources}" th:value="${resource.id}" th:text="${resource.name}"></option>
+                                </select>
+                                <label for="resourceForm">Resource</label>
                             </div>
-                            <div class="row">
-                                <div class="input-field col l6 m6 s12">
-                                    <select th:field="*{plotResourceList[__${rowStat.index}__].resource}" class="input-field">
-                                        <option id="mainCompany" th:each="resource: ${resources}" th:value="${resource.id}" th:text="${resource.name}"></option>
-                                    </select>
-                                    <label for="mainCompany">Resource</label>
-                                </div>
+                            <div class="input-field col l5 m5 s5">
+                                <input id="proportionForm" type="text" th:field="*{plotResourceList[__${rowStat.index}__].proportion}" th:value="*{plotResourceList[__${rowStat.index}__].proportion}" />
+                                <label for="proportionForm">Proportion</label>
+                            </div>
+                            <div class="input-field col l2 m2 s2">
+                                <a class="input_fields_delete"><i class="material-icons left">delete</i></a>
                             </div>
                         </div>
 
-
+                        <a id="add_field_button" class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add</a>
                         <input class="waves-effect waves-light btn" type="submit" />
+
+                        <script th:inline="javascript" th:src="@{/assets/js/utils/refreshSelect.js}"></script>
+                       <!-- Retrieving Resources form model attribute-->
+                        <script th:each="resource:${resources}" th:inline="javascript">
+                            var resourceItems = [];
+                            /*[# th:each="n : ${resources}"]*/
+                            resourceItems.push({"id":"[(${n.id})]", "name":"[(${n.name})]"});
+                            /*[/]*/
+                        </script>
+                        <!-- Building line Form-->
+                        <script th:inline="javascript">
+                            console.log(resourceItems);
+                            $(document).ready(function() {
+                                var deleter         = $(".input_fields_delete"); //Fields wrapper
+                                var add_button      = $("#add_field_button"); //Add button ID
+                                var x = 1; //initlal text box count
+                                var optionSelect = "";
+                                for (y = 0; y < resourceItems.length; y++) {
+                                    optionSelect = optionSelect + "<option id='resourceForm' value='"+ resourceItems[y].id+"'>"+ resourceItems[y].name+"</option>\n"
+                                }
+
+                                $(add_button).click(function (e) {
+                                    var idNewItem = parseInt($('#editPlotResourceForm').children('div').last().attr('id')) + 1;
+                                    var insertion = "<div class='row' id='"+ idNewItem +"'>\n" +
+                                        "                            <div class='input-field col l5 m5 s5'>\n" +
+                                        "                                <input type='hidden' id='" + "plotResourceList"+ idNewItem +".plot" +"' name='" + "plotResourceList["+ idNewItem +"].plot" +"' />\n" +
+                                        "                                <select th:field='*{plotResourceList[__${rowStat.index}__].resource}'>\n" +
+                                                                            optionSelect +
+                                        "                                </select>\n" +
+                                        "                                <label for='resourceForm'>Resource</label>\n" +
+                                        "                            </div>\n" +
+                                        "                            <div class=\"input-field col l5 m5 s5\">\n" +
+                                        "                                <input id='proportionForm' type=\"text\" th:field=\"*{plotResourceList[__${rowStat.index}__].proportion}\" th:value=\"*{plotResourceList[__${rowStat.index}__].proportion}\" />\n" +
+                                        "                                <label for=\"proportionForm\">Proportion</label>\n" +
+                                        "                            </div>\n" +
+                                        "                            <div class=\"input-field col l2 m2 s2\">\n" +
+                                        "                                <a class=\"input_fields_delete\"><i class=\"material-icons left\">delete</i></a>\n" +
+                                        "                            </div>\n" +
+                                        "                        </div>";
+                                    $( insertion ).insertBefore( "#add_field_button" );
+                                    $('select').material_select();
+                                });
+                                $(deleter).click(function (e) {
+                                    e.preventDefault();
+                                    $(this).parent('div').parent().remove();
+                                });
+                            });
+
+
+
+
+
+                        </script>
                     </form>
                 </div>
             </div>
