@@ -3,6 +3,7 @@ package de.onetwotree.margaux.service;
 import de.onetwotree.margaux.entity.Harvest;
 import de.onetwotree.margaux.entity.Plot;
 import de.onetwotree.margaux.entity.PlotResource;
+import de.onetwotree.margaux.form.PlotResourceForm;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,4 +34,7 @@ public interface PlotService {
 
     @Transactional
     void updatePlot(Plot plot, Plot plotOrigin);
+
+    @Transactional
+    void updateResourceOfPlot(Plot plot, PlotResourceForm plotResourceForm);
 }

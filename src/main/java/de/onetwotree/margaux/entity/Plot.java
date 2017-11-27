@@ -51,7 +51,7 @@ public class Plot extends MainEntity implements Serializable {
     @JsonView(PlotView.PlotWithUserAndCompany.class)
     private Project project;
 
-    @OneToMany(mappedBy = "plot")
+    @OneToMany(mappedBy = "plot", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<PlotResource> plotResources = new ArrayList<>();
 

@@ -5,6 +5,7 @@ import de.onetwotree.margaux.dao.PlotRepository;
 import de.onetwotree.margaux.dao.PlotResourceRepository;
 import de.onetwotree.margaux.entity.*;
 
+import de.onetwotree.margaux.form.PlotResourceForm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.ConstraintViolationException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -127,6 +129,26 @@ public class PlotServiceImpl implements PlotService {
         } catch (ConstraintViolationException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    @Transactional
+    public void updateResourceOfPlot(Plot plot, PlotResourceForm plotResourceForm) {
+        List<PlotResource> plotResourceList = new ArrayList<>();
+        for (PlotResource plotResource : plotResourceForm.getPlotResourceList()) {
+            if (plotResource.getProportion() != null) {
+                PlotResource plotResourceUpdate = new PlotResource();
+                plotResourceUpdate.setPlotResourcePK(new PlotResourcePK(plot.getId(), plotResource.getResource().getId()));
+                plotResourceUpdate.setPlot(plot);
+                plotResourceUpdate.setResource(plotResource.getResource());
+                plotResourceUpdate.setProportion(plotResource.getProportion());
+                plotResourceList.add(plotResourceUpdate);
+            }
+        }
+        plot.getPlotResources().clear();
+        plot.getPlotResources().addAll(plotResourceList);
+
+        plotRepository.save(plot);
     }
 
 }

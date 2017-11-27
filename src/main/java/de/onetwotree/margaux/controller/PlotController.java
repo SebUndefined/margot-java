@@ -18,6 +18,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.jws.WebParam;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -83,6 +84,16 @@ public class PlotController {
         model.addAttribute("urlId", id);
         model.addAttribute("plot", plot);
         return "Plot/viewPlot";
+    }
+    @RequestMapping(value = "/view/{id}/resources/")
+    public String viewResourceOfPlot(@PathVariable(value = "id") String id) throws ItemNotFoundException {
+        Long plotId = Long.valueOf(id);
+
+        Plot plot = plotService.findOne(plotId);
+        if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
+        List<PlotResource> resourcePlotList = plot.getPlotResources();
+        String myGraphData = plotResourceService.getPlotResourceAsJson(resourcePlotList);
+        return myGraphData;
     }
 
     @RequestMapping(value = "/add")
@@ -240,9 +251,16 @@ public class PlotController {
     @GetMapping(value = "view/{plot}/edit-resources/")
     public String editResourcesOfPlot(@PathVariable Plot plot, Model model) {
         PlotResourceForm plotResourceForm = new PlotResourceForm(plot.getPlotResources());
-        System.out.println(plotResourceForm.getPlotResourceList().size());
+        model.addAttribute("plot", plot);
         model.addAttribute("plotResourceForm", plotResourceForm);
         model.addAttribute("resources", resourceService.findAll());
         return "Plot/editPlotResources :: editPlotResourceForm";
+    }
+
+    @PostMapping(value = "view/{plot}/edit-resources/")
+    public String editResourceOfPlotSubmit(@PathVariable Plot plot, Model model, @ModelAttribute PlotResourceForm plotResourceForm) {
+
+        plotService.updateResourceOfPlot(plot, plotResourceForm);
+        return "pouete";
     }
 }
