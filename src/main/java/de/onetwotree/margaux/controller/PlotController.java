@@ -57,9 +57,11 @@ public class PlotController {
     @RequestMapping(value = "/")
     public String plotIndex(Model model,
                             @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+                            @RequestParam(name = "size", defaultValue = "2", required = false) Integer size,
+                            @RequestParam(name = "sort", defaultValue = "id", required = false) String sort,
+                            @RequestParam(name = "direction", defaultValue = "DESC", required = false) Sort.Direction direction)
     {
-        PageRequest pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        PageRequest pageable = new PageRequest(page - 1, size, new Sort(direction, sort));
         Page<Plot> plotPage = plotService.findAllPaginated(pageable);
         model.addAttribute("plots", plotPage);
         return "Plot/plot";

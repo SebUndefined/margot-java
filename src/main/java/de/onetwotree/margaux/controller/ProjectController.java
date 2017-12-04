@@ -41,16 +41,31 @@ public class ProjectController {
     ResourceTypeService resourceTypeService;
     private final
     UserService userService;
+    private final
+    CountryService countryService;
 
     @Autowired
-    public ProjectController(ProjectService projectService, CompanyService companyService, AlertService alertService, ResourceTypeService resourceTypeService, UserService userService) {
+    public ProjectController(ProjectService projectService,
+                             CompanyService companyService,
+                             AlertService alertService,
+                             ResourceTypeService resourceTypeService,
+                             UserService userService,
+                             CountryService countryService) {
         this.projectService = projectService;
         this.companyService = companyService;
         this.alertService = alertService;
         this.resourceTypeService = resourceTypeService;
         this.userService = userService;
+        this.countryService = countryService;
     }
 
+    /**
+     *
+     * @param model
+     * @param page
+     * @param size
+     * @return
+     */
     @RequestMapping(value = "/")
     public String projectIndex(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                    @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
@@ -60,6 +75,13 @@ public class ProjectController {
         return "Project/project";
     }
 
+    /**
+     *
+     * @param idProject
+     * @param model
+     * @return
+     * @throws ItemNotFoundException
+     */
     @RequestMapping(value = "/view/{id}")
     public  String viewProject(@PathVariable(value = "id") String idProject, Model model) throws ItemNotFoundException {
         Long projectId = Long.valueOf(idProject);
@@ -71,32 +93,49 @@ public class ProjectController {
         return "Project/viewProject";
     }
 
+    /**
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "/add")
     public String addProjectForm(Model model) {
-        List<User> users = userService.getAllUsers();
-        List<Company> companies = companyService.findAll();
         Project project = new Project();
-        model.addAttribute("users", users);
-        model.addAttribute("companies", companies);
+        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("companies", companyService.findAll());
+        model.addAttribute("countries", countryService.findAll());
         model.addAttribute("project", project);
         return "Project/editProject";
     }
 
+    /**
+     *
+     * @param project
+     * @param result
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping(value="/add")
     public String addProjectSubmit(@Valid @ModelAttribute("project")Project project, BindingResult result, RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            List<ObjectError> errors = result.getAllErrors();
-            System.out.println(errors);
-            for(ObjectError error : errors) {
-                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
-            }
+            redirectAttributes.addFlashAttribute("alerts", result.getAllErrors());
             return "redirect:/project/add/";
         }
         project = projectService.saveProject(project);
-        redirectAttributes.addFlashAttribute("info", "Company " + project.getName() + " has been saved !");
+        if (project.getId() != null) {
+            redirectAttributes.addFlashAttribute("info", "Project " + project.getName() + " has been saved !");
+        }
         return "redirect:/project/view/" + project.getId();
     }
+
+    /**
+     *
+     * @param model
+     * @param id
+     * @return
+     * @throws ItemNotFoundException
+     */
     @GetMapping(value = "/update/{id}")
     public String updateProject(Model model,
                                 @PathVariable(value = "id") String id) throws ItemNotFoundException {
@@ -129,8 +168,10 @@ public class ProjectController {
             }
             return "redirect:/project/update/" + id;
         }
-        projectService.updateProject(project);
-        redirectAttributes.addFlashAttribute("info", "Project " + project.getName() + " has been updated !");
+        project = projectService.updateProject(project);
+        if (project.getId() != null) {
+            redirectAttributes.addFlashAttribute("info", "Project " + project.getName() + " has been updated !");
+        }
         return "redirect:/project/view/" + id;
     }
 
@@ -176,6 +217,14 @@ public class ProjectController {
         model.addAttribute("page", page);
         return "Project/viewHarvestByProject";
     }
+
+    /**
+     *
+     * @param idProject
+     * @param idResourceType
+     * @param model
+     * @return
+     */
     @GetMapping(value = "view/{idProject}/harvests/{idResourceType}")
     public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idProject") String idProject,
                                                 @PathVariable(value = "idResourceType") String idResourceType, Model model){
@@ -186,6 +235,13 @@ public class ProjectController {
         return "common/graphHarvest";
 
     }
+
+    /**
+     *
+     * @param project
+     * @param model
+     * @return
+     */
     @GetMapping(value = "view/{idProject}/alerts")
     public String viewAlertsOfProject(@PathVariable(value = "idProject") Project project, Model model) {
         model.addAttribute("alertItems", project.getAlerts());

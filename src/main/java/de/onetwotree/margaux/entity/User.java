@@ -59,6 +59,7 @@ public class User {
     @Column(name="token_expired")
     private boolean tokenExpired;
 
+
     @ManyToMany
     @JoinTable(
             name = "db_users_roles",

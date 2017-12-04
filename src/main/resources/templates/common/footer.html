@@ -13,6 +13,7 @@
     <!-- Personnal script -->
     <script th:src="@{/assets/js/main.js}"></script>
     <script th:src="@{/assets/js/graph.js}"></script>
+
     <p th:if="${alert!=null}">
         <script th:inline="javascript">
             console.log([[${alert}]]);

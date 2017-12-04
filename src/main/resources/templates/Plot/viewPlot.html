@@ -72,6 +72,7 @@
 
                 </div>
                 <div id="resources-of-plot">
+                    <div class="loader"></div>
                 </div>
             </div>
         </div>
@@ -81,8 +82,9 @@
                        <h2>Localisation</h2>
                    </div>
                    <div class="map-panel">
-                       <div id="map"></div>
-
+                       <div id="map">
+                           <div class="loader"></div>
+                       </div>
                    </div>
                </div>
         </div>
@@ -132,16 +134,19 @@
     function loadChartFragment() {
         isEditing = false;
         console.log("Loading PIE chart for resources with ajax");
+         $chartTarget = $('.loader');
         $.ajax({
             type: 'GET',
             url: '/plot/view/'+ plotId + '/get-resources/',
-            timeout: 3000,
+            timeout: 5000,
             beforeSend: function() {
+                $chartTarget.addClass("loading-part");
             },
             success: function (data) {
                 $('#resources-of-plot').load(this.url);
             },
             complete: function() {
+                $chartTarget.removeClass("loading-part");
             },
             error: function () {
                 alert("Cannot load data on " + this.url);

@@ -127,7 +127,7 @@ img.mini-pic {
 /*End Sheet*/
 /*Google Map*/
 #map {
-    height: 400px;
+    height: 600px;
     width: 100%;
 }
 .gm-style-iw {
@@ -183,13 +183,14 @@ img.mini-pic {
    with position:fixed. Width, height, top and left speak
    for themselves. Background we set to 80% white with
    our animation centered, and no-repeating */
-#ajax-loader {
+.ajax-loader {
     display:    none;
     position:   fixed;
     z-index:    1000;
     top:        0;
     left:       0;
     height:     100%;
+    min-height: 300px;
     width:      100%;
     background: rgba( 255, 255, 255, .8 )
     url('../img/ajax-loader.gif')
@@ -199,14 +200,32 @@ img.mini-pic {
 
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
-body.loading {
+.loading {
     overflow: hidden;
+    min-height: 300px;
 }
 
 /* Anytime the body has the loading class, our
    modal element will be visible */
-body.loading #ajax-loader {
+.loading.ajax-loader {
     display: block;
+}
+.loading-part {
+    border: 16px solid #f3f3f3; /* Light grey */
+    border-top: 16px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    visibility: visible;
+    margin: 10% auto;
+}
+.loader {
+    visibility: hidden;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @media only screen and (max-width : 992px) {
