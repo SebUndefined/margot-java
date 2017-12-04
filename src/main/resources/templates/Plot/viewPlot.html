@@ -106,9 +106,71 @@
 <!--Alerte Message-->
 <!--End Alerte Message-->
 <!-- Un test de map -->
+
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=loadMap"></script>
+
+<!-- Load graph for resources -->
 <script th:inline="javascript">
+    var plotId = [[${plot.id}]];
+    var isEditing = false;
+    $(document).ready(function () {
+        //Loading the plotResource Chart
+        loadChartFragment();
+        loadMap();
+        //Adding form when click on edit button
+        $("#editResources").click(function () {
+                if (isEditing === false) {
+                    loadFormFragment();
+                }
+                else {
+                    loadChartFragment();
+                }
+            }
+        );
+    });
+
+    function loadChartFragment() {
+        isEditing = false;
+        console.log("Loading PIE chart for resources with ajax");
+        $.ajax({
+            type: 'GET',
+            url: '/plot/view/'+ plotId + '/get-resources/',
+            timeout: 3000,
+            beforeSend: function() {
+            },
+            success: function (data) {
+                $('#resources-of-plot').load(this.url);
+            },
+            complete: function() {
+            },
+            error: function () {
+                alert("Cannot load data on " + this.url);
+            }
+        });
+    }
+    function loadFormFragment() {
+        isEditing = true;
+        $.ajax({
+            async: true,
+            type: 'GET',
+            url: '/plot/view/'+ plotId + '/edit-resources/',
+            timeout: 3000,
+            beforeSend: function() {
+
+            },
+            success: function (data) {
+                $('#resources-of-plot').load('/plot/view/'+ plotId + '/edit-resources/');
+            },
+            complete: function() {
+
+            },
+            error: function () {
+                alert("Cannot load data");
+            }
+        });
+
+    }
     function loadMap() {
-        $(document).ready(function() {
             var map;
             var plot = /*[[${plot}]]*/ '';
             var infowindow = new google.maps.InfoWindow();
@@ -131,7 +193,7 @@
                         '</div>' +
                         '<div class="gm-window-content">' +
                         'Size: ' + plot.size + ' ha' + '<br/>' +
-                        'Project: <a href="/project/view/' + plot.project + '">' + plot.project.name + '</a>' +
+                        //'Project: <a href="/project/view/' + plot.project + '">' + plot.project.name + '</a>' +
                         '</div>' +
                         '</div>';
                     infowindow.setContent(contentString);
@@ -139,70 +201,6 @@
                     map.setCenter(latlng);
                 }
             })(marker));
-        });
-    }
-</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=loadMap"></script>
-
-<!-- Load graph for resources -->
-<script th:inline="javascript">
-    var plotId = [[${plot.id}]];
-    var isEditing = false;
-    $(document).ready(function () {
-        //Loading the plotResource Chart
-        loadChartFragment();
-        //Adding form when click on edit button
-        $("#editResources").click(function () {
-                if (isEditing === false) {
-                    isEditing = true;
-                    loadFormFragment();
-                }
-                else {
-                    isEditing = false;
-                    loadChartFragment();
-                }
-            }
-        );
-    });
-
-    function loadChartFragment() {
-        console.log("Loading PIE chart for resources with ajax");
-        $.ajax({
-            type: 'GET',
-            url: '/plot/view/'+ plotId + '/get-resources/',
-            timeout: 3000,
-            beforeSend: function() {
-            },
-            success: function (data) {
-                $('#resources-of-plot').load(this.url);
-            },
-            complete: function() {
-            },
-            error: function () {
-                alert("Cannot load data on " + this.url);
-            }
-        });
-    }
-    function loadFormFragment() {
-        $.ajax({
-            async: true,
-            type: 'GET',
-            url: '/plot/view/'+ plotId + '/edit-resources/',
-            timeout: 3000,
-            beforeSend: function() {
-
-            },
-            success: function (data) {
-                $('#resources-of-plot').load('/plot/view/'+ plotId + '/edit-resources/');
-            },
-            complete: function() {
-
-            },
-            error: function () {
-                alert("Cannot load data");
-            }
-        });
-
     }
 </script>
 

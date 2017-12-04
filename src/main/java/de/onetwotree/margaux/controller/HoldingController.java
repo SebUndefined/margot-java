@@ -98,13 +98,13 @@ public class HoldingController {
     public String saveHolding(@ModelAttribute("holding") @Valid Holding holding,
                                        BindingResult result, RedirectAttributes redirectAttributes){
         if (result.hasErrors()) {
-            List<ObjectError> errors = result.getAllErrors();
-            for(ObjectError error : errors) {
-                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
-            }
+            redirectAttributes.addFlashAttribute("alerts", result.getAllErrors());
             return "redirect:/holding/add/";
         }
-        holdingService.saveHolding(holding);
+        holding = holdingService.saveHolding(holding);
+        if (holding.getId()!= null) {
+            redirectAttributes.addFlashAttribute("info", "Holding " + holding.getName() + " has been saved !");
+        }
         return "redirect:/holding/view/" + holding.getId();
     }
     /**

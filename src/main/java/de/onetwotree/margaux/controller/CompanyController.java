@@ -33,15 +33,28 @@ public class CompanyController {
     private final HoldingService holdingService;
     private final AlertService alertService;
     private final ResourceTypeService resourceTypeService;
+    private final CountryService countryService;
 
     @Autowired
-    public CompanyController(CompanyService companyService, HoldingService holdingService, AlertService alertService, ResourceTypeService resourceTypeService) {
+    public CompanyController(CompanyService companyService,
+                             HoldingService holdingService,
+                             AlertService alertService,
+                             ResourceTypeService resourceTypeService,
+                             CountryService countryService) {
         this.companyService = companyService;
         this.holdingService = holdingService;
         this.alertService = alertService;
         this.resourceTypeService = resourceTypeService;
+        this.countryService = countryService;
     }
 
+    /**
+     * Show all company
+     * @param model
+     * @param page
+     * @param size
+     * @return
+     */
     @GetMapping(value = "/")
     public String indexCompany(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                                @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
@@ -50,6 +63,14 @@ public class CompanyController {
         model.addAttribute("companies", companyPage);
         return "Company/company";
     }
+
+    /**
+     * Show a company
+     * @param id
+     * @param model
+     * @return
+     * @throws ItemNotFoundException
+     */
     @GetMapping(value = "view/{id}")
     public String viewCompany(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long idCompany = Long.valueOf(id);
@@ -60,27 +81,48 @@ public class CompanyController {
         model.addAttribute("company", company);
         return "Company/viewCompany";
     }
+
+    /**
+     * Add Company GET ACTION
+     * @param model
+     * @return
+     */
     @GetMapping(value = "/add")
     public String addCompanyForm(Model model) {
         model.addAttribute("holdings", holdingService.findAll());
+        model.addAttribute("countries", countryService.findAll());
         model.addAttribute("company", new Company());
         return "Company/editCompany";
     }
 
+    /**
+     * Add a company POST ACTION
+     * @param company
+     * @param result
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping(value = "/add")
     public String addCompanySubmit(@ModelAttribute("Company") @Valid Company company,
                                    BindingResult result, RedirectAttributes redirectAttributes){
         if (result.hasErrors()) {
-            List<ObjectError> errors = result.getAllErrors();
-            for(ObjectError error : errors) {
-                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
-            }
+            redirectAttributes.addFlashAttribute("alerts", result.getAllErrors());
             return "redirect:/company/add/";
         }
         company = companyService.saveCompany(company);
-        redirectAttributes.addFlashAttribute("info", "Company " + company.getName() + " has been saved !");
+        if (company.getId() != null) {
+            redirectAttributes.addFlashAttribute("info", "Company " + company.getName() + " has been saved !");
+        }
         return "redirect:/company/view/" + company.getId();
     }
+
+    /**
+     * Show form for compan update
+     * @param model
+     * @param id
+     * @return
+     * @throws ItemNotFoundException
+     */
     @GetMapping(value = "/update/{id}")
     public String updateCompany(Model model,
                                     @PathVariable(value = "id") String id) throws ItemNotFoundException {
@@ -92,6 +134,16 @@ public class CompanyController {
         model.addAttribute("holdings", holdingService.findAll());
         return "Company/updateCompany";
     }
+
+    /**
+     * Submit form for update
+     * @param company
+     * @param result
+     * @param id
+     * @param redirectAttributes
+     * @return
+     * @throws ItemNotFoundException
+     */
     @PostMapping(value = "/update/{id}")
     public String updateCompanySubmit(@Valid Company company, BindingResult result,
                                           @PathVariable(value = "id") String id,
@@ -144,6 +196,14 @@ public class CompanyController {
         return "Company/viewPlotsofCompany";
     }
 
+    /**
+     * View harvests of a particular company
+     * @param model
+     * @param idMainCompany
+     * @param page
+     * @param size
+     * @return
+     */
     @RequestMapping(value = "view/{id}/harvests/")
     public String viewHarvestsOfCompany(Model model,
                                @PathVariable(value = "id") String idMainCompany,
@@ -159,6 +219,13 @@ public class CompanyController {
         return "Company/viewHarvestByCompany";
     }
 
+    /**
+     *
+     * @param idCompany
+     * @param idResourceType
+     * @param model
+     * @return
+     */
     @GetMapping(value = "view/{idCompany}/harvests/{idResourceType}")
     public String viewHarvestsOfMainCompanyAjax(@PathVariable(value = "idCompany") String idCompany,
                                                 @PathVariable(value = "idResourceType") String idResourceType, Model model){
@@ -170,6 +237,12 @@ public class CompanyController {
     }
 
 
+    /**
+     * Showing Alerts for a company
+     * @param company
+     * @param model
+     * @return
+     */
     @GetMapping(value = "view/{idCompany}/alerts")
     public String viewAlertsOfCompany(@PathVariable(value = "idCompany") Company company, Model model) {
         model.addAttribute("alertItems", company.getAlerts());

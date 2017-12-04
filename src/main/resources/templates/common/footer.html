@@ -24,10 +24,15 @@
     <p th:if="${alerts!=null}">
         <script th:inline="javascript">
             var alerts = [[${alerts}]];
-            alerts.forEach(function (alertRised) {
-                var message = "<i class=\"material-icons\">warning</i> " + alertRised.defaultMessage;
-                Materialize.toast(message.toString(), 6000, 'red');
-            })
+            $(document).ready(function () {
+                showAlert();
+            });
+            function showAlert() {
+                alerts.forEach(function (alertRised) {
+                    var message = "<i class=\"material-icons\">warning</i> " + alertRised.defaultMessage;
+                    Materialize.toast(message.toString(), 6000, 'red');
+                })
+            }
         </script>
     </p>
     <p th:if="${info!=null}">

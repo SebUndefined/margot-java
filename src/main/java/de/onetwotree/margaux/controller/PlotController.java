@@ -117,11 +117,7 @@ public class PlotController {
     public String addPlotSubmit(@Valid @ModelAttribute("Plot") Plot plot, BindingResult result, RedirectAttributes redirectAttributes) {
 
         if (result.hasErrors()) {
-            List<ObjectError> errors = result.getAllErrors();
-            /*for(ObjectError error : errors) {
-                redirectAttributes.addFlashAttribute("alert", "Error on " + error.getObjectName() + ". " + error.getDefaultMessage());
-            }*/
-            redirectAttributes.addFlashAttribute("alerts", errors);
+            redirectAttributes.addFlashAttribute("alerts", result.getAllErrors());
             return "redirect:/plot/add/";
         }
         try {
@@ -267,9 +263,10 @@ public class PlotController {
     }
 
     @PostMapping(value = "view/{plot}/edit-resources/")
-    public void editResourceOfPlotSubmit(@PathVariable Plot plot, @ModelAttribute PlotResourceForm plotResourceForm) {
+    @ResponseBody
+    public String editResourceOfPlotSubmit(@PathVariable Plot plot, @ModelAttribute PlotResourceForm plotResourceForm) {
         System.out.println(plot);
         plotService.updateResourceOfPlot(plot, plotResourceForm);
-        //return "pouete";
+        return "pouete";
     }
 }
