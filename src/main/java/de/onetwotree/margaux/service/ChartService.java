@@ -7,6 +7,7 @@ import de.onetwotree.margaux.entity.Resource;
 import de.onetwotree.margaux.entity.ResourceType;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,4 +22,6 @@ public interface ChartService {
     String buildLineChartHarvestWithYear(Map<Resource, Map<Integer, BigDecimal>> map);
 
     String buildLineChartHarvestWithYearByPlot(Map<String, Map<Integer, BigDecimal>> map);
+
+    String buildPieChart(List<String> labels, List<String> values);
 }

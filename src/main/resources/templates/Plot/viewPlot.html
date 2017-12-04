@@ -71,20 +71,21 @@
                     </div>
 
                 </div>
-                <div id="plot-resource-graph"></div>
-            </div>
-        </div>
-            <div class="col l6 m12 s12">
-                <div class="panel6">
-                    <div class="panel_title">
-                        <h2>Localisation</h2>
-                    </div>
-                    <div class="map-panel">
-                        <div id="map"></div>
-
-                    </div>
+                <div id="resources-of-plot">
                 </div>
             </div>
+        </div>
+        <div class="col l6 m12 s12">
+               <div class="panel6">
+                   <div class="panel_title">
+                       <h2>Localisation</h2>
+                   </div>
+                   <div class="map-panel">
+                       <div id="map"></div>
+
+                   </div>
+               </div>
+        </div>
         <!--Add button-->
         <div class="fixed-action-btn horizontal click-to-toggle">
             <a class="btn-floating btn-large red">
@@ -104,11 +105,6 @@
 <div th:replace="common/footer :: footer"></div>
 <!--Alerte Message-->
 <!--End Alerte Message-->
-<script th:inline="javascript">
-    var graphJson = /*[[${graphResource}]]*/ '';
-    var figure = JSON.parse(graphJson);
-    Plotly.newPlot('plot-resource-graph', figure.data, figure.layout);
-</script>
 <!-- Un test de map -->
 <script th:inline="javascript">
     function loadMap() {
@@ -148,32 +144,68 @@
 </script>
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=loadMap"></script>
 
-<!-- Un test deux -->
+<!-- Load graph for resources -->
 <script th:inline="javascript">
     var plotId = [[${plot.id}]];
-    $(document).ready(function() {
+    var isEditing = false;
+    $(document).ready(function () {
+        //Loading the plotResource Chart
+        loadChartFragment();
+        //Adding form when click on edit button
         $("#editResources").click(function () {
-                $.ajax({
-                    async: true,
-                    type: 'GET',
-                    url: '/plot/view/'+ plotId + '/edit-resources/',
-                    timeout: 3000,
-                    beforeSend: function() {
-
-                    },
-                    success: function (data) {
-                        $('#plot-resource-graph').load('/plot/view/'+ plotId + '/edit-resources/');
-                    },
-                    complete: function() {
-
-                    },
-                    error: function () {
-                        alert("Cannot load data");
-                    }
-                });
-
+                if (isEditing === false) {
+                    isEditing = true;
+                    loadFormFragment();
+                }
+                else {
+                    isEditing = false;
+                    loadChartFragment();
+                }
             }
         );
     });
+
+    function loadChartFragment() {
+        console.log("Loading PIE chart for resources with ajax");
+        $.ajax({
+            type: 'GET',
+            url: '/plot/view/'+ plotId + '/get-resources/',
+            timeout: 3000,
+            beforeSend: function() {
+            },
+            success: function (data) {
+                $('#resources-of-plot').load(this.url);
+            },
+            complete: function() {
+            },
+            error: function () {
+                alert("Cannot load data on " + this.url);
+            }
+        });
+    }
+    function loadFormFragment() {
+        $.ajax({
+            async: true,
+            type: 'GET',
+            url: '/plot/view/'+ plotId + '/edit-resources/',
+            timeout: 3000,
+            beforeSend: function() {
+
+            },
+            success: function (data) {
+                $('#resources-of-plot').load('/plot/view/'+ plotId + '/edit-resources/');
+            },
+            complete: function() {
+
+            },
+            error: function () {
+                alert("Cannot load data");
+            }
+        });
+
+    }
 </script>
+
+
+
 </html>

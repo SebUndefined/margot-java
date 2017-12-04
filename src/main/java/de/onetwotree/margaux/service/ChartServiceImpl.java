@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.chartData.json.Datum;
 import de.onetwotree.margaux.chartData.json.PlotLy;
 import de.onetwotree.margaux.chartData.plotLyJs.PlotLyJsLine;
+import de.onetwotree.margaux.chartData.plotLyJs.PlotLyJsPie;
 import de.onetwotree.margaux.chartData.plotLyJs.datum.DatumLine;
+import de.onetwotree.margaux.chartData.plotLyJs.datum.DatumPie;
 import de.onetwotree.margaux.chartData.plotLyJs.plotLyLayout.PlotLyLayout;
 import de.onetwotree.margaux.entity.Harvest;
 import de.onetwotree.margaux.entity.Plot;
@@ -114,6 +116,25 @@ public class ChartServiceImpl implements ChartService {
         String myGraphData = "";
         try {
             myGraphData = mapper.writeValueAsString(plotLyJsLine);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return myGraphData;
+    }
+    @Override
+    public String buildPieChart(List<String> labels, List<String> values) {
+        PlotLyLayout layout = new PlotLyLayout();
+        layout.setTitle("Resources of this plot");
+        layout.setAutosize(true);
+        DatumPie datumPie = DatumPie.createSimpleDataForPie(
+                labels, false, values, "label+value", 0.1);
+        List<DatumPie> data = new ArrayList<>();
+        data.add(datumPie);
+        PlotLyJsPie plotLyJsPie = new PlotLyJsPie(layout, data);
+        ObjectMapper mapper = new ObjectMapper();
+        String myGraphData = "";
+        try {
+            myGraphData = mapper.writeValueAsString(plotLyJsPie);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }

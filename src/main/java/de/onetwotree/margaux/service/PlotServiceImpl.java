@@ -72,6 +72,13 @@ public class PlotServiceImpl implements PlotService {
     public Page<Harvest> findHarvestsPaginated(Long idPlot, Pageable pageable) {
         return harvestRepository.findAllByPlotId(idPlot, pageable);
     }
+
+    /**
+     *
+     * @param idPlot
+     * @param idResourceType
+     * @return
+     */
     @Override
     public String findHarvestsByResourcesForGraph(Long idPlot, Long idResourceType) {
         List<Harvest> harvestList = harvestRepository.findAllByPlotIdAndResourceTypeId(idPlot, idResourceType);
@@ -118,6 +125,11 @@ public class PlotServiceImpl implements PlotService {
 
     }
 
+    /**
+     *
+     * @param plot
+     * @param plotOrigin
+     */
     @Override
     @Transactional
     public void updatePlot(Plot plot, Plot plotOrigin) {
@@ -131,18 +143,26 @@ public class PlotServiceImpl implements PlotService {
         }
     }
 
+    /**
+     *
+     * @param plot
+     * @param plotResourceForm
+     */
     @Override
     @Transactional
     public void updateResourceOfPlot(Plot plot, PlotResourceForm plotResourceForm) {
         List<PlotResource> plotResourceList = new ArrayList<>();
-        for (PlotResource plotResource : plotResourceForm.getPlotResourceList()) {
-            if (plotResource.getProportion() != null) {
-                PlotResource plotResourceUpdate = new PlotResource();
-                plotResourceUpdate.setPlotResourcePK(new PlotResourcePK(plot.getId(), plotResource.getResource().getId()));
-                plotResourceUpdate.setPlot(plot);
-                plotResourceUpdate.setResource(plotResource.getResource());
-                plotResourceUpdate.setProportion(plotResource.getProportion());
-                plotResourceList.add(plotResourceUpdate);
+        //Test if the list is empty, if not build PlotResource Object
+        if (plotResourceForm.getPlotResourceList() != null) {
+            for (PlotResource plotResource : plotResourceForm.getPlotResourceList()) {
+                if (plotResource.getProportion() != null) {
+                    PlotResource plotResourceUpdate = new PlotResource();
+                    plotResourceUpdate.setPlotResourcePK(new PlotResourcePK(plot.getId(), plotResource.getResource().getId()));
+                    plotResourceUpdate.setPlot(plot);
+                    plotResourceUpdate.setResource(plotResource.getResource());
+                    plotResourceUpdate.setProportion(plotResource.getProportion());
+                    plotResourceList.add(plotResourceUpdate);
+                }
             }
         }
         plot.getPlotResources().clear();

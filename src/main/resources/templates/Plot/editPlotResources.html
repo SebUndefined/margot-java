@@ -39,7 +39,7 @@
                         <script th:each="resource:${resources}" th:inline="javascript">
                             var resourceItems = [];
                             /*[# th:each="n : ${resources}"]*/
-                            resourceItems.push({"id":"[(${n.id})]", "name":"[(${n.name})]"});
+                                resourceItems.push({"id":"[(${n.id})]", "name":"[(${n.name})]"});
                             /*[/]*/
                         </script>
                         <!-- Building line Form-->
@@ -47,7 +47,7 @@
                             $(document).ready(function(e) {
                                 var deleter         = $(".input_fields_wrap"); //Fields wrapper
                                 var add_button      = $("#add_field_button"); //Add button ID
-                                var x = 1; //initlal text box count
+                                var plotId = [[${plot.id}]];
                                 var optionSelect = "";
                                 for (y = 0; y < resourceItems.length; y++) {
                                     optionSelect = optionSelect + "<option id='resourceForm' value='"+ resourceItems[y].id+"'>"+ resourceItems[y].name+"</option>\n"
@@ -55,10 +55,16 @@
 
                                 $(add_button).click(function (e) {
                                     e.preventDefault();
-                                    var idNewItem = parseInt($('#editPlotResourceForm').children('div').last().attr('id')) + 1;
+                                    //Get the last item
+                                    var idLastItem = parseInt($('#editPlotResourceForm').children('div').last().attr('id'));
+                                    var idNewItem = 0;
+                                    //Check if there is resources, if yes, we add 1 otherwise we just leave 0 as first field
+                                    if (!isNaN(idLastItem)) {
+                                        idNewItem = idLastItem + 1;
+                                    }
                                     var insertion = "<div class='row' id='"+ idNewItem +"'>\n" +
                                         "                            <div class='input-field col l5 m5 s5'>\n" +
-                                        "                                <input type='hidden' id='" + "plotResourceList"+ idNewItem +".plot" +"' name='" + "plotResourceList["+ idNewItem +"].plot" +"' />\n" +
+                                        "                                <input type='hidden' id='" + "plotResourceList"+ idNewItem +".plot" +"' name='" + "plotResourceList["+ idNewItem +"].plot" +"' value='"+plotId+"' />\n" +
                                                                         "<select id='" + "plotResourceList["+ idNewItem +"].plot" +"' name='"+ "plotResourceList[" + idNewItem + "].resource" + "'>" +
                                                                             optionSelect +
                                         "                                </select>\n" +
@@ -72,7 +78,6 @@
                                         "                                <a class='remove-field'><i class=\"material-icons left\">delete</i></a>\n" +
                                         "                            </div>\n" +
                                         "                        </div>";
-                                    //$(add_button).append(insertion);
                                     $( insertion ).insertBefore( "#add_field_button" );
                                     $('select').material_select();
                                 });
@@ -90,25 +95,20 @@
                                     var header = $('#_csrf_header').attr('content');
                                     $.ajax({
                                         type: "POST",
-                                        url: "/plot/view/5/edit-resources/",
+                                        url: "/plot/view/"+plotId+"/edit-resources/",
                                         beforeSend: function(xhr) {
                                             xhr.setRequestHeader(header, token);
                                         },
                                         data: data,
-                                        success: loadResourceOfPlot()
                                     });
+                                    loadResourceOfPlot();
 
                                 });
                                 function loadResourceOfPlot() {
-                                    console.log("Pouet!")
+                                    console.log("Loading new graph")
+                                    loadChartFragment();
                                 }
                             });
-
-
-
-
-
-
                         </script>
                     </form>
                 </div>

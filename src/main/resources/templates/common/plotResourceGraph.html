@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+   <div th:fragment="graphResourcesPlot">
+       <div id="chart-plot-resource">
+       </div>
+
+       <script th:inline="javascript">
+           var graphJson = /*[[${graphPlotResource}]]*/ '';
+           var figure = JSON.parse(graphJson);
+           Plotly.newPlot('chart-plot-resource', figure.data, figure.layout);
+       </script>
+   </div>

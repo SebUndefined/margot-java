@@ -85,6 +85,15 @@ public class PlotController {
         model.addAttribute("plot", plot);
         return "Plot/viewPlot";
     }
+    @RequestMapping(value = "/view/{id}/get-resources/")
+    public String getResourcesofPlot(@PathVariable(value = "id") String id, Model model) {
+        Long plotId = Long.valueOf(id);
+        Plot plot = plotService.findOne(plotId);
+        List<PlotResource> resourcePlotList = plot.getPlotResources();
+        String myGraphData = plotResourceService.getPlotResourceAsJson(resourcePlotList);
+        model.addAttribute("graphPlotResource", myGraphData);
+        return "common/plotResourceGraph :: graphResourcesPlot";
+    }
     @RequestMapping(value = "/view/{id}/resources/")
     public String viewResourceOfPlot(@PathVariable(value = "id") String id) throws ItemNotFoundException {
         Long plotId = Long.valueOf(id);
@@ -258,9 +267,9 @@ public class PlotController {
     }
 
     @PostMapping(value = "view/{plot}/edit-resources/")
-    public String editResourceOfPlotSubmit(@PathVariable Plot plot, Model model, @ModelAttribute PlotResourceForm plotResourceForm) {
-
+    public void editResourceOfPlotSubmit(@PathVariable Plot plot, @ModelAttribute PlotResourceForm plotResourceForm) {
+        System.out.println(plot);
         plotService.updateResourceOfPlot(plot, plotResourceForm);
-        return "pouete";
+        //return "pouete";
     }
 }
