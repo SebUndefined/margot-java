@@ -26,7 +26,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private long id;
+    private Long id;
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name="username", length = 50, unique = true, nullable = false)
@@ -54,6 +54,9 @@ public class User {
     @Column(name="localisation")
     private String localisation;
 
+    @Column(name = "picture")
+    private String picture;
+
     @Column(name="enabled")
     private boolean enabled;
     @Column(name="token_expired")
@@ -79,11 +82,37 @@ public class User {
     public User() {
     }
 
-    public long getId() {
+    /**
+     * All Attributes except picture and Roles
+     * @param userName
+     * @param password
+     * @param firstname
+     * @param lastname
+     * @param birthdate
+     * @param email
+     * @param phone
+     * @param localisation
+     * @param enabled
+     * @param tokenExpired
+     */
+    public User(String userName, String password, String firstname, String lastname, LocalDate birthdate, String email, String phone, String localisation, boolean enabled, boolean tokenExpired) {
+        this.userName = userName;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.phone = phone;
+        this.localisation = localisation;
+        this.enabled = enabled;
+        this.tokenExpired = tokenExpired;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -149,6 +178,14 @@ public class User {
 
     public void setLocalisation(String localisation) {
         this.localisation = localisation;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public boolean isEnabled() {

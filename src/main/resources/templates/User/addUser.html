@@ -10,45 +10,48 @@
                 <div class="panel_title">
                     <h2>Add a user</h2>
                 </div>
-                <form action="#" th:action="@{/user/add/}" th:object="${user}" method="post" class="col s12">
+                <form action="#" th:action="@{/user/add/}" th:object="${userDTO}" method="post" class="col s12" enctype="multipart/form-data">
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="resourceName" type="text" class="validate" th:field="*{userName}" required="required" />
-                            <label for="resourceName">Username</label>
+                            <input id="username" type="text" class="validate" th:field="*{userName}" />
+                            <label for="username">Username</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="resourceName" type="text" class="validate" th:field="*{lastname}" required="required" />
-                            <label for="resourceName">Last name</label>
+                            <input id="lastname" type="text" class="validate" th:field="*{lastname}" />
+                            <label for="lastname">Last name</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="resourceName" type="text" class="validate" th:field="*{firstname}" required="required" />
-                            <label for="resourceName">First name</label>
+                            <input id="firstname" type="text" class="validate" th:field="*{firstname}" />
+                            <label for="lastname">First name</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="resourceName" type="text" class="validate" th:field="*{password}" required="required" />
+                            <input id="resourceName" type="text" class="validate" th:field="*{password}" />
                             <label for="resourceName">Password</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="resourceName" type="text" class="validate" th:field="*{email}" required="required" />
+                            <input id="resourceName" type="text" class="validate" th:field="*{email}" />
                             <label for="resourceName">email</label>
                         </div>
                     </div>
-                    <!--<div class="row">
-                        <div class="input-field col l6 m6 s12">
-                            <select th:field="*{resourceType}" class="input-field">
-                                <option id="mainCompany" th:each="resourceType: ${resourceTypes}" th:value="${resourceType.id}" th:text="${resourceType.description}"></option>
-                            </select>
-                            <label for="mainCompany">Resource Type</label>
+                    <div class="row">
+                        <div class="file-field col l6 m6 s12">
+                            <div class="btn">
+                                <span>File</span>
+                                <input type="file" th:field="*{picture}">
+                            </div>
+                            <div class="file-path-wrapper">
+                                <input class="file-path validate" type="text">
+                            </div>
                         </div>
-                    </div>-->
+                    </div>
 
                     <input class="waves-effect waves-light btn" type="submit" />
                 </form>

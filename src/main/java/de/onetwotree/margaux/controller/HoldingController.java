@@ -211,14 +211,26 @@ public class HoldingController {
     }
 
 
+    /**
+     *
+     * @param model
+     * @param id
+     * @param page
+     * @param size
+     * @param sort
+     * @param direction
+     * @return
+     */
     @RequestMapping(value = "view/{id}/harvests/")
     public String viewHarvestOfHolding(Model model,
-                               @PathVariable(value = "id") String id,
-                               @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+                                       @PathVariable(value = "id") String id,
+                                       @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                       @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                                       @RequestParam(name = "sort", defaultValue = "id", required = false) String sort,
+                                       @RequestParam(name = "direction", defaultValue = "DESC", required = false) Sort.Direction direction)
     {
         Long holdingId = Long.valueOf(id);
-        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(direction, sort));
         Page<Harvest> harvestPage = holdingService.findHarvestsPaginated(holdingId, pageRequest);
         model.addAttribute("resourceTypeList", resourceTypeService.findAll());
         model.addAttribute("urlId", id);

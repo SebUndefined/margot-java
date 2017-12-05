@@ -115,6 +115,16 @@ div.row.small-margin {
     margin: 0;
 
 }
+/*
+Table
+ */
+a.sortable {
+    color: rgb(115, 135, 156);
+    font-weight: 700;
+}
+
+
+
 .map-panel {
     min-height: 400px;
 }

@@ -50,8 +50,7 @@ public interface HarvestRepository extends JpaRepository<Harvest, Long> {
             "JOIN plot.project project " +
             "JOIN project.company company " +
             "JOIN company.holding holding " +
-            "WHERE holding.id = :holdingId " +
-            "ORDER BY h.date ASC ",
+            "WHERE holding.id = :holdingId ",
             countQuery = "SELECT count(h) from Harvest as h " +
                     "JOIN h.plot plot " +
                     "JOIN plot.project project " +

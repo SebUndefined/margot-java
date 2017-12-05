@@ -2,6 +2,7 @@ package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.entity.*;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +33,7 @@ public interface HoldingService {
 
     List<Plot> findPlots(Long idMainCompany);
 
-    Page<Harvest> findHarvestsPaginated(Long idMainCompany, Pageable pageable);
+    Page<Harvest> findHarvestsPaginated(Long idMainCompany, PageRequest pageable);
 
     String findHarvestsByResourcesForGraph(Long idMainCompany, Long idResourceType);
 }

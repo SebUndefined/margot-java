@@ -49,6 +49,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public String store(MultipartFile file) {
         //getting the extension
+        System.out.println(file.toString());
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         String[] fileFrags = file.getOriginalFilename().split("\\.");
         String extension = fileFrags[fileFrags.length-1];

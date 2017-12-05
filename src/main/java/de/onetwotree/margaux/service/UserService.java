@@ -1,5 +1,6 @@
 package de.onetwotree.margaux.service;
 
+import de.onetwotree.margaux.dto.UserDTO;
 import de.onetwotree.margaux.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,7 +15,7 @@ public interface UserService {
 
     Page<User> findAll(PageRequest pageRequest);
 
-    void save(User user);
+    User save(UserDTO userDTO);
 
     User findByUsername(String username);
 

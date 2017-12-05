@@ -3,6 +3,7 @@ package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.dao.RoleRepository;
 import de.onetwotree.margaux.dao.UserRepository;
+import de.onetwotree.margaux.dto.UserDTO;
 import de.onetwotree.margaux.entity.Role;
 import de.onetwotree.margaux.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,14 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final StorageService storageService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder bCryptPasswordEncoder, StorageService storageService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.storageService = storageService;
     }
 
     @Override
@@ -41,11 +44,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(User user) {
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+    public User save(UserDTO userDTO) {
+        User user = new User(
+                userDTO.getUserName(),
+                bCryptPasswordEncoder.encode(userDTO.getPassword()),
+                userDTO.getFirstname(),
+                userDTO.getLastname(),
+                userDTO.getBirthdate(),
+                userDTO.getEmail(),
+                userDTO.getPhone(),
+                userDTO.getLocalisation(),
+                userDTO.isEnabled(),
+                userDTO.isTokenExpired());
         user.setRoles(new ArrayList<>(roleRepository.findAll()));
-        System.out.println(user.toString());
-        userRepository.save(user);
+        user.setPicture(storageService.store(userDTO.getPicture()));
+        user = userRepository.saveAndFlush(user);
+        return user;
     }
 
     @Override

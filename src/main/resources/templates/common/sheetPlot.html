@@ -5,13 +5,13 @@
     <table class="bordered highlight responsive-table">
         <thead>
         <tr>
-            <th><a class="sortable" data-sorted-by="id">ID</a></th>
-            <th><a class="sortable" data-sorted-by="name">Name</a></th>
-            <th><a class="sortable"  data-sorted-by="size">Size</a></a></th>
-            <th><a class="sortable" data-sorted-by="country">Country</a></th>
-            <th><a class="sortable" data-sorted-by="project">Project</a></th>
-            <th><a class="sortable" data-sorted-by="manager">Manager</a></th>
-            <th><a class="sortable" >Actions</a></th>
+            <th><a class="sortable" data-sorted-by="id" href="#">ID</a></th>
+            <th><a class="sortable" data-sorted-by="name" href="#">Name</a></th>
+            <th><a class="sortable"  data-sorted-by="size" href="#">Size</a></a></th>
+            <th><a class="sortable" data-sorted-by="country" href="#">Country</a></th>
+            <th><a class="sortable" data-sorted-by="project" href="#">Project</a></th>
+            <th><a class="sortable" data-sorted-by="manager" href="#">Manager</a></th>
+            <th>Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -33,13 +33,22 @@
         </tbody>
     </table>
     <div th:fragment="pagination" class="row center-align">
-        <ul class="pagination">
-            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-            <li th:each="i:${#numbers.sequence(0, plots.totalPages -1)}" class="waves-effect">
-                <a th:href="@{${url}(page=${i+1})}" th:text="${i+1}"></a>
+        <ul class="pagination" th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}">
+            <li class="disabled">
+                <a href="#!">
+                    <i class="material-icons">chevron_left</i>
+                </a>
             </li>
-            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+            <li th:each="i:${#numbers.sequence(0, plots.totalPages -1)}" class="waves-effect">
+                <a th:href="${urlBuilder.replaceQueryParam('page', i+1).toUriString()}" th:text="${i+1}"></a>
+            </li>
+            <li class="waves-effect">
+                <a href="#!">
+                    <i class="material-icons">chevron_right</i>
+                </a>
+            </li>
         </ul>
     </div>
+
 </div>
 </html>
