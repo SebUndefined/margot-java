@@ -5,6 +5,7 @@ import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.AlertRepository;
 import de.onetwotree.margaux.dao.MainEntityRepository;
 import de.onetwotree.margaux.entity.Alert;
+import de.onetwotree.margaux.entity.AlertComment;
 import de.onetwotree.margaux.entity.MainEntity;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.AlertService;
@@ -36,6 +37,14 @@ public class AlertController {
     public AlertController(AlertService alertService, MainEntityRepository mainEntityRepository) {
         this.alertService = alertService;
         this.mainEntityRepository = mainEntityRepository;
+    }
+
+    @GetMapping(value = "view/{id}/load-comments/")
+    public String loadAlertComments(Model model, @PathVariable(name = "id") Alert alert) {
+        List<AlertComment> alertComments = alert.getAlertComments();
+        model.addAttribute("alertComments", alertComments);
+        model.addAttribute("newComment", new AlertComment());
+        return "Alert/alertComment :: commentCollection";
     }
 
     @GetMapping(value = "add/{mainEntityId}")

@@ -28,6 +28,15 @@ header, main, footer {
 nav {
     background-color: #EDEDED;
 }
+.user-img {
+    max-height: 64px!important;
+    width: auto;
+    padding: 15px 0!important;
+}
+#personnal-menu-button {
+    color: rgb(115, 135, 156);
+    font-weight: 700;
+}
 #logo {
     height: 64px;
     background-image: url("../img/logo_12Tree_resize.jpg");
@@ -227,7 +236,7 @@ img.mini-pic {
     width: 120px;
     height: 120px;
     animation: spin 2s linear infinite;
-    visibility: visible;
+    visibility: visible !important;
     margin: 10% auto;
 }
 .loader {

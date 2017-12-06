@@ -6,8 +6,8 @@
 <main>
     <div th:fragment="sheetAlert">
         <ul class="collapsible popout" data-collapsible="accordion">
-            <li th:each="alertItem : ${alertItems}">
-                <div class="collapsible-header">
+            <li th:each="alertItem : ${alertItems}" th:data-alert-id="${alertItem.id}">
+                <div class="collapsible-header load-comment">
                 <span th:switch="${alertItem.level}">
                     <i th:case="${T(de.onetwotree.margaux.Enum.AlertLevel).NOTICE}" class="material-icons cyan-text">
                         report_problem
@@ -30,7 +30,12 @@
                         </i>
                     </span>
                 </div>
-                <div class="collapsible-body" th:text="${alertItem.comment}"></div>
+                <div class="collapsible-body">
+                    <div th:text="${alertItem.comment}"></div>
+                    <div class="loader"></div>
+                    <div class="alert-comment"></div>
+                </div>
+
             </li>
         </ul>
 

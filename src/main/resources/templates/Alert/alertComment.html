@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:fragment="commentCollection">
+
+    <div class="">
+        <div class="row">
+            <form th:object="${newComment}" method="post" class="col s12" id="newAlertComment">
+                <div class="row">
+                    <div class="input-field col l11 m11 s11">
+                        <img class="prefix circle" th:src="@{'/files/' + ${#authentication.principal.user.picture}}">
+                        <textarea id="commentContent" type="text" class="validate submit-enter" th:field="*{commentContent}"></textarea>
+                        <label for="commentContent">Your Comment...</label>
+                    </div>
+                    <div class="input-field col l1 m1 s1">
+                        <button type="submit" class="btn-floating btn-small waves-effect waves-light">
+                            <i class="material-icons">send</i>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <ul class="collection">
+                <li class="collection-item avatar" th:each="alertComment : ${alertComments}">
+                    <img th:src="@{'/files/' + ${alertComment.author.picture}}" alt="" class="circle">
+                    <span class="title" th:text="${alertComment.author.firstname}"></span>
+                    <span class="title" th:text="${alertComment.author.lastname}"></span>
+                    <p th:text="${alertComment.commentContent}">
+
+                    </p>
+                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+</div>
+</html>

@@ -134,7 +134,7 @@
     function loadChartFragment() {
         isEditing = false;
         console.log("Loading PIE chart for resources with ajax");
-         $chartTarget = $('.loader');
+        $chartTarget = $('.loader');
         $.ajax({
             type: 'GET',
             url: '/plot/view/'+ plotId + '/get-resources/',

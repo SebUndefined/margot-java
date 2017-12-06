@@ -20,6 +20,9 @@ public class AlertComment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alert_id", nullable = false)
     private Alert alert;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 
     public Long getId() {
         return id;
@@ -43,5 +46,13 @@ public class AlertComment {
 
     public void setAlert(Alert alert) {
         this.alert = alert;
+    }
+
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

@@ -69,8 +69,8 @@ public class HoldingController {
     public String viewHolding(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
         Long idMainCompany = Long.valueOf(id);
         Holding holding = holdingService.findOne(idMainCompany);
-        if (holding == null) throw new ItemNotFoundException(idMainCompany, "maincompany/");
-        model.addAttribute("alertsMainCompany", alertService.findLast10ByMainEntityId(idMainCompany, AlertStatus.OPEN));
+        if (holding == null) throw new ItemNotFoundException(idMainCompany, "holding/");
+        model.addAttribute("alertsHolding", alertService.findLast10ByMainEntityId(idMainCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
         model.addAttribute("holding", holding);
         return "Holding/viewHolding";
