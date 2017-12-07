@@ -42,10 +42,13 @@ public class AlertController {
     @GetMapping(value = "view/{id}/load-comments/")
     public String loadAlertComments(Model model, @PathVariable(name = "id") Alert alert) {
         List<AlertComment> alertComments = alert.getAlertComments();
+        AlertComment alertComment = new AlertComment();
+        alertComment.setAlert(alert);
         model.addAttribute("alertComments", alertComments);
-        model.addAttribute("newComment", new AlertComment());
+        model.addAttribute("newComment", alertComment);
         return "Alert/alertComment :: commentCollection";
     }
+
 
     @GetMapping(value = "add/{mainEntityId}")
     public String addAlertForm(Model model, @PathVariable(name = "mainEntityId") Long idMainEntity) throws ItemNotFoundException {

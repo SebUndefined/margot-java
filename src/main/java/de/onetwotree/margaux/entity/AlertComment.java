@@ -1,7 +1,6 @@
 package de.onetwotree.margaux.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by SebUndefined on 27/09/17.
@@ -22,7 +21,7 @@ public class AlertComment {
     private Alert alert;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    private UserCustom author;
 
     public Long getId() {
         return id;
@@ -48,11 +47,11 @@ public class AlertComment {
         this.alert = alert;
     }
 
-    public User getAuthor() {
+    public UserCustom getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(UserCustom author) {
         this.author = author;
     }
 }

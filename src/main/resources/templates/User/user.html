@@ -25,7 +25,7 @@
                     <tr th:each="user : ${users}">
                         <td th:text="${user.id}">undefined</td>
                         <td th:text="${user.firstname} + ' ' + ${user.lastname}">undefined</td>
-                        <td th:text="${user.userName}">undefined</td>
+                        <td th:text="${user.username}">undefined</td>
                         <td th:text="${user.email}">undefined</td>
                         <td class="center-align">
                             <span class="center-align" th:each="role : ${user.roles}">
@@ -45,7 +45,7 @@
                 <div th:fragment="pagination" class="row center-align">
                     <ul class="pagination">
                         <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                        <li th:each="i:${#numbers.sequence(0, users.totalPages -1)}" class="waves-effect">
+                       <li th:each="i:${#numbers.sequence(0, users.totalPages -1)}" class="waves-effect">
                             <a th:href="@{${url}(page=${i+1})}" th:text="${i+1}"></a>
                         </li>
                         <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>

@@ -1,12 +1,10 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.dao.UserRepository;
-import de.onetwotree.margaux.entity.Role;
-import de.onetwotree.margaux.entity.User;
+import de.onetwotree.margaux.entity.CustomUserDetails;
+import de.onetwotree.margaux.entity.UserCustom;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by SebUndefined on 03/10/17.
@@ -34,20 +31,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        User user = userRepository.findByUserName(username);
+        UserCustom userCustom = userRepository.findByUsername(username);
+        System.out.println("User : " + userCustom.getUsername());
+        System.out.println("User : " + userCustom.isEnabled());
+        System.out.println("User : " + userCustom.isAccountNonExpired());
+        System.out.println("User : " + userCustom.isCredentialsNonExpired());
+        System.out.println("User : " + userCustom.isAccountNonLocked());
+
 
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        for (Role role : user.getRoles()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
-        }
+        /*for (GrantedAuthority grantedAuthority : userCustom.getAuthorities()){
+            grantedAuthorities.add(new SimpleGrantedAuthority(grantedAuthority));
+        }*/
 
-        //return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), grantedAuthorities);
-        return new de.onetwotree.margaux.entity.UserDetails(
-                user,
-                true,
-                true,
-                true,
-                true,
-                grantedAuthorities);
+        //return new org.springframework.security.core.userdetails.UserCustom(userCustom.getUserName(), userCustom.getPassword(), grantedAuthorities);
+        return new CustomUserDetails(
+                userCustom);
     }
 }

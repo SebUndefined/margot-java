@@ -269,6 +269,6 @@ public class PlotController {
     public String editResourceOfPlotSubmit(@PathVariable Plot plot, @ModelAttribute PlotResourceForm plotResourceForm) {
         System.out.println(plot);
         plotService.updateResourceOfPlot(plot, plotResourceForm);
-        return "pouete";
+        return "Request done";
     }
 }

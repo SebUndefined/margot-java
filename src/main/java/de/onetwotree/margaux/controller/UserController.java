@@ -1,14 +1,14 @@
 package de.onetwotree.margaux.controller;
 
-import de.onetwotree.margaux.dto.CountryDTO;
 import de.onetwotree.margaux.dto.UserDTO;
 import de.onetwotree.margaux.entity.Role;
-import de.onetwotree.margaux.entity.User;
+import de.onetwotree.margaux.entity.UserCustom;
 import de.onetwotree.margaux.service.RoleService;
 import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.jws.WebParam;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -41,8 +40,9 @@ public class UserController {
     public String userIndex(Model model,
                             @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
                             @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
-        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<User> userPage = userService.findAll(pageRequest);
+        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Page<UserCustom> userPage = userService.findAll(pageable);
+        System.out.println(userPage.getTotalElements());
         model.addAttribute("users", userPage);
         return "User/user";
     }

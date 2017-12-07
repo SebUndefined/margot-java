@@ -11,14 +11,14 @@
                     <h2>Plots</h2>
                 </div>
                 <div class="map-panel">
-                   Logged user: <span sec:authentication="name">Bob</span>
+                   Logged userCustom: <span sec:authentication="name">Bob</span>
                     Roles: <span sec:authentication="principal">[ROLE_USER, ROLE_ADMIN]</span>
                     <br />
                     <br />
                     <br />
                     <br />
                     <br />
-                    <span th:text ="${#authentication.principal.user.picture}"></span>
+                    <!--<span th:text ="${#authentication.principal.userCustom.picture}"></span>-->
                 </div>
 
             </div>
@@ -48,6 +48,10 @@
         <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
         <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
     </ul>
+    <form action="/logout">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+        <input type="submit">
+    </form>
 </main>
 
 <div th:replace="common/footer :: footer"></div>

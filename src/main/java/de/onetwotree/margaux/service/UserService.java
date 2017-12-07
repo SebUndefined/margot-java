@@ -1,9 +1,10 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.dto.UserDTO;
-import de.onetwotree.margaux.entity.User;
+import de.onetwotree.margaux.entity.UserCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -13,13 +14,13 @@ import java.util.List;
 public interface UserService {
 
 
-    Page<User> findAll(PageRequest pageRequest);
+    Page<UserCustom> findAll(Pageable pageable);
 
-    User save(UserDTO userDTO);
+    String save(UserDTO userDTO);
 
-    User findByUsername(String username);
+    UserCustom findByUsername(String username);
 
-    User getUser(Long id);
+    UserCustom getUser(Long id);
 
-    List<User> getAllUsers();
+    List<UserCustom> getAllUsers();
 }

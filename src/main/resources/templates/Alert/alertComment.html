@@ -5,10 +5,12 @@
 
     <div class="">
         <div class="row">
-            <form th:object="${newComment}" method="post" class="col s12" id="newAlertComment">
+            <form th:object="${newComment}" method="post" class="col s12" id="newAlertComment" th:data-alert-id="${newComment.alert.id}">
+                <meta id="_csrf" name="_csrf" th:content="${_csrf.token}"/>
+                <meta id="_csrf_header" name="_csrf_header" th:content="${_csrf.headerName}"/>
                 <div class="row">
                     <div class="input-field col l11 m11 s11">
-                        <img class="prefix circle" th:src="@{'/files/' + ${#authentication.principal.user.picture}}">
+                        <img class="prefix circle" th:src="@{'/files/' + ${#authentication.principal.userCustom.picture}}">
                         <textarea id="commentContent" type="text" class="validate submit-enter" th:field="*{commentContent}"></textarea>
                         <label for="commentContent">Your Comment...</label>
                     </div>
@@ -36,6 +38,7 @@
         </div>
 
     </div>
+    <script th:src="@{/assets/js/form/alertCommentForm.js}"></script>
 
 
 </div>

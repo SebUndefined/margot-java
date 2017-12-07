@@ -90,7 +90,6 @@
                                     var formData = $('form').serialize();
                                     console.log(formData);
                                     event.preventDefault();
-                                    var data = $('form').serialize();
                                     var token = $('#_csrf').attr('content');
                                     var header = $('#_csrf_header').attr('content');
                                     $.ajax({
@@ -99,7 +98,7 @@
                                         beforeSend: function(xhr) {
                                             xhr.setRequestHeader(header, token);
                                         },
-                                        data: data,
+                                        data: formData,
                                     });
                                     loadResourceOfPlot();
 

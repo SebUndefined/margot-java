@@ -6,6 +6,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +15,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,7 +24,7 @@ import java.util.List;
 @Entity
 @Table(name = "db_user")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class User {
+public class UserCustom implements  UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +33,7 @@ public class User {
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name="username", length = 50, unique = true, nullable = false)
-    private String userName;
+    private String username;
     @Column(name = "password")
     @Length(min = 5, message = "*Your password must have at least 5 characters")
     @NotEmpty(message = "*Please provide your password")
@@ -59,9 +62,10 @@ public class User {
 
     @Column(name="enabled")
     private boolean enabled;
-    @Column(name="token_expired")
-    private boolean tokenExpired;
 
+    private boolean accountNonExpired;
+    private boolean credentialsNonExpired;
+    private boolean accountNonLocked;
 
     @ManyToMany
     @JoinTable(
@@ -72,41 +76,7 @@ public class User {
                     name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
 
-    /*@OneToMany(
-            mappedBy = "manager",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    @JsonBackReference
-    private List<MainEntity> isManagerOf = new ArrayList<MainEntity>();*/
 
-    public User() {
-    }
-
-    /**
-     * All Attributes except picture and Roles
-     * @param userName
-     * @param password
-     * @param firstname
-     * @param lastname
-     * @param birthdate
-     * @param email
-     * @param phone
-     * @param localisation
-     * @param enabled
-     * @param tokenExpired
-     */
-    public User(String userName, String password, String firstname, String lastname, LocalDate birthdate, String email, String phone, String localisation, boolean enabled, boolean tokenExpired) {
-        this.userName = userName;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.birthdate = birthdate;
-        this.email = email;
-        this.phone = phone;
-        this.localisation = localisation;
-        this.enabled = enabled;
-        this.tokenExpired = tokenExpired;
-    }
 
     public Long getId() {
         return id;
@@ -116,16 +86,38 @@ public class User {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     public String getPassword() {
         return password;
+    }
+
+
+    public String getUsername() {
+        return username;
+    }
+
+
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+
+    public boolean isCredentialsNonExpired() {
+        return accountNonExpired;
     }
 
     public void setPassword(String password) {
@@ -196,12 +188,28 @@ public class User {
         this.enabled = enabled;
     }
 
-    public boolean isTokenExpired() {
-        return tokenExpired;
+    public boolean getAccountNonExpired() {
+        return accountNonExpired;
     }
 
-    public void setTokenExpired(boolean tokenExpired) {
-        this.tokenExpired = tokenExpired;
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public boolean getCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public boolean getAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
     }
 
     public List<Role> getRoles() {
@@ -231,13 +239,12 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", userName='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
                 ", email='" + email + '\'' +
                 ", enabled=" + enabled +
-                ", tokenExpired=" + tokenExpired +
                 ", roles=" + roles +
                 '}';
     }

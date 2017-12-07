@@ -14,5 +14,7 @@ public interface AlertService {
 
     List<Alert> findLast10ByMainEntityId(Long idMainEntity, AlertStatus alertStatus);
 
+    Alert saveAlert(Alert alert);
+
     String addAlertToMainEntity(MainEntity mainEntity, Alert alert);
 }

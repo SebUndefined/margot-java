@@ -12,8 +12,8 @@ public class Role {
     private Long id;
 
     private String name;
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
+    /*@ManyToMany(mappedBy = "roles")
+    private List<UserCustom> userCustoms;*/
 
     @ManyToMany
     @JoinTable(
@@ -40,13 +40,13 @@ public class Role {
         this.name = name;
     }
 
-    public List<User> getUsers() {
-        return users;
+    /*public List<UserCustom> getUserCustoms() {
+        return userCustoms;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
+    public void setUserCustoms(List<UserCustom> userCustoms) {
+        this.userCustoms = userCustoms;
+    }*/
 
     public List<Privilege> getPrivileges() {
         return privileges;

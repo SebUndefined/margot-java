@@ -2,11 +2,8 @@ package de.onetwotree.margaux.controller;
 
 import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.AlertRepository;
-import de.onetwotree.margaux.dao.PlotRepository;
 import de.onetwotree.margaux.entity.Alert;
-import de.onetwotree.margaux.entity.Plot;
-import de.onetwotree.margaux.entity.User;
-import de.onetwotree.margaux.service.PlotService;
+import de.onetwotree.margaux.entity.UserCustom;
 import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,8 +50,8 @@ public class WebController {
     public String profileAction(Model model, Principal principal)
     {
         System.out.println(principal.getName());
-        User user = userService.findByUsername(principal.getName());
-        model.addAttribute("user", user);
+        UserCustom userCustom = userService.findByUsername(principal.getName());
+        model.addAttribute("userCustom", userCustom);
         return "User/profile";
     }
 

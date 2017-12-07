@@ -11,7 +11,7 @@ $(document).ready(function () {
  */
 function loadAlertComments(alertSelected) {
     console.log(alertSelected.data('alert-id'));
-    alertId = alertSelected.data('alert-id');
+    const alertId = alertSelected.data('alert-id');
 
     $.ajax({
         type: 'GET',
@@ -22,10 +22,6 @@ function loadAlertComments(alertSelected) {
         },
         success: function (data) {
             $(alertSelected).parent().find('.alert-comment').load(this.url);
-            $('#newAlertComment').submit(function (event) {
-                event.preventDefault();
-                alert("sub")
-            });
         },
         complete: function() {
             $(alertSelected).find('.loader').removeClass('loading-part');

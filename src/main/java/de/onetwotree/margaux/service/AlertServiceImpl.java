@@ -35,6 +35,11 @@ public class AlertServiceImpl implements AlertService {
     }
 
     @Override
+    public Alert saveAlert(Alert alert) {
+        alert = alertRepository.save(alert);
+        return alert;
+    }
+    @Override
     public String addAlertToMainEntity(MainEntity mainEntity, Alert alert) {
         try {
             alert.setMainEntity(mainEntity);

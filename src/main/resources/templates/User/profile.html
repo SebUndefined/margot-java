@@ -25,14 +25,14 @@
                             <td>
                                 First name
                             </td>
-                            <td th:text="${user.firstname}">
+                            <td th:text="${userCustom.firstname}">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Last name
                             </td>
-                            <td th:text="${user.lastname}">
+                            <td th:text="${userCustom.lastname}">
                             </td>
                         </tr>
                         <tr>
@@ -40,8 +40,8 @@
                                 Birtday date
                             </td>
                             <td
-                                    th:text="${user.birthdate != null} ?
-                                    ${#temporals.format(user.birthdate,'dd/MM/yyyy')}
+                                    th:text="${userCustom.birthdate != null} ?
+                                    ${#temporals.format(userCustom.birthdate,'dd/MM/yyyy')}
                                     : 'null value!'">undefined
                             </td>
                         </tr>
@@ -60,14 +60,14 @@
                         <td>
                             Email
                         </td>
-                        <td th:text="${user.email}">
+                        <td th:text="${userCustom.email}">
                         </td>
                     </tr>
                     <tr>
                         <td>
                             Phone
                         </td>
-                        <td th:text="${user.phone}">
+                        <td th:text="${userCustom.phone}">
                         </td>
                     </tr>
                     </tbody>
@@ -87,7 +87,7 @@
                         <td>
                             Login
                         </td>
-                        <td th:text="${user.userName}">
+                        <td th:text="${userCustom.username}">
                         </td>
                     </tr>
                     <tr>
@@ -112,7 +112,7 @@
                                 Role(s)
                             </td>
                             <td>
-                                <span th:each="role : ${user.roles}">
+                                <span th:each="role : ${userCustom.roles}">
                                     <span class="new badge" data-badge-caption="" th:text="${role.name}">
 
                                     </span>
