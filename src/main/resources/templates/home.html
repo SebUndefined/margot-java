@@ -11,13 +11,12 @@
                     <h2>Plots</h2>
                 </div>
                 <div class="map-panel">
-                   Logged userCustom: <span sec:authentication="name">Bob</span>
-                    Roles: <span sec:authentication="principal">[ROLE_USER, ROLE_ADMIN]</span>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    <br />
+                    <div sec:authorize="principal">
+                        This content is only shown to authenticated users.
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_USER')" > Has Authority USER </div>
+                    <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" > Has Authority ADMIN </div>
+
                     <!--<span th:text ="${#authentication.principal.userCustom.picture}"></span>-->
                 </div>
 

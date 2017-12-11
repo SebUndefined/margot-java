@@ -6,12 +6,17 @@ import de.onetwotree.margaux.entity.Alert;
 import de.onetwotree.margaux.entity.UserCustom;
 import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 
 /**
@@ -34,10 +39,18 @@ public class WebController {
     }
 
     @RequestMapping("/")
-    public String homeAction(Model model) {
+    public String homeAction(Model model, HttpServletRequest request) {
 
         List<Alert> alertList = alertRepository.findFirst20ByStatusOrderByDateDesc(AlertStatus.OPEN);
         model.addAttribute("alertList", alertList);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        Set<String> roles = authentication.getAuthorities().stream()
+                .map(r -> r.getAuthority()).collect(Collectors.toSet());
+        if (request.isUserInRole("ROLE_USER")) {
+            System.out.println("Has User Role");
+        }
+        System.out.println("Here are the roles " + roles);
         return "home";
     }
 

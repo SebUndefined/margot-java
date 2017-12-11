@@ -7,14 +7,13 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -74,7 +73,7 @@ public class UserCustom implements  UserDetails{
                     name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private List<Role> roles;
+    private List<Role> grantedAuthorities;
 
 
 
@@ -92,8 +91,8 @@ public class UserCustom implements  UserDetails{
     }
 
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+    public List<Role> getAuthorities() {
+        return this.grantedAuthorities;
     }
 
     public String getPassword() {
@@ -212,12 +211,12 @@ public class UserCustom implements  UserDetails{
         this.accountNonLocked = accountNonLocked;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public Collection<Role> getGrantedAuthorities() {
+        return grantedAuthorities;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setGrantedAuthorities(List<Role> grantedAuthorities) {
+        this.grantedAuthorities = grantedAuthorities;
     }
     /*public List<MainEntity> getIsManagerOf() {
         return isManagerOf;
@@ -237,15 +236,23 @@ public class UserCustom implements  UserDetails{
 
     @Override
     public String toString() {
-        return "User{" +
+        return "UserCustom{" +
                 "id=" + id +
-                ", userName='" + username + '\'' +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", lastname='" + lastname + '\'' +
+                ", birthdate=" + birthdate +
                 ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", localisation='" + localisation + '\'' +
+                ", picture='" + picture + '\'' +
                 ", enabled=" + enabled +
-                ", roles=" + roles +
+                ", accountNonExpired=" + accountNonExpired +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", grantedAuthorities=" + grantedAuthorities +
                 '}';
     }
+
 }

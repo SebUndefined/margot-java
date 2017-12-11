@@ -1,3 +1,4 @@
+/*
 package de.onetwotree.margaux.entity;
 
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
@@ -6,9 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
+*/
 /**
  * Created by SebUndefined on 04/10/17.
- */
+ *//*
+
 public class CustomUserDetails implements UserDetails {
 
     private UserCustom userCustom;
@@ -61,3 +64,4 @@ public class CustomUserDetails implements UserDetails {
         return userCustom.isEnabled();
     }
 }
+*/

@@ -1,17 +1,16 @@
 $(document).ready(function () {
     $('.load-comment').click(function (event) {
-        var alertSelected = $(this).parent();
+        const alertSelected = $(this).parent();
         loadAlertComments(alertSelected);
     });
 })
 
 /**
  * Load
- * @param alertId
+ * @param alertSelected
  */
 function loadAlertComments(alertSelected) {
-    console.log(alertSelected.data('alert-id'));
-    const alertId = alertSelected.data('alert-id');
+    var alertId = alertSelected.data('alert-id');
 
     $.ajax({
         type: 'GET',
@@ -21,7 +20,8 @@ function loadAlertComments(alertSelected) {
             $(alertSelected).find('.loader').addClass('loading-part');
         },
         success: function (data) {
-            $(alertSelected).parent().find('.alert-comment').load(this.url);
+            $('.alert-comment').empty();
+            $(alertSelected).parent().find('#alertComments-' +alertId).load(this.url);
         },
         complete: function() {
             $(alertSelected).find('.loader').removeClass('loading-part');

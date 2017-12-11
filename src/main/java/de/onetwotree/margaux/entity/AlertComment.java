@@ -1,6 +1,9 @@
 package de.onetwotree.margaux.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Created by SebUndefined on 27/09/17.
@@ -12,9 +15,8 @@ public class AlertComment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "alert_comment_id")
     private Long id;
-
-
     private String commentContent;
+    private LocalDateTime dateTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "alert_id", nullable = false)
@@ -37,6 +39,14 @@ public class AlertComment {
 
     public void setCommentContent(String commentContent) {
         this.commentContent = commentContent;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public Alert getAlert() {

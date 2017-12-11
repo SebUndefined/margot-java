@@ -6,7 +6,7 @@
 <main>
     <div th:fragment="sheetAlert">
         <ul class="collapsible popout" data-collapsible="accordion">
-            <li th:each="alertItem : ${alertItems}" th:data-alert-id="${alertItem.id}">
+            <li th:each="alertItem : ${alertItems}" th:data-alert-id="${alertItem.id}" th:id="'alert-'+ ${alertItem.id}">
                 <div class="collapsible-header load-comment">
                 <span th:switch="${alertItem.level}">
                     <i th:case="${T(de.onetwotree.margaux.Enum.AlertLevel).NOTICE}" class="material-icons cyan-text">
@@ -33,7 +33,7 @@
                 <div class="collapsible-body">
                     <div th:text="${alertItem.comment}"></div>
                     <div class="loader"></div>
-                    <div class="alert-comment"></div>
+                    <div th:id="'alertComments-'+ ${alertItem.id}" class="alert-comment"></div>
                 </div>
 
             </li>

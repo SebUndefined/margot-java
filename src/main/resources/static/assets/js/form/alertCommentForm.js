@@ -11,24 +11,30 @@ $(document).ready(function () {
         }
     });
 
-    $('#newAlertComment').submit(function (event) {
+    $('.newAlertComment').submit(function (event) {
         event.preventDefault();
         var data = $(this);
-        submitNewAlertCommentForm(data)
+        submitNewAlertCommentForm(data);
     });
 })
 
 function submitNewAlertCommentForm(form) {
     var data = $(form).serialize();
     var alertId = $(form).data('alert-id');
-    var token = $('#_csrf').attr('content');
-    var header = $('#_csrf_header').attr('content');
+    var token = $('#_csrf-'+alertId).attr('content');
+    var header = $('#_csrf_header-'+alertId).attr('content');
     $.ajax({
         type: "POST",
-        url: "/alert-comment/view/"+alertId+"/save-alert-comment/",
+        url: $(form).attr('action'),
+        data: data,
         beforeSend: function(xhr) {
             xhr.setRequestHeader(header, token);
         },
-        data: data,
+        success: function () {
+            loadAlertComments($('#alert-'+alertId))
+
+        },
+
     });
+    console.log(data)
 }

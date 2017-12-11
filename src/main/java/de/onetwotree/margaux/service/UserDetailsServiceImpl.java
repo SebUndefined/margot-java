@@ -1,10 +1,10 @@
 package de.onetwotree.margaux.service;
 
 import de.onetwotree.margaux.dao.UserRepository;
-import de.onetwotree.margaux.entity.CustomUserDetails;
 import de.onetwotree.margaux.entity.UserCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,20 +32,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         UserCustom userCustom = userRepository.findByUsername(username);
-        System.out.println("User : " + userCustom.getUsername());
-        System.out.println("User : " + userCustom.isEnabled());
-        System.out.println("User : " + userCustom.isAccountNonExpired());
-        System.out.println("User : " + userCustom.isCredentialsNonExpired());
-        System.out.println("User : " + userCustom.isAccountNonLocked());
-
-
+        System.out.println(userCustom.getPassword());
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        /*for (GrantedAuthority grantedAuthority : userCustom.getAuthorities()){
-            grantedAuthorities.add(new SimpleGrantedAuthority(grantedAuthority));
-        }*/
+        for (GrantedAuthority grantedAuthority : userCustom.getAuthorities()){
+            System.out.println(grantedAuthority.getAuthority());
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(grantedAuthority.getAuthority());
+            grantedAuthorities.add(simpleGrantedAuthority);
+            System.out.println(simpleGrantedAuthority);
+        }
+
 
         //return new org.springframework.security.core.userdetails.UserCustom(userCustom.getUserName(), userCustom.getPassword(), grantedAuthorities);
-        return new CustomUserDetails(
-                userCustom);
+        return userCustom;
     }
 }

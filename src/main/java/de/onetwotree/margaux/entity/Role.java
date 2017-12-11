@@ -1,34 +1,35 @@
 package de.onetwotree.margaux.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "db_role")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
-    /*@ManyToMany(mappedBy = "roles")
-    private List<UserCustom> userCustoms;*/
+    @ManyToMany(mappedBy = "grantedAuthorities")
+    private List<UserCustom> userCustoms;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "db_roles_privileges",
             joinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "privilege_id", referencedColumnName = "id"))
-    private List<Privilege> privileges;
+    private List<Privilege> privileges;*/
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -40,19 +41,24 @@ public class Role {
         this.name = name;
     }
 
-    /*public List<UserCustom> getUserCustoms() {
+    public List<UserCustom> getUserCustoms() {
         return userCustoms;
     }
 
     public void setUserCustoms(List<UserCustom> userCustoms) {
         this.userCustoms = userCustoms;
-    }*/
-
+    }
+/*
     public List<Privilege> getPrivileges() {
         return privileges;
     }
 
     public void setPrivileges(List<Privilege> privileges) {
         this.privileges = privileges;
+    }*/
+
+    @Override
+    public String getAuthority() {
+        return this.getId();
     }
 }

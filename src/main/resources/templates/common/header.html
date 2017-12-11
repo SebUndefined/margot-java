@@ -14,9 +14,9 @@
                </div>
                 <div class="col l6 right">
                     <a id="personnal-menu-button" href='#' data-activates='personnal' class="right valign-wrapper">
-                       <img class="circle userCustom-img" th:src="@{'/files/' + ${#authentication.principal.userCustom.picture}}">
+                       <!--<img class="circle userCustom-img" th:src="@{'/files/' + ${#authentication.principal.userCustom.picture}}">
                         <span sec:authentication="principal.userCustom.firstname"></span>
-                        <span sec:authentication="principal.userCustom.lastname"></span>
+                        <span sec:authentication="principal.userCustom.lastname"></span>-->
                         <i class="material-icons">arrow_drop_down</i>
                     </a>
                </div>
@@ -163,14 +163,14 @@
         <ul id="personnal" class="side-nav">
             <li>
                 <div class="userCustom-view">
-                <a href="#!userCustom"><img class="circle" th:src="@{'/files/' + ${#authentication.principal.userCustom.picture}}"></a>
+                <!--<a href="#!userCustom"><img class="circle" th:src="@{'/files/' + ${#authentication.principal.userCustom.picture}}"></a>
                 <a href="#!name">
                     <span class="white-text name">
                         <span sec:authentication="principal.userCustom.firstname"></span>
                         <span sec:authentication="principal.userCustom.lastname"></span>
                     </span>
                 </a>
-                <a href="#!email"><span class="white-text email" sec:authentication="principal.userCustom.email"></span></a>
+                <a href="#!email"><span class="white-text email" sec:authentication="principal.userCustom.email"></span></a>-->
             </div></li>
             <li><a th:href="@{/profile}"><i class="material-icons">perm_identity</i>Profile</a></li>
             <li><div class="divider"></div></li>
