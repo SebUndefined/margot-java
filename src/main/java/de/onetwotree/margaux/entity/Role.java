@@ -10,20 +10,12 @@ import java.util.List;
 public class Role implements GrantedAuthority {
 
     @Id
+    @Column(name = "role_id")
     private String id;
 
-    private String name;
+
     @ManyToMany(mappedBy = "grantedAuthorities")
     private List<UserCustom> userCustoms;
-
-    /*@ManyToMany
-    @JoinTable(
-            name = "db_roles_privileges",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id", referencedColumnName = "id"))
-    private List<Privilege> privileges;*/
 
     public String getId() {
         return id;
@@ -33,13 +25,6 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<UserCustom> getUserCustoms() {
         return userCustoms;
@@ -48,14 +33,6 @@ public class Role implements GrantedAuthority {
     public void setUserCustoms(List<UserCustom> userCustoms) {
         this.userCustoms = userCustoms;
     }
-/*
-    public List<Privilege> getPrivileges() {
-        return privileges;
-    }
-
-    public void setPrivileges(List<Privilege> privileges) {
-        this.privileges = privileges;
-    }*/
 
     @Override
     public String getAuthority() {

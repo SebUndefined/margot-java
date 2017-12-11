@@ -11,11 +11,11 @@
                     <h2>Plots</h2>
                 </div>
                 <div class="map-panel">
-                    <div sec:authorize="principal">
-                        This content is only shown to authenticated users.
+                    <div sec:authentication="principal.getAuthorities()">
+                        The value of the "name" property of the authentication object should appear here.
                     </div>
-                    <div sec:authorize="hasAuthority('ROLE_USER')" > Has Authority USER </div>
-                    <div sec:authorize="hasAnyAuthority('ROLE_ADMIN')" > Has Authority ADMIN </div>
+                    <div sec:authorize="hasRole('ROLE_USER')" > Has Authority USER </div>
+                    <div sec:authorize="hasRole('ADMIN')" > Has Authority ADMIN </div>
 
                     <!--<span th:text ="${#authentication.principal.userCustom.picture}"></span>-->
                 </div>

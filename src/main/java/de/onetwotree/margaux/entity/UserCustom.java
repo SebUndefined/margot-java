@@ -7,7 +7,6 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -72,8 +71,8 @@ public class UserCustom implements  UserDetails{
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"))
-    private List<Role> grantedAuthorities;
+                    name = "role_id", referencedColumnName = "role_id"))
+    private Collection<Role> grantedAuthorities;
 
 
 
@@ -91,7 +90,8 @@ public class UserCustom implements  UserDetails{
     }
 
 
-    public List<Role> getAuthorities() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.grantedAuthorities;
     }
 
@@ -211,7 +211,7 @@ public class UserCustom implements  UserDetails{
         this.accountNonLocked = accountNonLocked;
     }
 
-    public Collection<Role> getGrantedAuthorities() {
+    public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
         return grantedAuthorities;
     }
 
@@ -255,4 +255,7 @@ public class UserCustom implements  UserDetails{
                 '}';
     }
 
+    public void setGrantedAuthorities(Collection<Role> grantedAuthorities) {
+        this.grantedAuthorities = grantedAuthorities;
+    }
 }
