@@ -10,7 +10,7 @@
                 <div class="panel_title">
                     <h2>Users</h2>
                 </div>
-                <table class="bordered highlight responsive-table">
+                <table class="bordered highlight responsive-table centered">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -29,7 +29,7 @@
                         <td th:text="${user.email}">undefined</td>
                         <td class="center-align">
                             <span class="center-align" th:each="role : ${user.roles}">
-                                <span class="new badge" data-badge-caption="" th:text="${role.name}">
+                                <span class="new badge" data-badge-caption="" th:text="${role.id}">
 
                                 </span>
                             </span>

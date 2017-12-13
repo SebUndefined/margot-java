@@ -3,11 +3,16 @@ package de.onetwotree.margaux.controller;
 import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.AlertRepository;
 import de.onetwotree.margaux.entity.Alert;
+import de.onetwotree.margaux.entity.CustomUserDetails;
 import de.onetwotree.margaux.entity.UserCustom;
 import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -39,18 +44,18 @@ public class WebController {
     }
 
     @RequestMapping("/")
-    public String homeAction(Model model, HttpServletRequest request) {
+    public String homeAction(Model model, @AuthenticationPrincipal CustomUserDetails activeUser) {
 
         List<Alert> alertList = alertRepository.findFirst20ByStatusOrderByDateDesc(AlertStatus.OPEN);
         model.addAttribute("alertList", alertList);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Set<String> roles = authentication.getAuthorities().stream()
-                .map(r -> r.getAuthority()).collect(Collectors.toSet());
-        if (request.isUserInRole("ROLE_USER")) {
-            System.out.println("Has User Role");
-        }
+        List<String> roles = activeUser.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority).collect(Collectors.toList());
+
         System.out.println("Here are the roles " + roles);
+        if (activeUser.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            System.out.println("has");
+        }
         return "home";
     }
 

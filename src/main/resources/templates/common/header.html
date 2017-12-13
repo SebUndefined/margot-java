@@ -14,9 +14,8 @@
                </div>
                 <div class="col l6 right">
                     <a id="personnal-menu-button" href='#' data-activates='personnal' class="right valign-wrapper">
-                       <!--<img class="circle userCustom-img" th:src="@{'/files/' + ${#authentication.principal.userCustom.picture}}">
-                        <span sec:authentication="principal.userCustom.firstname"></span>
-                        <span sec:authentication="principal.userCustom.lastname"></span>-->
+                       <img class="circle header-picture" th:src="@{'/files/' + ${#authentication.principal.picture}}">
+                        <span th:text="${#authentication.name}"></span>
                         <i class="material-icons">arrow_drop_down</i>
                     </a>
                </div>
@@ -162,15 +161,16 @@
         <!--Test Personnal menu-->
         <ul id="personnal" class="side-nav">
             <li>
-                <div class="userCustom-view">
-                <!--<a href="#!userCustom"><img class="circle" th:src="@{'/files/' + ${#authentication.principal.userCustom.picture}}"></a>
+                <div class="user-view">
+                <a href="#!userCustom"><img class="circle" th:src="@{'/files/' + ${#authentication.principal.picture}}"></a>
                 <a href="#!name">
                     <span class="white-text name">
-                        <span sec:authentication="principal.userCustom.firstname"></span>
-                        <span sec:authentication="principal.userCustom.lastname"></span>
+                        <span th:text="${#authentication.principal.firstName}"></span>
+                        <span th:text="${#authentication.principal.lastName}"></span>
+                        <!--<span th:text="${#authentication.principal.email}"></span>-->
                     </span>
                 </a>
-                <a href="#!email"><span class="white-text email" sec:authentication="principal.userCustom.email"></span></a>-->
+                <a href="#!email"><span class="white-text email" th:text="${#authentication.principal.email}"></span></a>
             </div></li>
             <li><a th:href="@{/profile}"><i class="material-icons">perm_identity</i>Profile</a></li>
             <li><div class="divider"></div></li>
@@ -179,6 +179,22 @@
                     <!--<input type="submit" value="Sign Out"/>-->
                     <li><a type="submit"><i class="material-icons">power_settings_new</i>Logout</a></li>
                 </form>
+            <li>
+                <div class="row">
+                    <div class="col l4 m4 s4 center-align">
+                        <i class="material-icons">power_settings_new</i>
+                    </div>
+                    <div class="col l4 m4 s4 center-align">
+                        <i class="material-icons">power_settings_new</i>
+                    </div>
+                    <div class="col l4 m4 s4 center-align">
+                        <form th:action="@{/logout}" method="post">
+                            <!--<input type="submit" value="Sign Out"/>-->
+                            <button class="btn btn-submit-custom" type="submit"><i class="material-icons">power_settings_new</i></button>
+                        </form>
+                    </div>
+                </div>
+            </li>
         </ul>
 
         <!--end test personnal menu-->

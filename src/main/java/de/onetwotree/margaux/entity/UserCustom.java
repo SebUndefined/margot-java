@@ -7,12 +7,15 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +25,7 @@ import java.util.List;
 @Entity
 @Table(name = "db_user")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class UserCustom implements  UserDetails{
+public class UserCustom{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -72,8 +75,7 @@ public class UserCustom implements  UserDetails{
                     name = "user_id", referencedColumnName = "user_id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "role_id"))
-    private Collection<Role> grantedAuthorities;
-
+    private List<Role> roles;
 
 
     public Long getId() {
@@ -84,39 +86,16 @@ public class UserCustom implements  UserDetails{
         this.id = id;
     }
 
-
-    public void setUsername(String userName) {
-        this.username = userName;
-    }
-
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.grantedAuthorities;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-
     public String getUsername() {
         return username;
     }
 
-
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
-    }
-
-
-    public boolean isCredentialsNonExpired() {
-        return accountNonExpired;
+    public String getPassword() {
+        return password;
     }
 
     public void setPassword(String password) {
@@ -187,7 +166,7 @@ public class UserCustom implements  UserDetails{
         this.enabled = enabled;
     }
 
-    public boolean getAccountNonExpired() {
+    public boolean isAccountNonExpired() {
         return accountNonExpired;
     }
 
@@ -195,7 +174,7 @@ public class UserCustom implements  UserDetails{
         this.accountNonExpired = accountNonExpired;
     }
 
-    public boolean getCredentialsNonExpired() {
+    public boolean isCredentialsNonExpired() {
         return credentialsNonExpired;
     }
 
@@ -203,7 +182,7 @@ public class UserCustom implements  UserDetails{
         this.credentialsNonExpired = credentialsNonExpired;
     }
 
-    public boolean getAccountNonLocked() {
+    public boolean isAccountNonLocked() {
         return accountNonLocked;
     }
 
@@ -211,51 +190,11 @@ public class UserCustom implements  UserDetails{
         this.accountNonLocked = accountNonLocked;
     }
 
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities() {
-        return grantedAuthorities;
+    public List<Role> getRoles() {
+        return roles;
     }
 
-    public void setGrantedAuthorities(List<Role> grantedAuthorities) {
-        this.grantedAuthorities = grantedAuthorities;
-    }
-    /*public List<MainEntity> getIsManagerOf() {
-        return isManagerOf;
-    }
-    public void setIsManagerOf(List<MainEntity> isManagerOf) {
-        this.isManagerOf = isManagerOf;
-    }
-    public void addEntityTomanager(MainEntity mainEntity) {
-        this.isManagerOf.add(mainEntity);
-    }
-    public void removeEntityTomanager(MainEntity mainEntity) {
-        this.isManagerOf.remove(mainEntity);
-    }*/
-
-    //Equal HashCode test
-
-
-    @Override
-    public String toString() {
-        return "UserCustom{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", birthdate=" + birthdate +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", localisation='" + localisation + '\'' +
-                ", picture='" + picture + '\'' +
-                ", enabled=" + enabled +
-                ", accountNonExpired=" + accountNonExpired +
-                ", credentialsNonExpired=" + credentialsNonExpired +
-                ", accountNonLocked=" + accountNonLocked +
-                ", grantedAuthorities=" + grantedAuthorities +
-                '}';
-    }
-
-    public void setGrantedAuthorities(Collection<Role> grantedAuthorities) {
-        this.grantedAuthorities = grantedAuthorities;
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

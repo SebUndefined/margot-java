@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div th:replace="common/head :: head"></div>
 <div th:replace="common/header :: header"></div>
 <main>
@@ -11,13 +11,14 @@
                     <h2>Plots</h2>
                 </div>
                 <div class="map-panel">
-                    <div sec:authentication="principal.getAuthorities()">
-                        The value of the "name" property of the authentication object should appear here.
-                    </div>
-                    <div sec:authorize="hasRole('ROLE_USER')" > Has Authority USER </div>
-                    <div sec:authorize="hasRole('ADMIN')" > Has Authority ADMIN </div>
+                    <div th:text="${#authentication.principal.picture}"></div>
 
-                    <!--<span th:text ="${#authentication.principal.userCustom.picture}"></span>-->
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        This will only be displayed if authenticated user has role ROLE_ADMIN.
+                    </div>
+                    <div sec:authorize="hasAuthority('ROLE_USER')" > Has Authority USER </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')" > Has Authority ADMIN </div>
+
                 </div>
 
             </div>

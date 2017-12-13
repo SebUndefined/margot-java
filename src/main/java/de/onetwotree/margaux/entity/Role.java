@@ -14,7 +14,7 @@ public class Role implements GrantedAuthority {
     private String id;
 
 
-    @ManyToMany(mappedBy = "grantedAuthorities")
+    @ManyToMany(mappedBy = "roles")
     private List<UserCustom> userCustoms;
 
     public String getId() {

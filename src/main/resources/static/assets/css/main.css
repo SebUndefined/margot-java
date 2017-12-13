@@ -28,14 +28,16 @@ header, main, footer {
 nav {
     background-color: #EDEDED;
 }
-.user-img {
-    max-height: 64px!important;
-    width: auto;
-    padding: 15px 0!important;
+.header-picture {
+    width: 42px;
+    height: 42px;
 }
 #personnal-menu-button {
     color: rgb(115, 135, 156);
     font-weight: 700;
+}
+.btn-submit-custom {
+
 }
 #logo {
     height: 64px;

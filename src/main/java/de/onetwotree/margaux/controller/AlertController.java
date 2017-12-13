@@ -44,12 +44,9 @@ public class AlertController {
         this.mainEntityRepository = mainEntityRepository;
     }
 
-    @GetMapping(value = "view/{id}/load-comments/")
-    public String loadAlertComments(Model model, @PathVariable(name = "id") Alert alert) {
+    @GetMapping(value = "view/{idAlert}/load-comments/")
+    public String loadAlertComments(Model model, @PathVariable(name = "idAlert") Alert alert, @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-        UserCustom userCustom = (UserCustom)SecurityContextHolder.getContext()
-                        .getAuthentication().getPrincipal();
-        System.out.println("test" + userCustom);
 
         List<AlertComment> alertComments = alert.getAlertComments()
                 .stream()
