@@ -31,14 +31,20 @@
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="resourceName" type="text" class="validate" th:field="*{password}" />
-                            <label for="resourceName">Password</label>
+                            <input id="password" type="text" class="validate" th:field="*{password}" />
+                            <label for="password">Password</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col l6 m6 s12">
-                            <input id="resourceName" type="text" class="validate" th:field="*{email}" />
-                            <label for="resourceName">email</label>
+                            <input id="confirmPassword" type="text" class="validate" th:field="*{confirmPassword}" />
+                            <label for="confirmPassword">Confirm password</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <input id="email" type="text" class="validate" th:field="*{email}" />
+                            <label for="email">Email</label>
                         </div>
                     </div>
                     <div class="row">
@@ -49,6 +55,35 @@
                             </div>
                             <div class="file-path-wrapper">
                                 <input class="file-path validate" type="text">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col l6 m6 s12">
+                            <div class="row">
+                                <div class="col l2 m3 s12">
+                                    <label class="form_label">Enable: </label>
+                                </div>
+                                <div class="col l10 m9 s12">
+                                    <div class="switch">
+                                        <label>
+                                            Off
+                                            <input id="enabled" type="checkbox" name="enabled" value="true">
+                                            <span class="lever"></span>
+                                            On
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col l6 m6 s12">
+                            <div class="input-field col s12">
+                                <select multiple th:field="*{roles}">
+                                    <option value="" disabled selected>Choose your option</option>
+                                    <option th:each="role: ${roleList}" th:value="${role.id}" th:text="${role.id}" ></option>
+                                </select>
                             </div>
                         </div>
                     </div>

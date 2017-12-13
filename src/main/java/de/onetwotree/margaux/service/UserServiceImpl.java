@@ -4,6 +4,7 @@ package de.onetwotree.margaux.service;
 import de.onetwotree.margaux.dao.RoleRepository;
 import de.onetwotree.margaux.dao.UserRepository;
 import de.onetwotree.margaux.dto.UserDTO;
+import de.onetwotree.margaux.entity.Role;
 import de.onetwotree.margaux.entity.UserCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolationException;
 import java.util.*;
 
 /**
@@ -41,14 +43,31 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll(pageable);
     }
 
+
+
     @Override
     @Transactional
-    public String save(UserDTO userDTO) {
-        //UserCustom userCustom = new UserCustom();
-//        userCustom.setRoles(new ArrayList<>(roleRepository.findAll()));
-//        userCustom.setPicture(storageService.store(userDTO.getPicture()));
-//        userCustom = userRepository.saveAndFlush(userCustom);
-        return "test";
+    public UserCustom save(UserDTO userDTO) {
+        UserCustom userCustom = new UserCustom(userDTO.getUserName(),
+                bCryptPasswordEncoder.encode(userDTO.getPassword()),
+                userDTO.getFirstname(),
+                userDTO.getLastname(),
+                userDTO.getBirthdate(),
+                userDTO.getEmail(),
+                userDTO.getPhone(),
+                userDTO.getLocalisation(),
+                storageService.store(userDTO.getPicture()),
+                userDTO.isEnabled(),
+                true,
+                true,
+                true,
+                userDTO.getRoles());
+        try {
+            userCustom = userRepository.saveAndFlush(userCustom);
+        } catch (ConstraintViolationException e) {
+            e.printStackTrace();
+        }
+        return userCustom;
     }
 
     @Override

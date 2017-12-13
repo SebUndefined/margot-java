@@ -27,9 +27,9 @@
                         <td th:text="${user.firstname} + ' ' + ${user.lastname}">undefined</td>
                         <td th:text="${user.username}">undefined</td>
                         <td th:text="${user.email}">undefined</td>
-                        <td class="center-align">
-                            <span class="center-align" th:each="role : ${user.roles}">
-                                <span class="new badge" data-badge-caption="" th:text="${role.id}">
+                        <td>
+                            <span th:each="role : ${user.roles}">
+                                <span class="new badge reset-float" data-badge-caption="" th:text="${role.id}">
 
                                 </span>
                             </span>

@@ -36,15 +36,25 @@ nav {
     color: rgb(115, 135, 156);
     font-weight: 700;
 }
-.btn-submit-custom {
+.btn-custom {
+    background: none;
+    border:none;
+    box-shadow: none;
+}
+.btn-custom:hover {
+    background-color: white;
+}
 
+.btn-custom:hover i {
+    color: #2A3F54 !important;
+}
+.form_label {
+    font-size: 16px;
 }
 #logo {
-    height: 64px;
-    background-image: url("../img/logo_12Tree_resize.jpg");
-    background-repeat: no-repeat;
+    height: 100px;
     background-size: contain;
-    background-position: center;
+    background: url("../img/logo_12Tree_resize.jpg") no-repeat center;
 }
 .tabs .indicator { display: none; }
 .tabs .tab a {
@@ -133,7 +143,9 @@ a.sortable {
     color: rgb(115, 135, 156);
     font-weight: 700;
 }
-
+.reset-float {
+    float: none !important;
+}
 
 
 .map-panel {

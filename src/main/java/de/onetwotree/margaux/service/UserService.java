@@ -16,7 +16,7 @@ public interface UserService {
 
     Page<UserCustom> findAll(Pageable pageable);
 
-    String save(UserDTO userDTO);
+    UserCustom save(UserDTO userDTO);
 
     UserCustom findByUsername(String username);
 

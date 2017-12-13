@@ -46,6 +46,11 @@ public class UserController {
         model.addAttribute("users", userPage);
         return "User/user";
     }
+    @GetMapping(value = "/view/{id}")
+    public String viewUser(@PathVariable(value = "id") UserCustom userCustom,  Model model) {
+        model.addAttribute("userCustom", userCustom);
+        return "User/viewUser";
+    }
 
     @GetMapping(value = "/add")
     public String addUserForm(Model model) {
@@ -57,9 +62,16 @@ public class UserController {
     }
 
     @PostMapping(value = "/add")
-    public String addUserSubmit(@Valid UserDTO userDTO,
+    public String addUserSubmit(@ModelAttribute("UserDTO") @Valid UserDTO userDTO,
                                 BindingResult result, RedirectAttributes redirectAttributes) {
-        userService.save(userDTO);
-        return "prout";
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("alerts", result.getAllErrors());
+            return "redirect:/user/add/";
+        }
+        UserCustom userCustom = userService.save(userDTO);
+        if (userCustom.getId() != null) {
+            redirectAttributes.addFlashAttribute("info", "User " + userCustom.getUsername() + " has been saved !");
+        }
+        return "redirect:/user/view/" + userCustom.getId();
     }
 }

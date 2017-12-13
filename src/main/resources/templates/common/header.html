@@ -173,24 +173,32 @@
                 <a href="#!email"><span class="white-text email" th:text="${#authentication.principal.email}"></span></a>
             </div></li>
             <li><a th:href="@{/profile}"><i class="material-icons">perm_identity</i>Profile</a></li>
-            <li><div class="divider"></div></li>
-            <li><a class="subheader">Subheader</a></li>
-                <form th:action="@{/logout}" method="post">
-                    <!--<input type="submit" value="Sign Out"/>-->
-                    <li><a type="submit"><i class="material-icons">power_settings_new</i>Logout</a></li>
-                </form>
+            <li>
+                <div class="divider"></div>
+            </li>
+            <li><a>Links</a></li>
+
             <li>
                 <div class="row">
-                    <div class="col l4 m4 s4 center-align">
-                        <i class="material-icons">power_settings_new</i>
+                    <div class="col l4 m4 s4 center-align  link-menu">
+                        <button class="btn btn-floating btn-custom" title="Reset your password">
+                            <i class="material-icons">settings_backup_restore</i>
+                        </button>
+
+
                     </div>
-                    <div class="col l4 m4 s4 center-align">
-                        <i class="material-icons">power_settings_new</i>
+                    <div class="col l4 m4 s4 center-align  link-menu">
+                        <form th:action="${#httpServletRequest.requestURL.toString()}" method="post">
+                            <button class="btn btn-floating btn-custom" type="submit" title="Logout">
+                                <i class="material-icons">open_in_new</i>
+                            </button>
+                        </form>
                     </div>
-                    <div class="col l4 m4 s4 center-align">
+                    <div class="col l4 m4 s4 center-align  link-menu">
                         <form th:action="@{/logout}" method="post">
-                            <!--<input type="submit" value="Sign Out"/>-->
-                            <button class="btn btn-submit-custom" type="submit"><i class="material-icons">power_settings_new</i></button>
+                            <button class="btn btn-floating btn-custom" type="submit" title="Logout">
+                                <i class="material-icons">power_settings_new</i>
+                            </button>
                         </form>
                     </div>
                 </div>

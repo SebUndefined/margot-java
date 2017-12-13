@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<div th:replace="common/head :: head"></div>
+<div th:replace="common/header :: header"></div>
+<main>
+    <div class="row">
+        <div class="col l12 m12 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h1>
+                        <span th:text="${userCustom.firstname}"></span>
+                        <span th:text="${userCustom.lastname}"></span>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Informations</h2>
+                </div>
+                <table class="bordered responsive-table">
+                    <tr>
+                        <th>Username</th>
+                        <td th:text="${userCustom.username}"></td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td th:text="${userCustom.email}"></td>
+                    </tr>
+                    <tr>
+                        <th>Role</th>
+                        <td>
+                            <span th:each="role : ${userCustom.roles}">
+                                <span class="new badge reset-float" data-badge-caption="" th:text="${role.id}">
+
+                                </span>
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Alerts</h2>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="col l6 m6 s12">
+            <div class="panel6">
+                <div class="panel_title">
+                    <h2>Holding</h2>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!--Add button-->
+    <div class="fixed-action-btn horizontal click-to-toggle">
+        <a class="btn-floating btn-large">
+            <i class="material-icons">menu</i>
+        </a>
+        <ul>
+
+            <!--<li><a class="btn-floating yellow darken-1"><i class="material-icons">format_quote</i></a></li>
+            <li><a class="btn-floating green"><i class="material-icons">publish</i></a></li>
+            <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>-->
+        </ul>
+    </div>
+    <!-- end Add button-->
+</main>
+
+<div th:replace="common/footer :: footer"></div>
+</html>

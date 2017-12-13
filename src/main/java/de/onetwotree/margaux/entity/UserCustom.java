@@ -31,25 +31,22 @@ public class UserCustom{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
-    @NotNull
-    @Size(min = 1, max = 50)
+
     @Column(name="username", length = 50, unique = true, nullable = false)
     private String username;
+
     @Column(name = "password")
-    @Length(min = 5, message = "*Your password must have at least 5 characters")
-    @NotEmpty(message = "*Please provide your password")
     private String password;
-    @NotNull
+
     @Column(name="firstname")
     private String firstname;
-    @NotNull
+
     @Column(name="lastname")
     private String lastname;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+
     @Column(name = "birthdate")
     private LocalDate birthdate;
-    @Email(message = "*Please provide a valid Email")
-    @NotEmpty(message = "*Please provide an email")
+
     @Column(name="email")
     private String email;
 
@@ -77,6 +74,25 @@ public class UserCustom{
                     name = "role_id", referencedColumnName = "role_id"))
     private List<Role> roles;
 
+    public UserCustom() {
+    }
+
+    public UserCustom(String username, String password, String firstname, String lastname, LocalDate birthdate, String email, String phone, String localisation, String picture, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, List<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
+        this.email = email;
+        this.phone = phone;
+        this.localisation = localisation;
+        this.picture = picture;
+        this.enabled = enabled;
+        this.accountNonExpired = accountNonExpired;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.accountNonLocked = accountNonLocked;
+        this.roles = roles;
+    }
 
     public Long getId() {
         return id;

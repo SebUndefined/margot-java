@@ -21,6 +21,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addConverter(getStringToCompany());
         registry.addConverter(getStringToProject());
         registry.addConverter(getLocalDateConverter());
+        registry.addConverter(getStringToRole());
     }
     @Bean
     public StringToUser getStringToUser(){
@@ -38,8 +39,14 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     public StringToProject getStringToProject() {
         return new StringToProject();
     }
+
     @Bean
     public LocalDateConverter getLocalDateConverter(){return new LocalDateConverter("dd-MM-yyyy");}
+
+    @Bean
+    public StringToRole getStringToRole() {
+        return new StringToRole();
+    }
     //Test with Service
     @Bean
     public HibernateJpaSessionFactoryBean sessionFactory() {

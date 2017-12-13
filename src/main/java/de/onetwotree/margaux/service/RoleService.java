@@ -8,5 +8,7 @@ import java.util.List;
  * Created by SebUndefined on 03/10/17.
  */
 public interface RoleService {
+    Role findbyId(String idRole);
+
     List<Role> findAll();
 }
