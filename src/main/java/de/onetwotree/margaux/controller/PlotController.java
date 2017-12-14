@@ -1,5 +1,7 @@
 package de.onetwotree.margaux.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.dao.*;
 import de.onetwotree.margaux.dto.PlotMapDTO;
 import de.onetwotree.margaux.entity.*;
@@ -76,15 +78,31 @@ public class PlotController {
     }
 
     @RequestMapping(value = "/view/{id}")
-    public  String viewPlot(@PathVariable(value = "id") String id, Model model) throws ItemNotFoundException {
-        Long plotId = Long.valueOf(id);
+    public  String viewPlot(@PathVariable(value = "id") Plot plot, Model model) throws ItemNotFoundException {
 
-        Plot plot = plotService.findOne(plotId);
-        if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
+        //if (plot == null) throw new ItemNotFoundException(plotId, "plot/");
         List<PlotResource> resourcePlotList = plot.getPlotResources();
         String myGraphData = plotResourceService.getPlotResourceAsJson(resourcePlotList);
+        //Creating JSON DATA for Localisation
+        ObjectMapper mapper = new ObjectMapper();
+        PlotMapDTO plotMapDTO = new PlotMapDTO(
+                plot.getProject().getId(),
+                plot.getId(),
+                plot.getLatitude(),
+                plot.getLongitude(),
+                plot.getName(),
+                plot.getSize());
+        List<PlotMapDTO> plotMapDTOList = new ArrayList<>();
+        plotMapDTOList.add(plotMapDTO);
+        String plotJson = "";
+        try {
+            plotJson = mapper.writeValueAsString(plotMapDTOList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("plots", plotJson);
         model.addAttribute("graphResource", myGraphData);
-        model.addAttribute("urlId", id);
+        model.addAttribute("urlId", plot.getId());
         model.addAttribute("plot", plot);
         return "Plot/viewPlot";
     }
@@ -97,18 +115,7 @@ public class PlotController {
         model.addAttribute("graphPlotResource", myGraphData);
         return "common/plotResourceGraph :: graphResourcesPlot";
     }
-    @RequestMapping(value = "/view/{id}/get-localisation/")
-    public String getLocalisationOfPlot(@PathVariable(value = "id")Plot plot, Model model) {
-        PlotMapDTO plotMapDTO = new PlotMapDTO();
-        plotMapDTO.setLatitude(plot.getLatitude());
-        plotMapDTO.setLongitude(plot.getLongitude());
-        plotMapDTO.setName(plot.getName());
-        plotMapDTO.setSize(plot.getSize());
-        List<PlotMapDTO> plotMapDTOList = new ArrayList<>();
-        plotMapDTOList.add(plotMapDTO);
-        model.addAttribute("plotsMap", plotMapDTOList);
-        return "common/map/googleMap :: googleMap";
-    }
+
     @RequestMapping(value = "/view/{id}/resources/")
     public String viewResourceOfPlot(@PathVariable(value = "id") String id) throws ItemNotFoundException {
         Long plotId = Long.valueOf(id);

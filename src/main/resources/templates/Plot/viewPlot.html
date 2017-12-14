@@ -85,6 +85,10 @@
                        <div id="map">
                            <div class="loader"></div>
                        </div>
+                       <script th:inline="javascript">
+                           var plots = [(${plots})];
+                       </script>
+                       <div th:replace="common/map :: map"></div>
                    </div>
                </div>
         </div>
@@ -118,7 +122,6 @@
     $(document).ready(function () {
         //Loading the plotResource Chart
         loadChartFragment();
-        loadMapFragment();
         //Adding form when click on edit button
         $("#editResources").click(function () {
                 if (isEditing === false) {
@@ -129,31 +132,6 @@
                 }
             }
         );
-
-
-        function loadMapFragment() {
-            console.log("Loading Map Fragment");
-            $.ajax({
-                dataType: 'html',
-                async: true,
-                type: 'GET',
-                url: '/plot/view/'+ plotId + '/get-localisation/',
-                timeout: 5000,
-                beforeSend: function() {
-                    $chartTarget.addClass("loading-part");
-                },
-                success: function (data) {
-                    $('#map').load(this.url);
-                },
-                complete: function() {
-                    $chartTarget.removeClass("loading-part");
-                },
-                error: function () {
-                    alert("Cannot load data on " + this.url);
-                }
-            });
-
-        }
 
     });
     function loadChartFragment() {

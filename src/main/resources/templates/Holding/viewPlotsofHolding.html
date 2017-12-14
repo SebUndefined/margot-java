@@ -12,13 +12,13 @@
                     <h2>Plots</h2>
                 </div>
                 <div class="map-panel">
-                    <div id="map"></div>
+                    <div id="map">
+
+                    </div>
                 </div>
                 <!-- Un test de map -->
                 <script th:inline="javascript">
-                    //var plots = [];
                     var plots = [(${plots})];
-                    console.log(plots);
                 </script>
                 <div th:replace="common/map :: map"></div>
                 <!-- Un test deux -->

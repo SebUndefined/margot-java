@@ -3,46 +3,41 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <div th:fragment="map">
     <script th:inline="javascript">
-        var map;
-
         function initMap() {
-            var infowindow = new google.maps.InfoWindow();
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat:0,lng:0},
-                zoom: 2
+            console.log(plots);
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: {lat: 0, lng: 0}
             });
-            for(var i = 0; i < plots.length; i++) {
-                var latlng = new google.maps.LatLng(plots[i].latitude, plots[i].longitude);
+            plots.forEach(function (plotParam) {
+                var plot = plotParam;
+                var position = {lat: plot.latitude, lng: plot.longitude};
                 var marker = new google.maps.Marker({
-                    position: latlng,
+                    position: position,
                     map: map,
                     icon: '/assets/img/tree-2-32.png'
                 });
-                google.maps.event.addListener(marker, 'click', (function(marker, i) {
+                var contentString = '<div class="gm-window">' +
+                    '<div class="gm-window-title">' +
+                    plot.name +
+                    '</div>' +
+                    '<div class="gm-window-content">' +
+                    'Size: ' + plot.size + ' ha' + '<br/>' +
+                    '<a href="/plot/view/' + plot.plotId + '">Go to the plot</a><br />' +
+                    '<a href="/project/view/' + plot.projectId + '">Go to project</a>' +
+                    '</div>' +
+                    '</div>';
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
 
-                    return function() {
-                        var contentString = '<div class="gm-window">' +
-                            '<div class="gm-window-title">' +
-                            plots[i].name +
-                            '</div>' +
-                            '<div class="gm-window-content">' +
-                            'Size: ' + plots[i].size + ' ha' + '<br/>' +
-                            'Project: <a href="/project/view/' + plots[i].project.id + '">' + plots[i].project.name + '</a>' +
-                            '</div>' +
-                            '</div>';
-                        //infowindow.close();
-                        infowindow.setContent(contentString);
-                        infowindow.open(map, marker);
-                        map.setCenter(latlng);
-                    }
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
 
-                })(marker, i));
+            })
 
-
-
-            }
         }
-        //google.maps.event.addDomListener(window, 'load', initMap);
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=initMap"></script>
 </div>

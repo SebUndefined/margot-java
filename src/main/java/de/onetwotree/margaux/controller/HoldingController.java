@@ -200,21 +200,24 @@ public class HoldingController {
         List<Plot> plotList = holdingService.findPlots(holding.getId());
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
-        /*try {
-            result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plotList);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }*/
+
         List<PlotMapDTO> plotMapDTOList = new ArrayList<>();
         for (Plot plot : plotList) {
-            PlotMapDTO plotMapDTO = new PlotMapDTO();
-            plotMapDTO.setLatitude(plot.getLatitude());
-            plotMapDTO.setLongitude(plot.getLongitude());
-            plotMapDTO.setSize(plot.getSize());
+            PlotMapDTO plotMapDTO = new PlotMapDTO(plot.getProject().getId(),
+                    plot.getId(),
+                    plot.getLatitude(),
+                    plot.getLongitude(),
+                    plot.getName(),
+                    plot.getSize());
             plotMapDTOList.add(plotMapDTO);
         }
+        try {
+            result = mapper.writeValueAsString(plotMapDTOList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         model.addAttribute("urlId", holding.getId());
-        model.addAttribute("plotsMap", plotMapDTOList);
+        model.addAttribute("plots", result);
         return "Holding/viewPlotsofHolding";
     }
 

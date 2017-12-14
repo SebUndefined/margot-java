@@ -7,10 +7,38 @@ import java.math.BigDecimal;
  */
 public class PlotMapDTO {
 
+    private Long projectId;
+    private Long plotId;
     private Double latitude;
     private Double longitude;
     private String name;
     private BigDecimal size;
+
+
+    public PlotMapDTO(Long projectId, Long plotId, Double latitude, Double longitude, String name, BigDecimal size) {
+        this.projectId = projectId;
+        this.plotId = plotId;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.name = name;
+        this.size = size;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public Long getPlotId() {
+        return plotId;
+    }
+
+    public void setPlotId(Long plotId) {
+        this.plotId = plotId;
+    }
 
     public Double getLatitude() {
         return latitude;
