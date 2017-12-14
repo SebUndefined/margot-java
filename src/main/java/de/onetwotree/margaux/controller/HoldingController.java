@@ -3,6 +3,7 @@ package de.onetwotree.margaux.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Enum.AlertStatus;
+import de.onetwotree.margaux.dto.PlotMapDTO;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -189,24 +191,30 @@ public class HoldingController {
 
     /**
      * View plots of Holding
-     * @param id
+     * @param holding
      * @param model
      * @return
      */
     @GetMapping(value = "view/{id}/plots/")
-    public String viewPlotsOfHolding(@PathVariable(value = "id") String id, Model model) {
-        Long holdingId = Long.valueOf(id);
-        List<Plot> plotList = holdingService.findPlots(holdingId);
+    public String viewPlotsOfHolding(@PathVariable(value = "id") Holding holding, Model model) {
+        List<Plot> plotList = holdingService.findPlots(holding.getId());
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
-        try {
+        /*try {
             result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plotList);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
+        }*/
+        List<PlotMapDTO> plotMapDTOList = new ArrayList<>();
+        for (Plot plot : plotList) {
+            PlotMapDTO plotMapDTO = new PlotMapDTO();
+            plotMapDTO.setLatitude(plot.getLatitude());
+            plotMapDTO.setLongitude(plot.getLongitude());
+            plotMapDTO.setSize(plot.getSize());
+            plotMapDTOList.add(plotMapDTO);
         }
-        System.out.println(result);
-        model.addAttribute("urlId", id);
-        model.addAttribute("plots", result);
+        model.addAttribute("urlId", holding.getId());
+        model.addAttribute("plotsMap", plotMapDTOList);
         return "Holding/viewPlotsofHolding";
     }
 

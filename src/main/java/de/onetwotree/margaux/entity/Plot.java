@@ -105,5 +105,23 @@ public class Plot extends MainEntity implements Serializable {
     public void setPlotResources(List<PlotResource> plotResources) {
         this.plotResources = plotResources;
     }
+
+    public List<Resource> getResources() {
+        List<Resource> resourceList = new ArrayList<>();
+        for (PlotResource plotResource : this.getPlotResources()) {
+            resourceList.add(plotResource.getResource());
+        }
+        return resourceList;
+    }
+
+    public boolean hasResource(Resource resource) {
+        if (this.getResources().contains(resource)) {
+            System.out.println("this plot has the ressource " + resource.getName());
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
 

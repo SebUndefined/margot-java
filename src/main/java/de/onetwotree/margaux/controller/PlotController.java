@@ -1,6 +1,7 @@
 package de.onetwotree.margaux.controller;
 
 import de.onetwotree.margaux.dao.*;
+import de.onetwotree.margaux.dto.PlotMapDTO;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.exception.PlotResourceException;
@@ -96,6 +97,18 @@ public class PlotController {
         model.addAttribute("graphPlotResource", myGraphData);
         return "common/plotResourceGraph :: graphResourcesPlot";
     }
+    @RequestMapping(value = "/view/{id}/get-localisation/")
+    public String getLocalisationOfPlot(@PathVariable(value = "id")Plot plot, Model model) {
+        PlotMapDTO plotMapDTO = new PlotMapDTO();
+        plotMapDTO.setLatitude(plot.getLatitude());
+        plotMapDTO.setLongitude(plot.getLongitude());
+        plotMapDTO.setName(plot.getName());
+        plotMapDTO.setSize(plot.getSize());
+        List<PlotMapDTO> plotMapDTOList = new ArrayList<>();
+        plotMapDTOList.add(plotMapDTO);
+        model.addAttribute("plotsMap", plotMapDTOList);
+        return "common/map/googleMap :: googleMap";
+    }
     @RequestMapping(value = "/view/{id}/resources/")
     public String viewResourceOfPlot(@PathVariable(value = "id") String id) throws ItemNotFoundException {
         Long plotId = Long.valueOf(id);
@@ -171,12 +184,15 @@ public class PlotController {
 
         return "Plot/addResourceToPlot";
     }
-    @PostMapping(value="/view/{id}/add-resource")
+    @PostMapping(value="/view/{id-plot}/add-resource")
     public String addResourceToPlotSubmit(RedirectAttributes redirectAttributes,
-                                          @PathVariable(value = "id") String id,
+                                          @PathVariable(value = "id-plot") Plot plot,
                                           @ModelAttribute("PlotResource") PlotResource plotResource,
                                           BindingResult result) {
-        Boolean isExist = plotService.addResourceToPlot(Long.valueOf(id), plotResource);
+        if (plot.hasResource(plotResource.getResource())) {
+            System.out.println("################Has the ressource");
+        }
+        /*Boolean isExist = plotService.addResourceToPlot(Long.valueOf(id), plotResource);
         if (!isExist) {
             throw new PlotResourceException("Error: You cannot add this resource to this plot. " +
                     "Already here, or the size of the plot is not big enough", id);
@@ -186,7 +202,8 @@ public class PlotController {
                     + " has been added to plot.";
             redirectAttributes.addFlashAttribute("info", message);
         }
-        String url = "redirect:/plot/view/" + id + "/";
+        String url = "redirect:/plot/view/" + id + "/";*/
+        String url = "redirect:/plot/view/12/add-resource/";
         return url;
 
     }

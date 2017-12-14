@@ -52,8 +52,12 @@ nav {
     font-size: 16px;
 }
 #logo {
-    height: 100px;
+    height: 64px;
+    background: url("../img/logo_12Tree_resize.jpg") no-repeat center;
     background-size: contain;
+}
+#logo_login {
+    height: 100px;
     background: url("../img/logo_12Tree_resize.jpg") no-repeat center;
 }
 .tabs .indicator { display: none; }

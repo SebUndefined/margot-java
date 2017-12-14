@@ -36,7 +36,7 @@
 
                         <script th:inline="javascript" th:src="@{/assets/js/utils/refreshSelect.js}"></script>
                        <!-- Retrieving Resources form model attribute-->
-                        <script th:each="resource:${resources}" th:inline="javascript">
+                        <script th:inline="javascript">
                             var resourceItems = [];
                             /*[# th:each="n : ${resources}"]*/
                                 resourceItems.push({"id":"[(${n.id})]", "name":"[(${n.name})]"});

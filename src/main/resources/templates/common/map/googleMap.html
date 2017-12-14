@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<div th:fragment="googleMap">
+    <div id="google-map">
+
+    </div>
+
+
+    <script th:inline="javascript">
+
+            function initMap() {
+                var plots = /*[[${plotsMap}]]*/ null;
+                console.log(plots);
+                var map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 4,
+                    center: {lat: 0, lng: 0}
+                });
+                plots.forEach(function (plotParam) {
+                    var plot = plotParam;
+                    var position = {lat: plot.latitude, lng: plot.longitude};
+                    var marker = new google.maps.Marker({
+                        position: position,
+                        map: map,
+                        icon: '/assets/img/tree-2-32.png'
+                    });
+                    var contentString = '<div class="gm-window">' +
+                        '<div class="gm-window-title">' +
+                        plot.name +
+                        '</div>' +
+                        '<div class="gm-window-content">' +
+                        'Size: ' + plot.size + ' ha' + '<br/>' +
+                        //'Project: <a href="/project/view/' + plot.project + '">' + plot.project.name + '</a>' +
+                        '</div>' +
+                        '</div>';
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+
+                })
+
+            }
+
+
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=initMap">
+    </script>
+
+
+</div>

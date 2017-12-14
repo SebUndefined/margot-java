@@ -109,16 +109,16 @@
 <!--End Alerte Message-->
 <!-- Un test de map -->
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCf532UCd9nQEUc0fhK1qe4cdk1ppXkAzQ&callback=loadMap"></script>
-
 <!-- Load graph for resources -->
 <script th:inline="javascript">
     var plotId = [[${plot.id}]];
     var isEditing = false;
+    console.log(plotId);
+
     $(document).ready(function () {
         //Loading the plotResource Chart
         loadChartFragment();
-        loadMap();
+        loadMapFragment();
         //Adding form when click on edit button
         $("#editResources").click(function () {
                 if (isEditing === false) {
@@ -129,14 +129,41 @@
                 }
             }
         );
-    });
 
+
+        function loadMapFragment() {
+            console.log("Loading Map Fragment");
+            $.ajax({
+                dataType: 'html',
+                async: true,
+                type: 'GET',
+                url: '/plot/view/'+ plotId + '/get-localisation/',
+                timeout: 5000,
+                beforeSend: function() {
+                    $chartTarget.addClass("loading-part");
+                },
+                success: function (data) {
+                    $('#map').load(this.url);
+                },
+                complete: function() {
+                    $chartTarget.removeClass("loading-part");
+                },
+                error: function () {
+                    alert("Cannot load data on " + this.url);
+                }
+            });
+
+        }
+
+    });
     function loadChartFragment() {
         isEditing = false;
         console.log("Loading PIE chart for resources with ajax");
         $chartTarget = $('.loader');
         $.ajax({
+            async: true,
             type: 'GET',
+            dataType: 'html',
             url: '/plot/view/'+ plotId + '/get-resources/',
             timeout: 5000,
             beforeSend: function() {
@@ -154,6 +181,7 @@
         });
     }
     function loadFormFragment() {
+        console.log("Loading Form");
         isEditing = true;
         $.ajax({
             async: true,
@@ -173,41 +201,14 @@
                 alert("Cannot load data");
             }
         });
+    }
 
-    }
-    function loadMap() {
-            var map;
-            var plot = /*[[${plot}]]*/ '';
-            var infowindow = new google.maps.InfoWindow();
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: plot.latitude, lng: plot.longitude},
-                zoom: 2
-            });
-            var latlng = new google.maps.LatLng(plot.latitude, plot.longitude);
-            var marker = new google.maps.Marker({
-                position: latlng,
-                map: map,
-                icon: '/assets/img/tree-2-32.png'
-            });
-            google.maps.event.addListener(marker, 'click', (function (marker) {
-                return function (plot) {
-                    console.log(plot);
-                    var contentString = '<div class="gm-window">' +
-                        '<div class="gm-window-title">' +
-                        plot.name +
-                        '</div>' +
-                        '<div class="gm-window-content">' +
-                        'Size: ' + plot.size + ' ha' + '<br/>' +
-                        //'Project: <a href="/project/view/' + plot.project + '">' + plot.project.name + '</a>' +
-                        '</div>' +
-                        '</div>';
-                    infowindow.setContent(contentString);
-                    infowindow.open(map, marker);
-                    map.setCenter(latlng);
-                }
-            })(marker));
-    }
+
+
+
 </script>
+
+
 
 
 
