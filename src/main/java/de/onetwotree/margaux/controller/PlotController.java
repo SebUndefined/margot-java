@@ -72,8 +72,26 @@ public class PlotController {
     @RequestMapping(value = "/map/")
     public String plotIndexMap(Model model)
     {
-        List<Plot> plots = plotService.findAll();
-        model.addAttribute("plots", plots);
+        List<Plot> plotList = plotService.findAll();
+        ObjectMapper mapper = new ObjectMapper();
+        String result = null;
+
+        List<PlotMapDTO> plotMapDTOList = new ArrayList<>();
+        for (Plot plot : plotList) {
+            PlotMapDTO plotMapDTO = new PlotMapDTO(plot.getProject().getId(),
+                    plot.getId(),
+                    plot.getLatitude(),
+                    plot.getLongitude(),
+                    plot.getName(),
+                    plot.getSize());
+            plotMapDTOList.add(plotMapDTO);
+        }
+        try {
+            result = mapper.writeValueAsString(plotMapDTOList);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        model.addAttribute("plots", result);
         return "Plot/plotMap";
     }
 
@@ -152,7 +170,7 @@ public class PlotController {
     }
 
     @GetMapping(value = "update/{plotId}")
-    public String updatePlot(@ModelAttribute("plot") Plot plot,
+    public String updatePlot(@ModelAttribute("plotId") Plot plot,
                              Model model,
                              @PathVariable(value = "plotId") String idPlot) throws ItemNotFoundException {
         plot = plotService.findOne(Long.valueOf(idPlot));

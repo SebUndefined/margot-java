@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.onetwotree.margaux.Enum.AlertStatus;
 import de.onetwotree.margaux.dao.*;
+import de.onetwotree.margaux.dto.PlotMapDTO;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
@@ -23,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -187,12 +189,22 @@ public class ProjectController {
         List<Plot> plotList = projectService.findPlots(idProject);
         ObjectMapper mapper = new ObjectMapper();
         String result = null;
+
+        List<PlotMapDTO> plotMapDTOList = new ArrayList<>();
+        for (Plot plot : plotList) {
+            PlotMapDTO plotMapDTO = new PlotMapDTO(plot.getProject().getId(),
+                    plot.getId(),
+                    plot.getLatitude(),
+                    plot.getLongitude(),
+                    plot.getName(),
+                    plot.getSize());
+            plotMapDTOList.add(plotMapDTO);
+        }
         try {
-            result = mapper.writerWithView(PlotView.PlotWithUserAndCompany.class).writeValueAsString(plotList);
+            result = mapper.writeValueAsString(plotMapDTOList);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
-        System.out.println(result);
         model.addAttribute("urlId", id);
         model.addAttribute("plots", result);
         return "Project/viewPlotsofProject";
