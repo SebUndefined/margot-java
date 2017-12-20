@@ -50,6 +50,14 @@
                             <label for="projectPlot">Project</label>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="input-field col l6 m6 s12">
+                            <select th:field="*{country}" class="input-field">
+                                <option id="manager" class="left circle" th:each="country: ${countries}" th:data-icon="${'/files/' + country.flag}" th:value="${country.id}" th:text="${country.name}"></option>
+                            </select>
+                            <label for="manager">Manager</label>
+                        </div>
+                    </div>
 
                     <input class="waves-effect waves-light btn" type="submit" />
                 </form>

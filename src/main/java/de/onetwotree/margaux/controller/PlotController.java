@@ -46,15 +46,25 @@ public class PlotController {
     PlotResourceService plotResourceService;
     private final
     HarvestService harvestService;
+    private final
+    CountryService countryService;
+
 
     @Autowired
-    public PlotController(PlotService plotService, ResourceService resourceService, ResourceTypeService resourceTypeService, ProjectService projectService, PlotResourceService plotResourceService, HarvestService harvestService) {
+    public PlotController(PlotService plotService,
+                          ResourceService resourceService,
+                          ResourceTypeService resourceTypeService,
+                          ProjectService projectService,
+                          PlotResourceService plotResourceService,
+                          HarvestService harvestService,
+                          CountryService countryService) {
         this.plotService = plotService;
         this.resourceService = resourceService;
         this.resourceTypeService = resourceTypeService;
         this.projectService = projectService;
         this.plotResourceService = plotResourceService;
         this.harvestService = harvestService;
+        this.countryService = countryService;
     }
 
     @RequestMapping(value = "/")
@@ -149,8 +159,10 @@ public class PlotController {
     public String addPlotForm(Model model) {
         Plot plot = new Plot();
         List<Project> projects = projectService.findAll();
+        List<Country> countries = countryService.findAll();
         model.addAttribute("plot", plot);
         model.addAttribute("projects", projects);
+        model.addAttribute("countries", countries);
         return "Plot/editPlot";
     }
     @PostMapping(value="/add")
@@ -215,21 +227,21 @@ public class PlotController {
                                           @ModelAttribute("PlotResource") PlotResource plotResource,
                                           BindingResult result) {
         if (plot.hasResource(plotResource.getResource())) {
-            System.out.println("################Has the ressource");
+            throw new PlotResourceException("Error: You cannot add this resource to this plot. " +
+                    "This resource" + plotResource.getResource().getName() + " is already on the plot ", plot.getId().toString());
         }
-        /*Boolean isExist = plotService.addResourceToPlot(Long.valueOf(id), plotResource);
+        Boolean isExist = plotService.addResourceToPlot(plot, plotResource);
         if (!isExist) {
             throw new PlotResourceException("Error: You cannot add this resource to this plot. " +
-                    "Already here, or the size of the plot is not big enough", id);
+                    "The size of the plot is not big enough", plot.getId().toString());
         }
         else {
             String message = "Resource " + plotResource.getResource().getName()
                     + " has been added to plot.";
             redirectAttributes.addFlashAttribute("info", message);
         }
-        String url = "redirect:/plot/view/" + id + "/";*/
-        String url = "redirect:/plot/view/12/add-resource/";
-        return url;
+
+        return "redirect:/plot/view/" + plot.getId().toString() + "/";
 
     }
 
@@ -309,7 +321,6 @@ public class PlotController {
     @PostMapping(value = "view/{plot}/edit-resources/")
     @ResponseBody
     public String editResourceOfPlotSubmit(@PathVariable Plot plot, @ModelAttribute PlotResourceForm plotResourceForm) {
-        System.out.println(plot);
         plotService.updateResourceOfPlot(plot, plotResourceForm);
         return "Request done";
     }

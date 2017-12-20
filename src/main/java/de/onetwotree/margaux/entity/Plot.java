@@ -5,16 +5,12 @@ package de.onetwotree.margaux.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
-import de.onetwotree.margaux.entity.MainEntity;
-import de.onetwotree.margaux.entity.PlotResource;
-import de.onetwotree.margaux.entity.Project;
 import de.onetwotree.margaux.entityJson.PlotView;
-import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;

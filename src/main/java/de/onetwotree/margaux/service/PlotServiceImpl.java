@@ -92,21 +92,20 @@ public class PlotServiceImpl implements PlotService {
     }
     /**
      *
-     * @param id
+     * @param plot
      * @param plotResource
      * @return boolean true|false
      */
     @Override
     @Transactional
-    public boolean addResourceToPlot(Long id, PlotResource plotResource) {
-        PlotResourcePK plotResourcePK = new PlotResourcePK(id, plotResource.getResource().getId());
+    public boolean addResourceToPlot(Plot plot, PlotResource plotResource) {
+        PlotResourcePK plotResourcePK = new PlotResourcePK(plot.getId(), plotResource.getResource().getId());
         PlotResource isExist = plotResourceRepository.findOne(plotResourcePK);
-        BigDecimal total = plotResourceRepository.findSumOfProportionOfPlot(id);
+        BigDecimal total = plotResourceRepository.findSumOfProportionOfPlot(plot.getId());
         if(total == null) {
             total = BigDecimal.valueOf(0);
         }
         if (isExist == null) {
-            Plot plot = plotRepository.findOne(id);
             plotResource.setPlotResourcePK(plotResourcePK);
             plotResource.setPlot(plot);
             BigDecimal difference = plotResource.getPlot().getSize().subtract(total);

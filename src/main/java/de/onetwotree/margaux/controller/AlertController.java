@@ -7,9 +7,11 @@ import de.onetwotree.margaux.dao.MainEntityRepository;
 import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.AlertService;
+import de.onetwotree.margaux.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -37,11 +39,13 @@ public class AlertController {
 
     private final AlertService alertService;
     private final MainEntityRepository mainEntityRepository;
+    private final UserService userService;
 
     @Autowired
-    public AlertController(AlertService alertService, MainEntityRepository mainEntityRepository) {
+    public AlertController(AlertService alertService, MainEntityRepository mainEntityRepository, UserService userService) {
         this.alertService = alertService;
         this.mainEntityRepository = mainEntityRepository;
+        this.userService = userService;
     }
 
     @GetMapping(value = "view/{idAlert}/load-comments/")
@@ -63,13 +67,12 @@ public class AlertController {
     @ResponseBody
     public String saveAlertComment(@ModelAttribute("AlertComment") AlertComment alertComment,
                                    @PathVariable(value = "idAlert") Alert alert,
-                                   @AuthenticationPrincipal UserCustom activeUser) {
-        System.out.println("Here " + alertComment.getId());
-        System.out.println("Here " + alertComment.getCommentContent());
+                                   @AuthenticationPrincipal UserDetails activeUser) {
+
         alertComment.setDateTime(LocalDateTime.now());
         alertComment.setAlert(alert);
-        UserCustom userCustom = activeUser;
-        alertComment.setAuthor(userCustom);
+
+        alertComment.setAuthor(userService.findByUsername(activeUser.getUsername()));
         alert.getAlertComments().add(alertComment);
         alertService.saveAlert(alert);
         return "done";

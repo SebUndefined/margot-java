@@ -30,7 +30,7 @@ public interface PlotService {
     String findHarvestsByResourcesForGraph(Long idPlot, Long idResourceType);
 
     @Transactional
-    boolean addResourceToPlot(Long id, PlotResource plotResource);
+    boolean addResourceToPlot(Plot plot, PlotResource plotResource);
 
     @Transactional
     void updatePlot(Plot plot, Plot plotOrigin);
