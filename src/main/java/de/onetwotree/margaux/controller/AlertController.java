@@ -71,7 +71,6 @@ public class AlertController {
 
         alertComment.setDateTime(LocalDateTime.now());
         alertComment.setAlert(alert);
-
         alertComment.setAuthor(userService.findByUsername(activeUser.getUsername()));
         alert.getAlertComments().add(alertComment);
         alertService.saveAlert(alert);

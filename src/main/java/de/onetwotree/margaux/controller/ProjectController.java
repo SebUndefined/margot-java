@@ -69,10 +69,13 @@ public class ProjectController {
      * @return
      */
     @RequestMapping(value = "/")
-    public String projectIndex(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                                   @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
-        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Project> projectPage = projectService.findAllPaginated(pageable);
+    public String projectIndex(Model model,
+                               @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                               @RequestParam(name = "sort", defaultValue = "id", required = false) String sort,
+                               @RequestParam(name = "direction", defaultValue = "DESC", required = false) Sort.Direction direction) {
+        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(direction, sort));
+        Page<Project> projectPage = projectService.findAllPaginated(pageRequest);
         model.addAttribute("projectPage", projectPage);
         return "Project/project";
     }

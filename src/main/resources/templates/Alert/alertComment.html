@@ -32,7 +32,7 @@
                     <p th:text="${alertComment.commentContent}">
 
                     </p>
-                    <a href="#!" class="secondary-content"><i class="material-icons">grade</i></a>
+                    <a href="#!" class="secondary-content"><span class="badge" th:text="${#temporals.format(alertComment.dateTime,'dd/MM/yyyy HH:mm')}"></a>
                 </li>
             </ul>
         </div>

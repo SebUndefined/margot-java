@@ -8,6 +8,8 @@ import de.onetwotree.margaux.entity.*;
 import de.onetwotree.margaux.entityJson.PlotView;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -37,6 +39,8 @@ public class HoldingController {
     private final ResourceTypeService resourceTypeService;
     private final CountryService countryService;
 
+    private static final Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
+
     @Autowired
     public HoldingController(HoldingService holdingService, AlertService alertService, ResourceTypeService resourceTypeService, CountryService countryService) {
         this.holdingService = holdingService;
@@ -58,6 +62,8 @@ public class HoldingController {
         Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
         Page<Holding> holdingPage = holdingService.findAllPaginated(pageable);
         model.addAttribute("holdingPage", holdingPage);
+        //Log
+        logger.info("[MARGAUX]Index of holding page. " + holdingPage.getTotalElements() + " elements retrieved.");
         return "Holding/holding";
     }
 
@@ -75,6 +81,8 @@ public class HoldingController {
         model.addAttribute("alertsHolding", alertService.findLast10ByMainEntityId(idMainCompany, AlertStatus.OPEN));
         model.addAttribute("urlId", id);
         model.addAttribute("holding", holding);
+        //Log
+        logger.info("[MARGAUX]Retriving holding with id: " + holding.getId());
         return "Holding/viewHolding";
     }
 

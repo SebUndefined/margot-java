@@ -5,6 +5,7 @@ import de.onetwotree.margaux.entity.UserCustom;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public interface UserService {
 
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     Page<UserCustom> findAll(Pageable pageable);
 
     UserCustom save(UserDTO userDTO);

@@ -58,10 +58,13 @@ public class CompanyController {
      * @return
      */
     @GetMapping(value = "/")
-    public String indexCompany(Model model, @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
-        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Company> companyPage = companyService.findAllPaginated(pageable);
+    public String indexCompany(Model model,
+                               @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                               @RequestParam(name = "sort", defaultValue = "id", required = false) String sort,
+                               @RequestParam(name = "direction", defaultValue = "DESC", required = false) Sort.Direction direction) {
+        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(direction, sort));
+        Page<Company> companyPage = companyService.findAllPaginated(pageRequest);
         model.addAttribute("companies", companyPage);
         return "Company/company";
     }
@@ -167,9 +170,11 @@ public class CompanyController {
     public String viewProjectsOfCompany(@PathVariable(value = "id") String id,
                                         Model model,
                                         @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                                        @RequestParam(name = "size", defaultValue = "10", required = false) Integer size) {
-        Pageable pageable = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
-        Page<Project> projectPage = companyService.findProjectsPaginated(Long.valueOf(id), pageable);
+                                        @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                                        @RequestParam(name = "sort", defaultValue = "id", required = false) String sort,
+                                        @RequestParam(name = "direction", defaultValue = "DESC", required = false) Sort.Direction direction) {
+        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(direction, sort));
+        Page<Project> projectPage = companyService.findProjectsPaginated(Long.valueOf(id), pageRequest);
         model.addAttribute("projectPage", projectPage);
         model.addAttribute("urlId", id);
         return "Company/viewProjectsofCompany";
@@ -218,11 +223,13 @@ public class CompanyController {
      */
     @RequestMapping(value = "view/{id}/harvests/")
     public String viewHarvestsOfCompany(Model model,
-                               @PathVariable(value = "id") String idMainCompany,
-                               @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+                                        @PathVariable(value = "id") String idMainCompany,
+                                        @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                                        @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                                        @RequestParam(name = "sort", defaultValue = "id", required = false) String sort,
+                                        @RequestParam(name = "direction", defaultValue = "DESC", required = false) Sort.Direction direction)
     {
-        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        Pageable pageRequest = new PageRequest(page - 1, size, new Sort(direction, sort));
         Page<Harvest> harvestPage = companyService.findHarvestsPaginated(Long.valueOf(idMainCompany), pageRequest);
         model.addAttribute("resourceTypeList", resourceTypeService.findAll());
         model.addAttribute("urlId", idMainCompany);

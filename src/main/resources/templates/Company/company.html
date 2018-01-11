@@ -10,35 +10,7 @@
                 <div class="panel_title">
                     <h2>Companies</h2>
                 </div>
-                <table class="bordered highlight responsive-table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Holding</th>
-                        <th>Country</th>
-                        <th>Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="company : ${companies}">
-                        <td th:text="${company.id}">undefined</td>
-                        <td th:text="${company.name}">undefined</td>
-                        <td th:text="${company.holding.name}">undefined</td>
-                        <td>
-                            <img class="responsive-img mini-pic" th:src="@{${'/files/' + company.country.flag}}" th:title="${company.country.name}">
-                        </td>
-                        <td>
-                            <a th:href="@{'/company/view/' + ${company.id}}" class="btn-floating btn-small waves-effect waves-light">
-                                <i class="material-icons">visibility</i>
-                            </a>
-                            <a th:href="@{'/company/update/' + ${company.id}}" class="btn-floating btn-small waves-effect waves-light">
-                                <i class="material-icons">edit</i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div th:replace="common/sheetCompany :: sheetCompany"></div>
             </div>
         </div>
     </div>
@@ -63,4 +35,6 @@
 </main>
 
 <div th:replace="common/footer :: footer"></div>
+<script th:src="@{/assets/js/utils/getURIParam.js}"></script>
+<script th:src="@{/assets/js/utils/sorting.js}"></script>
 </html>

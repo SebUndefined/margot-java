@@ -5,10 +5,7 @@
 <div th:replace="common/header :: header"></div>
 <main>
     <h1>Request Failed...</h1>
-     Failed URL: <span th:text="${#httpServletRequest.requestURI}">undefined</span>
-    <div th:if="${exception != null}"
-         th:utext="'Exception: ' + ${exception}" th:remove="tag">
-    </div>-->
+    <h2>Sorry, you do not have permission to view this page.</h2>
 </main>
 
 <div th:replace="common/footer :: footer"></div>

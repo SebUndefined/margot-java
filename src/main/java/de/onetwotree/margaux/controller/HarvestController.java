@@ -42,10 +42,12 @@ public class HarvestController {
 
     @RequestMapping(value = "/")
     public String harvestIndex(Model model,
-                            @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
-                            @RequestParam(name = "size", defaultValue = "10", required = false) Integer size)
+                               @RequestParam(name = "page", defaultValue = "1", required = false) Integer page,
+                               @RequestParam(name = "size", defaultValue = "10", required = false) Integer size,
+                               @RequestParam(name = "sort", defaultValue = "id", required = false) String sort,
+                               @RequestParam(name = "direction", defaultValue = "DESC", required = false) Sort.Direction direction)
     {
-        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(Sort.Direction.ASC, "id"));
+        PageRequest pageRequest = new PageRequest(page - 1, size, new Sort(direction, sort));
         Page<Harvest> harvestPage = harvestRepository.findAll(pageRequest);
         model.addAttribute("harvests", harvestPage);
         model.addAttribute("page", page);

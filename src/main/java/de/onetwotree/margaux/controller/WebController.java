@@ -73,4 +73,9 @@ public class WebController {
         return "User/profile";
     }
 
+    @GetMapping(value = "/accessDenied")
+    public String accessDenied(Model model) {
+        return "403";
+    }
+
 }

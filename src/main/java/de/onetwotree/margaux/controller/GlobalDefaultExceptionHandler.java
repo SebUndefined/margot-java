@@ -1,21 +1,22 @@
 package de.onetwotree.margaux.controller;
 
 
+
 import de.onetwotree.margaux.exception.AddHarvestException;
 import de.onetwotree.margaux.exception.ItemNotFoundException;
 import de.onetwotree.margaux.exception.PlotResourceException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.boot.context.config.ResourceNotFoundException;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -25,9 +26,10 @@ import java.sql.SQLException;
 public class GlobalDefaultExceptionHandler {
     public static final String DEFAULT_ERROR_VIEW = "error";
     private static final Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
-    /*@ExceptionHandler(value = Exception.class)
-    public ModelAndView
-    defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
+
+
+   /*@ExceptionHandler(value = Exception.class)
+    public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
         // If the exception is annotated with @ResponseStatus rethrow it and let
         // the framework handle it - like the OrderNotFoundException example
         // at the start of this post.
@@ -44,13 +46,19 @@ public class GlobalDefaultExceptionHandler {
         mav.setViewName(DEFAULT_ERROR_VIEW);
         return mav;
     }*/
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ModelAndView handleEntityNotFoundException(EntityNotFoundException e, RedirectAttributes redirectAttributes, HttpServletRequest request) {
+
+   /*@ExceptionHandler(value = AccessDeniedException.class)
+   @ResponseBody
+   public String handleAccessDeniedException() {
+        return "Pouet";
+   }*/
+   @ExceptionHandler(EntityNotFoundException.class)
+   public ModelAndView handleEntityNotFoundException(EntityNotFoundException e, RedirectAttributes redirectAttributes, HttpServletRequest request) {
         redirectAttributes.addFlashAttribute("alert", e.getMessage());
         String url = "redirect:" + request.getRequestURI() ;
         ModelAndView modelAndView = new ModelAndView(url);
         return modelAndView;
-    }
+   }
     @ExceptionHandler(SQLException.class)
     public String handleSQLException(HttpServletRequest request, Exception ex){
         logger.info("SQLException Occured:: URL="+request.getRequestURL());
@@ -67,7 +75,7 @@ public class GlobalDefaultExceptionHandler {
     @ExceptionHandler(ItemNotFoundException.class)
     public ModelAndView handleItemNotFoundException(ItemNotFoundException e, RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("alert", "Item Not Found");
-        System.out.println("error Item not found ############");
+        logger.warn("[MARGAUX] 404 error: Item not found !!! ");
         String url = "redirect:/" + e.getUrl();
         ModelAndView modelAndView = new ModelAndView(url);
         return modelAndView;
@@ -87,6 +95,12 @@ public class GlobalDefaultExceptionHandler {
         ModelAndView modelAndView = new ModelAndView(url);
         return modelAndView;
     }
+
+    @ExceptionHandler(IOException.class)
+    public String handle404Exception() {
+        return "404";
+    }
+
 
 
 }

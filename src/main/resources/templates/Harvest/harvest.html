@@ -11,41 +11,13 @@
                 <div class="panel_title">
                     <h2>Harvests</h2>
                 </div>
-                <table class="bordered highlight responsive-table">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Quantity</th>
-                        <th>Plot</th>
-                        <th>Resource</th>
-                        <th>Manager</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="harvest : ${harvests}">
-                        <td th:text="${harvest.id}">undefined</td>
-                        <td th:text="${harvest.date}">undefined</td>
-                        <td th:text="${harvest.quantity}">undefined</td>
-                        <td th:text="${harvest.plot.name}">undefined</td>
-                        <td th:text="${harvest.resource.name}">undefined</td>
-                        <td>undefined</td>
-                    </tr>
-                    </tbody>
-                </table>
-                <div th:fragment="pagination" class="row center-align">
-                    <ul class="pagination">
-                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                        <li th:each="i:${#numbers.sequence(0, harvests.totalPages -1)}" class="waves-effect">
-                            <a th:href="@{${url}(page=${i+1})}" th:text="${i+1}"></a>
-                        </li>
-                        <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                    </ul>
-                </div>
+                <div th:replace="common/sheetHarvest :: sheetHarvest"></div>
             </div>
         </div>
     </div>
 </main>
 
 <div th:replace="common/footer :: footer"></div>
+<script th:src="@{/assets/js/utils/getURIParam.js}"></script>
+<script th:src="@{/assets/js/utils/sorting.js}"></script>
 </html>
